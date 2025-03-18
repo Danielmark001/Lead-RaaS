@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-Readiness Assessment Tool</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>AI-Readiness Assessment Tool</h1>
+            <p class="subtitle">Evaluate a company's AI readiness for investment and transformation</p>
+        </header>
+        
+        <main>
+            <section class="input-section">
+                <h2>Analyze Company Website</h2>
+                <p>Enter a company website URL to assess its AI readiness and identify transformation opportunities.</p>
+                
+                <div class="input-container">
+                    <input type="text" id="url-input" placeholder="Enter company URL (e.g., company.com)">
+                    <button id="analyze-btn">Analyze</button>
+                </div>
+                
+                <div class="loading" id="loading">
+                    <div class="spinner"></div>
+                    <p>Analyzing website... (This may take up to 30 seconds)</p>
+                </div>
+            </section>
+            
+            <section class="results-section" id="results-section">
+                <div id="results"></div>
+            </section>
+        </main>
+        
+        <footer>
+            <p>AI-Readiness Assessment Tool | Built for Caprae Capital Partners</p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
