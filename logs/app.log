@@ -1,1 +1,21 @@
 2025-03-18 11:58:12,439 - __main__ - INFO - Starting AI-Readiness Lead Generation Tool
+2025-03-18 15:02:59,352 - __main__ - INFO - Starting AI-Readiness Lead Generation Tool
+2025-03-18 15:03:01,713 - __main__ - INFO - Starting AI-Readiness Lead Generation Tool
+2025-03-18 15:03:58,457 - __main__ - INFO - Starting analysis for URL: https://capraecapital.com
+2025-03-18 15:03:58,461 - __main__ - INFO - Scraping website content
+2025-03-18 15:04:01,513 - __main__ - INFO - Analyzing website content
+2025-03-18 15:04:01,856 - __main__ - INFO - Calculating AI readiness score
+2025-03-18 15:04:01,857 - __main__ - INFO - Generating lead qualification insights
+2025-03-18 15:04:01,858 - __main__ - INFO - Analysis completed successfully for URL: https://capraecapital.com
+2025-03-18 15:06:31,374 - __main__ - INFO - Starting analysis for URL: https://capraecapital.com
+2025-03-18 15:06:31,375 - __main__ - INFO - Scraping website content
+2025-03-18 15:06:34,489 - __main__ - INFO - Analyzing website content
+2025-03-18 15:06:34,726 - __main__ - INFO - Calculating AI readiness score
+2025-03-18 15:06:34,726 - __main__ - INFO - Generating lead qualification insights
+2025-03-18 15:06:34,727 - __main__ - INFO - Analysis completed successfully for URL: https://capraecapital.com
+2025-03-18 15:06:51,883 - __main__ - INFO - Starting analysis for URL: https://getcohesiveai.com
+2025-03-18 15:06:51,883 - __main__ - INFO - Scraping website content
+2025-03-18 15:06:57,754 - __main__ - INFO - Analyzing website content
+2025-03-18 15:06:57,968 - __main__ - INFO - Calculating AI readiness score
+2025-03-18 15:06:57,969 - __main__ - INFO - Generating lead qualification insights
+2025-03-18 15:06:57,970 - __main__ - INFO - Analysis completed successfully for URL: https://getcohesiveai.com
