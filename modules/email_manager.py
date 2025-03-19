@@ -38,7 +38,7 @@ class EmailManager:
         """Initialize the email manager with default settings."""
         self.configured = False
         self.settings = {
-            'smtp_server': os.environ.get('SMTP_SERVER', 'smtp.example.com'),
+            'smtp_server': os.environ.get('SMTP_SERVER', 'smtp.gmail.com'),
             'smtp_port': int(os.environ.get('SMTP_PORT', 587)),
             'smtp_user': os.environ.get('SMTP_USER', 'leadgen12344@gmail.com'),
             'smtp_password': os.environ.get('SMTP_PASSWORD', 'dvjyrfoziaojyorz'),

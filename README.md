@@ -26,86 +26,6 @@ pip install -r requirements.txt
 ```bash
 python -c "import nltk; nltk.download('punkt')"
 ```
-
-## Features
-- **Website Analysis**: Automatically crawls and analyzes company websites
-- **AI Readiness Scoring**: Calculates a 1-10 score based on technology indicators, leadership, and growth potential
-- **Technology Detection**: Identifies AI, data, cloud, and automation technologies
-- **Leadership Assessment**: Extracts information about the company's leadership team
-- **Opportunity Identification**: Suggests potential AI transformation opportunities based on the analysis
-- **Advanced Security**: Integrated multi-factor CAPTCHA system to prevent automated scraping and ensure secure access
-- **Email Management**: Comprehensive email validation and enrichment module
-- **Lead Validation**: Sophisticated lead scoring and qualification system
-
-## Enhanced Feature Details
-
-### CAPTCHA Integration
-- **Multi-Layer Security**: Implements advanced CAPTCHA technologies to:
-  - Prevent automated scraping and bot attacks
-  - Protect sensitive analysis data
-  - Ensure genuine user interactions
-- **Adaptive Challenge Mechanisms**: 
-  - Dynamic difficulty adjustment based on user behavior
-  - Multiple challenge types (image recognition, audio challenges, interactive puzzles)
-  - Machine learning-powered bot detection
-- **Compliance**: Adheres to WCAG accessibility guidelines for inclusive user experience
-
-### Email Manager Module
-- **Email Validation Capabilities**:
-  - Real-time email syntax and domain verification
-  - MX record checking
-  - Disposable email detection
-  - Catch-all email identification
-- **Email Enrichment**:
-  - Connects to professional databases to supplement contact information
-  - Extracts additional professional details from verified email domains
-  - Identifies corporate email vs. personal email accounts
-- **Data Privacy**:
-  - GDPR and CCPA compliant email handling
-  - Secure data storage and processing
-  - Optional data anonymization features
-
-### Lead Validation System
-- **Comprehensive Lead Scoring**:
-  - Multi-dimensional scoring algorithm
-  - Factors include:
-    * Website technology indicators
-    * Leadership profile strength
-    * AI readiness score
-    * Company size and industry
-    * Digital transformation signals
-- **Qualification Workflow**:
-  - Automated lead categorization
-  - Prioritization based on AI transformation potential
-  - Integration-ready lead management formats
-- **Intelligence Gathering**:
-  - Cross-references multiple data sources
-  - Generates detailed lead profiles
-  - Provides investment readiness recommendations
-
-## Target Market
-1. **Private Equity Firms:**
-- AI-Readiness Assessment Tool helps investors identify companies with high potential for AI adoption and transformation, enabling better-informed investment decisions.
-2. **Venture Capitalists:**
-- The tool supports venture capitalists in finding early-stage companies that are ready to integrate AI technologies, allowing them to target startups with high growth potential.
-3. **Corporate Investors:**
-- Companies looking to invest in or acquire businesses for digital transformation can leverage this tool to assess the AI readiness of potential targets.
-4. **Consulting Firms:**
-- Consulting firms focused on digital transformation can use the tool to assist clients in determining their AI readiness and uncover opportunities for improvement.
-
-## Project Structure
-- `app.py`: Main Flask application file
-- `modules/`: Core functionality modules
-    - `scraper.py`: Website scraping functionality
-    - `analyzer.py`: Content analysis logic
-    - `scorer.py`: AI readiness scoring algorithm
-    - `captcha.py`: CAPTCHA management module
-    - `email_validator.py`: Email validation and enrichment
-    - `lead_scoring.py`: Lead qualification system
-- `static/`: Static files (CSS, JavaScript)
-- `templates/`: HTML templates
-- `utils/`: Helper functions
-
 ## Setting Up Gmail for Application Use
 
 The most straightforward email provider to use is Gmail. Follow these steps to set up a Gmail account for use with the Lead Generation Tool:
@@ -199,6 +119,86 @@ While Gmail is recommended for simplicity, you can use other email providers:
 SMTP_SERVER=smtp.office365.com
 SMTP_PORT=587
 ```
+
+## Features
+- **Website Analysis**: Automatically crawls and analyzes company websites
+- **AI Readiness Scoring**: Calculates a 1-10 score based on technology indicators, leadership, and growth potential
+- **Technology Detection**: Identifies AI, data, cloud, and automation technologies
+- **Leadership Assessment**: Extracts information about the company's leadership team
+- **Opportunity Identification**: Suggests potential AI transformation opportunities based on the analysis
+- **Advanced Security**: Integrated multi-factor CAPTCHA system to prevent automated scraping and ensure secure access
+- **Email Management**: Comprehensive email validation and enrichment module
+- **Lead Validation**: Sophisticated lead scoring and qualification system
+
+## Enhanced Feature Details
+
+### CAPTCHA Integration
+- **Multi-Layer Security**: Implements advanced CAPTCHA technologies to:
+  - Prevent automated scraping and bot attacks
+  - Protect sensitive analysis data
+  - Ensure genuine user interactions
+- **Adaptive Challenge Mechanisms**: 
+  - Dynamic difficulty adjustment based on user behavior
+  - Multiple challenge types (image recognition, audio challenges, interactive puzzles)
+  - Machine learning-powered bot detection
+- **Compliance**: Adheres to WCAG accessibility guidelines for inclusive user experience
+
+### Email Manager Module
+- **Email Validation Capabilities**:
+  - Real-time email syntax and domain verification
+  - MX record checking
+  - Disposable email detection
+  - Catch-all email identification
+- **Email Enrichment**:
+  - Connects to professional databases to supplement contact information
+  - Extracts additional professional details from verified email domains
+  - Identifies corporate email vs. personal email accounts
+- **Data Privacy**:
+  - GDPR and CCPA compliant email handling
+  - Secure data storage and processing
+  - Optional data anonymization features
+
+### Lead Validation System
+- **Comprehensive Lead Scoring**:
+  - Multi-dimensional scoring algorithm
+  - Factors include:
+    * Website technology indicators
+    * Leadership profile strength
+    * AI readiness score
+    * Company size and industry
+    * Digital transformation signals
+- **Qualification Workflow**:
+  - Automated lead categorization
+  - Prioritization based on AI transformation potential
+  - Integration-ready lead management formats
+- **Intelligence Gathering**:
+  - Cross-references multiple data sources
+  - Generates detailed lead profiles
+  - Provides investment readiness recommendations
+
+## Target Market
+1. **Private Equity Firms:**
+- AI-Readiness Assessment Tool helps investors identify companies with high potential for AI adoption and transformation, enabling better-informed investment decisions.
+2. **Venture Capitalists:**
+- The tool supports venture capitalists in finding early-stage companies that are ready to integrate AI technologies, allowing them to target startups with high growth potential.
+3. **Corporate Investors:**
+- Companies looking to invest in or acquire businesses for digital transformation can leverage this tool to assess the AI readiness of potential targets.
+4. **Consulting Firms:**
+- Consulting firms focused on digital transformation can use the tool to assist clients in determining their AI readiness and uncover opportunities for improvement.
+
+## Project Structure
+- `app.py`: Main Flask application file
+- `modules/`: Core functionality modules
+    - `scraper.py`: Website scraping functionality
+    - `analyzer.py`: Content analysis logic
+    - `scorer.py`: AI readiness scoring algorithm
+    - `captcha.py`: CAPTCHA management module
+    - `email_validator.py`: Email validation and enrichment
+    - `lead_scoring.py`: Lead qualification system
+- `static/`: Static files (CSS, JavaScript)
+- `templates/`: HTML templates
+- `utils/`: Helper functions
+
 ## Development Notes
 This project was developed as part of the Caprae Capital Partners AI-Readiness Pre-Screening Challenge, with a 5-hour development constraint. The recent enhancements focus on adding robust security, comprehensive contact management, and intelligent lead validation capabilities.
 

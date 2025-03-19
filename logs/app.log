@@ -261,3 +261,11 @@ AttributeError: 'CRMIntegrationManager' object has no attribute 'test_connection
 2025-03-19 20:21:42,612 - __main__ - INFO - Calculating AI readiness score
 2025-03-19 20:21:42,615 - __main__ - INFO - Generating lead qualification insights
 2025-03-19 20:21:42,615 - __main__ - INFO - Analysis completed successfully for URL: https://getcohesiveai.com
+2025-03-19 22:30:48,329 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-19 22:30:49,319 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-19 22:37:15,765 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-19 22:39:38,882 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-19 22:39:40,562 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-19 22:39:41,502 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-19 22:40:22,700 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-19 22:40:25,815 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
