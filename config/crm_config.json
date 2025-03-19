@@ -2,10 +2,10 @@
   "enabled_crms": ["hubspot", "salesforce"],
   "default_crm": "hubspot",
   "hubspot": {
-    "api_key": "your_hubspot_api_key"
+    "api_key": "pk_3a7b1c2d-8e9f-45f3-91ab-6d5e1a7b0c9e"
   },
   "salesforce": {
-    "client_id": "your_salesforce_client_id",
-    "client_secret": "your_salesforce_client_secret"
+    "client_id": "3MVG9lKcPoNINVBIPZqY6jOwG8e5M7l0AbCdEfGhIjKlMnOpQrStUvWxYZa12345",
+    "client_secret": "sk_92f5c4e7-a1b3-4d2c-9876-f0e3b6a8d1c4"
   }
 }

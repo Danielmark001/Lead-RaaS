@@ -7,8 +7,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const resultsElement = document.getElementById("results");
   const resultsTemplate = document.getElementById("results-template");
   const leadTemplate = document.getElementById("lead-insights-template");
-
-  // Element references for new features
   const savedLeadsBtn = document.getElementById("saved-leads-btn");
   const settingsBtn = document.getElementById("settings-btn");
   const leadsDashboard = document.getElementById("leads-dashboard");
@@ -30,7 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // State management
   let lastAnalysisData = null;
-  let savedLeads = loadSavedLeads();
+  let savedLeads = initializeSampleLeads();
   let currentPage = 1;
   let itemsPerPage = 10;
   let sortField = "lead_score";
@@ -92,6 +90,13 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       customFields.style.display = "none";
     }
+  });
+  // Auto-display the dashboard on page load
+  document.addEventListener("DOMContentLoaded", () => {
+    // Wait a moment for everything to initialize
+    setTimeout(() => {
+      showLeadsDashboard();
+    }, 500);
   });
 
   filterToggle.addEventListener("click", () => {
@@ -446,6 +451,29 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
   });
+  // Example implementation using a CAPTCHA-solving service
+  async function solveCaptcha(captchaURL) {
+    try {
+      // Send CAPTCHA to solving service
+      const response = await fetch(
+        "https://api.captchasolverservice.com/solve",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            apiKey: "your_api_key",
+            captchaUrl: captchaURL,
+          }),
+        }
+      );
+
+      const data = await response.json();
+      return data.solution;
+    } catch (error) {
+      console.error("Error solving CAPTCHA:", error);
+      return null;
+    }
+  }
 
   // Function to analyze website
   async function analyzeWebsite(url) {
@@ -474,6 +502,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Hide loading indicator
       loadingElement.style.display = "none";
+
+      const hasCaptcha = await page.evaluate(() => {
+        return (
+          document.body.innerHTML.includes("captcha") ||
+          document.querySelector('iframe[src*="recaptcha"]') !== null
+        );
+      });
+
+      if (hasCaptcha) {
+        // Send notification for manual intervention
+        showNotification(
+          "CAPTCHA detected. Please solve it manually",
+          "warning"
+        );
+      }
 
       // Display results or error
       if (data.error) {
@@ -1068,7 +1111,40 @@ document.addEventListener("DOMContentLoaded", () => {
       showError(`Export failed: ${error.message}`);
     }
   }
+  // Add this directly to your JavaScript file
+  // Add this directly to your JavaScript file
+  document.querySelector("#save-lead").addEventListener("click", function () {
+    if (lastAnalysisData) {
+      try {
+        // Generate unique ID
+        const id = `lead_${Date.now()}`;
 
+        // Create lead object
+        const lead = {
+          id,
+          url: urlInput.value,
+          company_name: lastAnalysisData.company_name || "Unknown Company",
+          date_added: new Date().toISOString(),
+          ai_readiness_score: lastAnalysisData.ai_readiness_score,
+          sales_insights: lastAnalysisData.sales_insights,
+        };
+
+        // Add to saved leads array
+        savedLeads.push(lead);
+
+        // Save to localStorage
+        localStorage.setItem("savedLeads", JSON.stringify(savedLeads));
+
+        console.log("Lead saved:", lead);
+        showNotification("Lead saved successfully!", "success");
+      } catch (e) {
+        console.error("Error saving lead:", e);
+        showNotification("Failed to save lead: " + e.message, "danger");
+      }
+    } else {
+      showNotification("No lead data available to save", "warning");
+    }
+  });
   // Function to animate score count
   function animateScoreCount(selector, targetScore) {
     const scoreElement = document.querySelector(selector);
@@ -1184,13 +1260,15 @@ document.addEventListener("DOMContentLoaded", () => {
       lead.company_size_indicator || "Unknown";
 
     // Fill AI score
-    document.getElementById("ai-score-value").textContent = `${lead.ai_readiness_score || 0
-      } / 10`;
+    document.getElementById("ai-score-value").textContent = `${
+      lead.ai_readiness_score || 0
+    } / 10`;
 
     // Fill lead score and tier
     if (lead.sales_insights) {
-      document.getElementById("lead-score-value").textContent = `${lead.sales_insights.lead_score || 0
-        } / 100`;
+      document.getElementById("lead-score-value").textContent = `${
+        lead.sales_insights.lead_score || 0
+      } / 100`;
 
       const tierElement = document.getElementById("lead-tier-value");
       tierElement.textContent = lead.sales_insights.lead_tier || "Unknown";
@@ -1303,8 +1381,9 @@ document.addEventListener("DOMContentLoaded", () => {
     ).length;
     document.getElementById(
       "export-action"
-    ).textContent = `Export ${selectedCount} Lead${selectedCount !== 1 ? "s" : ""
-      }`;
+    ).textContent = `Export ${selectedCount} Lead${
+      selectedCount !== 1 ? "s" : ""
+    }`;
   }
 
   // Function to add overlay
@@ -1419,8 +1498,8 @@ document.addEventListener("DOMContentLoaded", () => {
             lead.sales_insights.lead_tier === "Hot"
               ? "tier-hot"
               : lead.sales_insights.lead_tier === "Warm"
-                ? "tier-warm"
-                : "tier-nurture";
+              ? "tier-warm"
+              : "tier-nurture";
           tierBadge = `<span class="${tierClass}">${lead.sales_insights.lead_tier}</span>`;
         } else {
           tierBadge = '<span class="tier-nurture">Nurture</span>';
@@ -1433,14 +1512,14 @@ document.addEventListener("DOMContentLoaded", () => {
             lead.verification.status === "Verified"
               ? "status-verified"
               : lead.verification.status === "Flagged"
-                ? "status-flagged"
-                : "status-pending";
+              ? "status-flagged"
+              : "status-pending";
           const statusIcon =
             lead.verification.status === "Verified"
               ? "fa-check-circle"
               : lead.verification.status === "Flagged"
-                ? "fa-flag"
-                : "fa-clock";
+              ? "fa-flag"
+              : "fa-clock";
           verificationBadge = `
             <span class="status-badge ${statusClass}">
               <i class="fas ${statusIcon}"></i> ${lead.verification.status}
@@ -1461,18 +1540,18 @@ document.addEventListener("DOMContentLoaded", () => {
             lead.crm.status === "Synced"
               ? "status-synced"
               : lead.crm.status === "Failed"
-                ? "status-failed"
-                : lead.crm.status === "Queued"
-                  ? "status-queued"
-                  : "status-pending";
+              ? "status-failed"
+              : lead.crm.status === "Queued"
+              ? "status-queued"
+              : "status-pending";
           const crmIcon =
             lead.crm.status === "Synced"
               ? "fa-check-circle"
               : lead.crm.status === "Failed"
-                ? "fa-exclamation-circle"
-                : lead.crm.status === "Queued"
-                  ? "fa-sync"
-                  : "fa-times-circle";
+              ? "fa-exclamation-circle"
+              : lead.crm.status === "Queued"
+              ? "fa-sync"
+              : "fa-times-circle";
           crmBadge = `
             <span class="status-badge ${crmClass}">
               <i class="fas ${crmIcon}"></i> ${lead.crm.status}
@@ -1871,7 +1950,759 @@ document.addEventListener("DOMContentLoaded", () => {
   // Call to add notification styles
   addNotificationStyles();
 
+  localStorage.removeItem("savedLeads");
+
   // Initialize backend communication handlers
+  // Function to initialize sample leads data
+  function initializeSampleLeads() {
+    // Check if we already have leads saved
+    const existingLeads = localStorage.getItem("savedLeads");
+    if (existingLeads && JSON.parse(existingLeads).length > 0) {
+      console.log("Using existing saved leads");
+      return JSON.parse(existingLeads);
+    }
+
+    // Create sample leads for notable companies
+    const sampleLeads = [
+      {
+        id: "lead_1679012345678",
+        url: "https://netflix.com",
+        company_name: "Netflix",
+        date_added: new Date(
+          Date.now() - 15 * 24 * 60 * 60 * 1000
+        ).toISOString(), // 15 days ago
+        ai_readiness_score: 9.2,
+        company_size_indicator: "Enterprise (1000+ employees)",
+        tech_indicators: {
+          ai_ml: {
+            total: 6,
+            indicators: {
+              "Machine Learning": 4,
+              "Recommendation Systems": 5,
+              "Personalization AI": 3,
+              "Computer Vision": 2,
+              "Natural Language Processing": 3,
+              "Predictive Analytics": 4,
+            },
+          },
+          data: {
+            total: 4,
+            indicators: {
+              "Big Data": 5,
+              "Data Warehousing": 4,
+              "Data Streaming": 5,
+              "Apache Kafka": 3,
+            },
+          },
+          cloud: {
+            total: 3,
+            indicators: {
+              AWS: 4,
+              "Cloud Migration": 3,
+              "Cloud-Native": 5,
+            },
+          },
+        },
+        leadership_team: [
+          { name: "Ted Sarandos", title: "Co-CEO" },
+          { name: "Greg Peters", title: "Co-CEO" },
+          { name: "Marian Lee", title: "Chief Marketing Officer" },
+        ],
+        sales_insights: {
+          lead_score: 92,
+          lead_tier: "Hot",
+          primary_contact: {
+            name: "Alex Rivera",
+            title: "VP of Data Engineering",
+            email: "alex.rivera@example.com",
+            phone: "+1-555-923-4567",
+          },
+          pain_points: [
+            "Content recommendation optimization",
+            "Scaling ML infrastructure",
+            "Improving predictions for viewer retention",
+          ],
+          outreach_recommendation: {
+            timing: "Immediate",
+            approach: {
+              focus: "ML Infrastructure Optimization",
+              message: "Value-focused",
+              conversation_starters: [
+                "Your recent investment in machine learning suggests you might be looking to scale your ML operations",
+                "How are you currently addressing the challenge of real-time recommendation systems?",
+                "We've helped similar companies reduce ML training costs by 40%",
+              ],
+            },
+          },
+          score_components: {
+            decision_maker_score: 9.5,
+            tech_investment_score: 9.2,
+            growth_score: 8.8,
+            ai_readiness_factor: 9.5,
+          },
+        },
+        verification: {
+          status: "Verified",
+          date: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
+          notes:
+            "Verified contact information through LinkedIn. Company is actively hiring for AI/ML roles.",
+        },
+        crm: {
+          status: "Synced",
+          date: new Date(Date.now() - 9 * 24 * 60 * 60 * 1000).toISOString(),
+          crm_id: "CRM_NF123456",
+        },
+      },
+      {
+        id: "lead_1679012345679",
+        url: "https://salesforce.com",
+        company_name: "Salesforce",
+        date_added: new Date(
+          Date.now() - 7 * 24 * 60 * 60 * 1000
+        ).toISOString(), // 7 days ago
+        ai_readiness_score: 8.7,
+        company_size_indicator: "Enterprise (1000+ employees)",
+        tech_indicators: {
+          ai_ml: {
+            total: 5,
+            indicators: {
+              "Einstein AI": 5,
+              "Machine Learning": 4,
+              "Predictive Analytics": 5,
+              "Natural Language Processing": 3,
+              "Automated ML": 2,
+            },
+          },
+          data: {
+            total: 4,
+            indicators: {
+              "Data Integration": 5,
+              "Data Warehousing": 4,
+              "Big Data": 3,
+              "Data Lakes": 3,
+            },
+          },
+          cloud: {
+            total: 3,
+            indicators: {
+              SaaS: 5,
+              "Cloud Platform": 5,
+              "Multi-Cloud": 4,
+            },
+          },
+        },
+        leadership_team: [
+          { name: "Marc Benioff", title: "CEO" },
+          { name: "Brian Millham", title: "COO" },
+          { name: "Bret Taylor", title: "Board Member" },
+        ],
+        sales_insights: {
+          lead_score: 87,
+          lead_tier: "Hot",
+          primary_contact: {
+            name: "Jordan Chen",
+            title: "Director of AI Strategy",
+            email: "jordan.chen@example.com",
+            phone: "+1-555-783-2190",
+          },
+          pain_points: [
+            "Einstein AI integration challenges",
+            "AI model fairness and bias",
+            "Customer data integration for ML",
+          ],
+          outreach_recommendation: {
+            timing: "Immediate",
+            approach: {
+              focus: "Enterprise AI Ethics & Integration",
+              message: "Solution-focused",
+              conversation_starters: [
+                "How are you addressing ethical concerns in your Einstein AI implementations?",
+                "Are you facing challenges with enterprise-wide AI adoption?",
+                "Our approach to AI governance has helped similar companies improve compliance by 35%",
+              ],
+            },
+          },
+          score_components: {
+            decision_maker_score: 8.9,
+            tech_investment_score: 9.1,
+            growth_score: 8.5,
+            ai_readiness_factor: 8.9,
+          },
+        },
+        verification: {
+          status: "Verified",
+          date: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+          notes:
+            "Confirmed company's AI initiatives through recent press releases and tech blog posts.",
+        },
+        crm: {
+          status: "Synced",
+          date: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000).toISOString(),
+          crm_id: "CRM_SF789012",
+        },
+      },
+      {
+        id: "lead_1679012345680",
+        url: "https://spotify.com",
+        company_name: "Spotify",
+        date_added: new Date(
+          Date.now() - 3 * 24 * 60 * 60 * 1000
+        ).toISOString(), // 3 days ago
+        ai_readiness_score: 7.9,
+        company_size_indicator: "Large Business (251-1000 employees)",
+        tech_indicators: {
+          ai_ml: {
+            total: 4,
+            indicators: {
+              "Recommendation Systems": 5,
+              "Machine Learning": 4,
+              "Audio Analysis": 5,
+              Personalization: 5,
+            },
+          },
+          data: {
+            total: 3,
+            indicators: {
+              "Big Data Processing": 4,
+              "Data Streaming": 5,
+              "Event Data": 4,
+            },
+          },
+          cloud: {
+            total: 3,
+            indicators: {
+              "Google Cloud": 4,
+              Microservices: 5,
+              Kubernetes: 4,
+            },
+          },
+        },
+        leadership_team: [
+          { name: "Daniel Ek", title: "CEO" },
+          { name: "Gustav Söderström", title: "Co-President" },
+          { name: "Alex Norström", title: "Co-President" },
+        ],
+        sales_insights: {
+          lead_score: 79,
+          lead_tier: "Warm",
+          primary_contact: {
+            name: "Sam Taylor",
+            title: "Head of AI & Machine Learning",
+            email: "sam.taylor@example.com",
+            phone: "+1-555-672-3941",
+          },
+          pain_points: [
+            "Audio content recommendation accuracy",
+            "Real-time personalization at scale",
+            "Balancing exploration and exploitation in recommendations",
+          ],
+          outreach_recommendation: {
+            timing: "This Week",
+            approach: {
+              focus: "Audio Content Recommendation Optimization",
+              message: "Innovation-focused",
+              conversation_starters: [
+                "How are you balancing user preference data with discovery in your recommendation systems?",
+                "What techniques are you using to improve cold-start recommendations?",
+                "Our specialized audio content analysis has helped similar platforms increase engagement by 28%",
+              ],
+            },
+          },
+          score_components: {
+            decision_maker_score: 8.2,
+            tech_investment_score: 7.9,
+            growth_score: 7.8,
+            ai_readiness_factor: 7.6,
+          },
+        },
+        verification: {
+          status: "Pending",
+          date: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+          notes: "Need to verify primary contact's role and contact details.",
+        },
+        crm: {
+          status: "Not Synced",
+          date: null,
+          crm_id: null,
+        },
+      },
+      {
+        id: "lead_1679012345681",
+        url: "https://tesla.com",
+        company_name: "Tesla",
+        date_added: new Date(
+          Date.now() - 20 * 24 * 60 * 60 * 1000
+        ).toISOString(), // 20 days ago
+        ai_readiness_score: 9.5,
+        company_size_indicator: "Enterprise (1000+ employees)",
+        tech_indicators: {
+          ai_ml: {
+            total: 6,
+            indicators: {
+              "Computer Vision": 5,
+              "Deep Learning": 5,
+              "Neural Networks": 5,
+              "Reinforcement Learning": 4,
+              "Autonomous Systems": 5,
+              "Machine Learning": 5,
+            },
+          },
+          data: {
+            total: 4,
+            indicators: {
+              "Sensor Data": 5,
+              "Big Data": 5,
+              "Data Lakes": 4,
+              "Real-time Analytics": 5,
+            },
+          },
+          cloud: {
+            total: 2,
+            indicators: {
+              "Edge Computing": 5,
+              "Distributed Systems": 5,
+            },
+          },
+          automation: {
+            total: 3,
+            indicators: {
+              Robotics: 5,
+              "Manufacturing Automation": 5,
+              "Workflow Automation": 4,
+            },
+          },
+        },
+        leadership_team: [
+          { name: "Elon Musk", title: "CEO" },
+          { name: "Vaibhav Taneja", title: "CFO" },
+          {
+            name: "Drew Baglino",
+            title: "SVP, Powertrain and Energy Engineering",
+          },
+        ],
+        sales_insights: {
+          lead_score: 95,
+          lead_tier: "Hot",
+          primary_contact: {
+            name: "Morgan Lee",
+            title: "Director of Autonomous Systems",
+            email: "morgan.lee@example.com",
+            phone: "+1-555-459-7823",
+          },
+          pain_points: [
+            "Scaling AI training for autonomous driving",
+            "Edge AI optimization",
+            "Data processing pipeline efficiency",
+          ],
+          outreach_recommendation: {
+            timing: "Immediate",
+            approach: {
+              focus: "Edge AI & Distributed Training",
+              message: "Innovation-focused",
+              conversation_starters: [
+                "How are you currently addressing the challenge of training AI models with massive real-world driving datasets?",
+                "What's your approach to optimizing AI inference on edge devices?",
+                "Our distributed training platform has helped similar companies reduce training time by 65%",
+              ],
+            },
+          },
+          score_components: {
+            decision_maker_score: 9.4,
+            tech_investment_score: 9.8,
+            growth_score: 9.2,
+            ai_readiness_factor: 9.6,
+          },
+        },
+        verification: {
+          status: "Verified",
+          date: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toISOString(),
+          notes:
+            "Verified through industry conference contacts. Company is investing heavily in AI infrastructure.",
+        },
+        crm: {
+          status: "Synced",
+          date: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString(),
+          crm_id: "CRM_TS456789",
+        },
+      },
+      {
+        id: "lead_1679012345682",
+        url: "https://slack.com",
+        company_name: "Slack",
+        date_added: new Date(
+          Date.now() - 10 * 24 * 60 * 60 * 1000
+        ).toISOString(), // 10 days ago
+        ai_readiness_score: 7.5,
+        company_size_indicator: "Large Business (251-1000 employees)",
+        tech_indicators: {
+          ai_ml: {
+            total: 3,
+            indicators: {
+              "Natural Language Processing": 4,
+              "Machine Learning": 3,
+              "Search Algorithms": 4,
+            },
+          },
+          data: {
+            total: 3,
+            indicators: {
+              "Data Processing": 4,
+              "Real-time Data": 5,
+              "Message Data": 5,
+            },
+          },
+          cloud: {
+            total: 4,
+            indicators: {
+              AWS: 5,
+              Microservices: 4,
+              Containerization: 4,
+              "Cloud-Native": 4,
+            },
+          },
+        },
+        leadership_team: [
+          { name: "Denise Dresser", title: "CEO" },
+          { name: "Ali Rayl", title: "SVP of Product" },
+          { name: "Tamar Yehoshua", title: "Chief Product Officer" },
+        ],
+        sales_insights: {
+          lead_score: 75,
+          lead_tier: "Warm",
+          primary_contact: {
+            name: "Taylor Wong",
+            title: "Senior Director of Engineering",
+            email: "taylor.wong@example.com",
+            phone: "+1-555-329-6847",
+          },
+          pain_points: [
+            "Scaling search and message indexing",
+            "Improving message relevance with NLP",
+            "Real-time communication analytics",
+          ],
+          outreach_recommendation: {
+            timing: "This Week",
+            approach: {
+              focus: "Communication AI & NLP",
+              message: "Efficiency-focused",
+              conversation_starters: [
+                "How are you currently using NLP to improve the search experience?",
+                "What challenges are you facing with message relevance at scale?",
+                "Our communication NLP solutions have helped platforms improve search accuracy by 45%",
+              ],
+            },
+          },
+          score_components: {
+            decision_maker_score: 7.8,
+            tech_investment_score: 7.3,
+            growth_score: 7.5,
+            ai_readiness_factor: 7.4,
+          },
+        },
+        verification: {
+          status: "Flagged",
+          date: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+          notes:
+            "Need to verify if contact is still with the company. LinkedIn shows a recent job change.",
+        },
+        crm: {
+          status: "Failed",
+          date: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+          crm_id: null,
+          error: "Invalid contact information",
+        },
+      },
+      {
+        id: "lead_1679012345683",
+        url: "https://airbnb.com",
+        company_name: "Airbnb",
+        date_added: new Date(
+          Date.now() - 5 * 24 * 60 * 60 * 1000
+        ).toISOString(), // 5 days ago
+        ai_readiness_score: 8.1,
+        company_size_indicator: "Large Business (251-1000 employees)",
+        tech_indicators: {
+          ai_ml: {
+            total: 4,
+            indicators: {
+              "Machine Learning": 4,
+              "Search Ranking": 5,
+              "Recommendation Systems": 4,
+              "Computer Vision": 3,
+            },
+          },
+          data: {
+            total: 4,
+            indicators: {
+              "Big Data": 4,
+              "Data Science": 5,
+              "Data Analytics": 4,
+              "Predictive Analytics": 4,
+            },
+          },
+          cloud: {
+            total: 3,
+            indicators: {
+              AWS: 5,
+              Microservices: 4,
+              "Cloud Infrastructure": 4,
+            },
+          },
+        },
+        leadership_team: [
+          { name: "Brian Chesky", title: "Co-founder and CEO" },
+          { name: "Dave Stephenson", title: "CFO" },
+          { name: "Catherine Powell", title: "Global Head of Hosting" },
+        ],
+        sales_insights: {
+          lead_score: 81,
+          lead_tier: "Warm",
+          primary_contact: {
+            name: "Jamie Patel",
+            title: "VP of Data Science",
+            email: "jamie.patel@example.com",
+            phone: "+1-555-218-9034",
+          },
+          pain_points: [
+            "Property recommendation accuracy",
+            "Pricing optimization algorithms",
+            "Fraud detection and security",
+          ],
+          outreach_recommendation: {
+            timing: "Next Week",
+            approach: {
+              focus: "Recommendation & Pricing AI",
+              message: "Value-focused",
+              conversation_starters: [
+                "How are you currently balancing supply and demand in your pricing algorithms?",
+                "What challenges are you facing with property matching at scale?",
+                "Our recommendation optimization approach has helped similar marketplaces increase conversion by 24%",
+              ],
+            },
+          },
+          score_components: {
+            decision_maker_score: 8.3,
+            tech_investment_score: 8.0,
+            growth_score: 8.2,
+            ai_readiness_factor: 7.9,
+          },
+        },
+        verification: {
+          status: "Pending",
+          date: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
+          notes: "Need to verify current technology stack and AI initiatives.",
+        },
+        crm: {
+          status: "Queued",
+          date: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
+          crm_id: null,
+        },
+      },
+      {
+        id: "lead_1679012345684",
+        url: "https://doordash.com",
+        company_name: "DoorDash",
+        date_added: new Date(
+          Date.now() - 1 * 24 * 60 * 60 * 1000
+        ).toISOString(), // 1 day ago
+        ai_readiness_score: 8.4,
+        company_size_indicator: "Large Business (251-1000 employees)",
+        tech_indicators: {
+          ai_ml: {
+            total: 5,
+            indicators: {
+              "Machine Learning": 4,
+              "Route Optimization": 5,
+              "Demand Prediction": 5,
+              "Location-based AI": 4,
+              "Recommendation Systems": 3,
+            },
+          },
+          data: {
+            total: 4,
+            indicators: {
+              "Real-time Data": 5,
+              "Geospatial Data": 5,
+              "Data Science": 4,
+              "Data Analytics": 4,
+            },
+          },
+          cloud: {
+            total: 3,
+            indicators: {
+              AWS: 4,
+              Microservices: 5,
+              Containerization: 4,
+            },
+          },
+        },
+        leadership_team: [
+          { name: "Tony Xu", title: "CEO and Co-founder" },
+          { name: "Christopher Payne", title: "President" },
+          { name: "Prabir Adarkar", title: "CFO" },
+        ],
+        sales_insights: {
+          lead_score: 84,
+          lead_tier: "Warm",
+          primary_contact: {
+            name: "Riley Garcia",
+            title: "Director of Machine Learning Engineering",
+            email: "riley.garcia@example.com",
+            phone: "+1-555-847-6231",
+          },
+          pain_points: [
+            "Delivery time estimation accuracy",
+            "Route optimization at scale",
+            "Real-time demand prediction",
+          ],
+          outreach_recommendation: {
+            timing: "This Week",
+            approach: {
+              focus: "Logistics AI & Optimization",
+              message: "Efficiency-focused",
+              conversation_starters: [
+                "How are you currently addressing the challenge of real-time route optimization?",
+                "What are your biggest pain points with delivery time predictions?",
+                "Our AI-driven logistics solution has helped similar companies reduce delivery times by 18%",
+              ],
+            },
+          },
+          score_components: {
+            decision_maker_score: 8.5,
+            tech_investment_score: 8.4,
+            growth_score: 8.6,
+            ai_readiness_factor: 8.2,
+          },
+        },
+        verification: {
+          status: "Pending",
+          date: new Date().toISOString(),
+          notes: "New lead, verification process just started.",
+        },
+        crm: {
+          status: "Not Synced",
+          date: null,
+          crm_id: null,
+        },
+      },
+      {
+        id: "lead_" + Date.now(),
+        url: "https://getcohesiveai.com",
+        company_name: "Cohesive AI",
+        date_added: new Date().toISOString(),
+        ai_readiness_score: 9.0,
+        company_size_indicator: "Unknown",
+        tech_indicators: {
+          ai_ml: {
+            total: 67,
+            indicators: {
+              AI: 65,
+              ML: 2,
+            },
+          },
+          automation: {
+            total: 2,
+            indicators: {
+              Automation: 2,
+            },
+          },
+          integration: {
+            total: 10,
+            indicators: {
+              API: 8,
+              Integration: 2,
+            },
+          },
+        },
+        leadership_team: [],
+        growth_indicators: ["launch"],
+        contact_info: {
+          emails: ["kevin@cohesiveapp.com"],
+        },
+        score_components: {
+          technology_score: 18.5,
+          leadership_score: 0.0,
+          growth_score: 0.4,
+        },
+        sales_insights: {
+          lead_score: 4.5,
+          lead_tier: "Nurture",
+          primary_contact: null,
+          pain_points: [
+            "Company size: Unknown Growth indicators: launch Our company is focused on improving efficiency and reducing costs",
+            "We're challenged by legacy systems and manual processes",
+            "Our team is committed to innovation and transformation",
+          ],
+          outreach_recommendation: {
+            timing: "Medium-term",
+            approach: {
+              focus: "Partnership",
+              message: "Explore advanced AI implementation and optimization",
+              conversation_starters: [
+                "Company size: Unknown Growth indicators: launch Our company is focused on improving efficiency and reducing costs",
+                "We're challenged by legacy systems and manual processes",
+              ],
+            },
+          },
+          score_components: {
+            decision_maker_score: 0.0,
+            tech_investment_score: 10.0,
+            growth_score: 1.0,
+            ai_readiness_factor: 1.8,
+          },
+        },
+        transformation_opportunities: [
+          {
+            title: "Advanced AI Solution Deployment",
+            description:
+              "Implement sophisticated AI models to enhance decision-making and create competitive advantages.",
+          },
+          {
+            title: "Predictive Analytics Enhancement",
+            description:
+              "Leverage existing data infrastructure for forecasting and predictive business intelligence.",
+          },
+          {
+            title: "Robust Data Infrastructure Development",
+            description:
+              "Build comprehensive data pipeline to fully leverage existing AI capabilities.",
+          },
+        ],
+        verification: {
+          status: "Pending",
+          date: new Date().toISOString(),
+          notes: "Need to verify company size and identify leadership team.",
+        },
+        crm: {
+          status: "Not Synced",
+          date: null,
+          crm_id: null,
+        },
+      },
+    ];
+
+    // Save to localStorage
+    localStorage.setItem("savedLeads", JSON.stringify(sampleLeads));
+    document.getElementById("leads-table-body").innerHTML = "";
+    window.renderLeadsTable();
+
+    return sampleLeads;
+  }
+
+  // Call this function at the start of your application
+  // Replace your current savedLeads initialization with this:
+  // let savedLeads = initializeSampleLeads();
+  // Function to initialize sample leads data
+
+  // Save to localStorage
+  localStorage.setItem("savedLeads", JSON.stringify(sampleLeads));
+  console.log("Sample leads initialized");
+
+  return sampleLeads;
+
+  // Call this function at the start of your application
+  // Replace your current savedLeads initialization with this:
+  // let savedLeads = initializeSampleLeads();
   function initBackendHandlers() {
     // API endpoint for saving leads to server
     document.addEventListener("click", (e) => {
@@ -1970,6 +2801,96 @@ document.addEventListener("DOMContentLoaded", () => {
           });
       }
     });
+    // Create a new sample lead object
+    const newSampleLead = {
+      id: `lead_${Date.now()}`, // Generate a unique ID using timestamp
+      url: "https://example.com", // Company website URL
+      company_name: "Example Company", // Company name
+      date_added: new Date().toISOString(), // Current date/time in ISO format
+      ai_readiness_score: 7.8, // Score from 0-10
+      company_size_indicator: "Medium Business (50-250 employees)", // Company size
+      tech_indicators: {
+        ai_ml: {
+          total: 3,
+          indicators: {
+            "Machine Learning": 3,
+            "Deep Learning": 2,
+            "Natural Language Processing": 4,
+          },
+        },
+        data: {
+          total: 2,
+          indicators: {
+            "Data Analytics": 4,
+            "Business Intelligence": 3,
+          },
+        },
+        cloud: {
+          total: 2,
+          indicators: {
+            "Cloud Migration": 3,
+            SaaS: 4,
+          },
+        },
+      },
+      leadership_team: [
+        { name: "Jane Smith", title: "CEO" },
+        { name: "John Doe", title: "CTO" },
+        { name: "Alex Johnson", title: "Head of Data Science" },
+      ],
+      sales_insights: {
+        lead_score: 78, // Score from 0-100
+        lead_tier: "Warm", // Hot, Warm, or Nurture
+        primary_contact: {
+          name: "Alex Johnson",
+          title: "Head of Data Science",
+          email: "alex.johnson@example.com",
+          phone: "+1-555-123-4567",
+        },
+        pain_points: [
+          "Legacy system integration challenges",
+          "Scaling data processing capabilities",
+          "Talent acquisition for AI initiatives",
+        ],
+        outreach_recommendation: {
+          timing: "This Week",
+          approach: {
+            focus: "Data Infrastructure Modernization",
+            message: "Solution-focused",
+            conversation_starters: [
+              "How are you currently handling integration between your legacy systems and newer data platforms?",
+              "What challenges are you facing with scaling your data processing capabilities?",
+              "Our data modernization approach has helped similar companies reduce processing time by 40%",
+            ],
+          },
+        },
+        score_components: {
+          decision_maker_score: 7.9,
+          tech_investment_score: 7.6,
+          growth_score: 8.0,
+          ai_readiness_factor: 7.5,
+        },
+      },
+      verification: {
+        status: "Pending", // Verified, Pending, or Flagged
+        date: new Date().toISOString(),
+        notes: "Need to verify contact information and recent AI initiatives.",
+      },
+      crm: {
+        status: "Not Synced", // Synced, Not Synced, Failed, or Queued
+        date: null,
+        crm_id: null,
+      },
+    };
+
+    // To add this lead to the existing savedLeads array:
+    savedLeads.push(newSampleLead);
+
+    // To save the updated array to localStorage:
+    localStorage.setItem("savedLeads", JSON.stringify(savedLeads));
+
+    // If you need to refresh the table display after adding the lead:
+    renderLeadsTable();
 
     // CRM sync with server
     document.getElementById("crm-sync-btn").addEventListener("click", () => {
@@ -2458,7 +3379,8 @@ document.addEventListener("DOMContentLoaded", () => {
       document.body.removeChild(link);
 
       showNotification(
-        `Successfully exported ${leads.length
+        `Successfully exported ${
+          leads.length
         } leads as ${format.toUpperCase()}`,
         "success"
       );
@@ -2793,9 +3715,60 @@ document.addEventListener("DOMContentLoaded", () => {
         );
       }
     }, 1500);
-    if (fields.contact.name) filterLeads.contact.name = contact.name;
-    if (fields.contact.title) filterLeads.contact.title = contact.title;
-    if (fields.contact.email) filterLeads.contact.email = contact.email;
-    if (fields.contact.phone) filterLeads.contact.phone = contact.phone;
+    if (fields.contact.name) filteredleads.contact.name = contact.name;
+    if (fields.contact.title) filteredleads.contact.title = contact.title;
+    if (fields.contact.email) filteredleads.contact.email = contact.email;
+    if (fields.contact.phone) filteredleads.contact.phone = contact.phone;
+
+    // Assessment data
+    filteredleads.assessment = {};
+    if (fields.assessment.aiScore)
+      filteredleads.assessment.aiReadinessScore = lead.ai_readiness_score;
+    if (fields.assessment.leadScore)
+      filteredleads.assessment.leadScore = lead.sales_insights?.lead_score;
+    if (fields.assessment.leadTier)
+      filteredleads.assessment.leadTier = lead.sales_insights?.lead_tier;
+
+    // Tech indicators
+    if (fields.assessment.techIndicators) {
+      filteredleads.assessment.techIndicators = [];
+      if (lead.tech_indicators) {
+        for (const category in lead.tech_indicators) {
+          for (const indicator in lead.tech_indicators[category].indicators) {
+            filteredleads.assessment.techIndicators.push(indicator);
+          }
+        }
+      }
+    }
+    if (fields.assessment.approach) {
+      filteredleads.assessment.recommendedApproach =
+        lead.sales_insights?.outreach_recommendation?.approach?.focus;
+    }
+
+    if (fields.assessment.painPoints) {
+      filteredleads.assessment.painPoints =
+        lead.sales_insights?.pain_points || [];
+    }
+
+    // Verification data
+    filteredleads.verification = {};
+    if (fields.verification.status)
+      filteredleads.verification.status =
+        lead.verification?.status || "Pending";
+    if (fields.verification.date)
+      filteredleads.verification.date = lead.verification?.date;
+    if (fields.verification.notes)
+      filteredleads.verification.notes = lead.verification?.notes;
+
+    // CRM data
+    if (lead.crm) {
+      filteredleads.crm = {
+        status: lead.crm.status || "Not Synced",
+        date: lead.crm.date,
+        crm_id: lead.crm.crm_id,
+      };
+    }
+
+    return filteredleads;
   }
 });

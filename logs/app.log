@@ -58,3 +58,16 @@
 2025-03-19 12:33:46,046 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
 2025-03-19 12:34:00,387 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
 2025-03-19 12:40:44,752 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-19 12:41:03,583 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-19 12:45:19,831 - __main__ - INFO - Starting analysis for URL: https://capraecapital.com
+2025-03-19 12:45:19,831 - __main__ - INFO - Scraping website content
+2025-03-19 12:45:23,015 - __main__ - INFO - Analyzing website content
+2025-03-19 12:45:23,490 - __main__ - INFO - Calculating AI readiness score
+2025-03-19 12:45:23,493 - __main__ - INFO - Generating lead qualification insights
+2025-03-19 12:45:23,493 - __main__ - INFO - Analysis completed successfully for URL: https://capraecapital.com
+2025-03-19 12:48:46,053 - __main__ - ERROR - CRM connection test failed: 'CRMIntegrationManager' object has no attribute 'test_connection'
+Traceback (most recent call last):
+  File "C:\Users\vanes\ai_readiness_assessment\app.py", line 379, in test_crm_connection
+    connection_result = crm_manager.test_connection(settings)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'CRMIntegrationManager' object has no attribute 'test_connection'
