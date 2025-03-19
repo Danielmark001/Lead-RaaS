@@ -106,6 +106,99 @@ python -c "import nltk; nltk.download('punkt')"
 - `templates/`: HTML templates
 - `utils/`: Helper functions
 
+## Setting Up Gmail for Application Use
+
+The most straightforward email provider to use is Gmail. Follow these steps to set up a Gmail account for use with the Lead Generation Tool:
+
+### Step 1: Create or Select a Gmail Account
+
+You can either:
+- Use an existing Gmail account (personal or work)
+- Create a new Gmail account specifically for sending lead generation emails (recommended)
+
+### Step 2: Enable 2-Step Verification
+
+Google requires 2-Step Verification to be enabled before you can create app passwords:
+
+1. Sign in to your Google Account at [myaccount.google.com](https://myaccount.google.com/)
+2. In the navigation panel, select **Security**
+3. Under "Signing in to Google," select **2-Step Verification**
+4. Follow the on-screen steps to turn on 2-Step Verification
+
+### Step 3: Generate an App Password
+
+App passwords are special 16-character codes that allow applications to access your Gmail account:
+
+1. Go to your Google Account again
+2. Select **Security** in the navigation panel
+3. Under "Signing in to Google," select **App passwords**
+   - Note: This option only appears if 2-Step Verification is enabled
+4. At the bottom, select **Select app** and choose **Mail**
+5. For "Select device," choose **Other (Custom name)** and enter "Lead Generation Tool"
+6. Click **Generate**
+7. Copy the 16-character app password (it will look like: "hgdk eegt jvrw xyzp")
+8. **Important**: For use in the application, remove all spaces from this password
+
+## Configuring the Application
+
+There are two ways to customize email settings in the Lead Generation Tool:
+
+### Option 1: Using Environment Variables (Recommended)
+
+Set the following environment variables before starting the application:
+
+```bash
+# Required settings
+export SMTP_SERVER="smtp.gmail.com"
+export SMTP_PORT="587"
+export SMTP_USER="your.email@gmail.com"
+export SMTP_PASSWORD="yourapppasswordwithoutspaces"
+
+# Optional customization
+export DEFAULT_SENDER="Your Name <your.email@gmail.com>"
+export EMAIL_SUBJECT_PREFIX="[Your Company] "
+```
+
+#### For Windows Users:
+
+```cmd
+set SMTP_SERVER=smtp.gmail.com
+set SMTP_PORT=587
+set SMTP_USER=your.email@gmail.com
+set SMTP_PASSWORD=yourapppasswordwithoutspaces
+set DEFAULT_SENDER=Your Name <your.email@gmail.com>
+set EMAIL_SUBJECT_PREFIX=[Your Company] 
+```
+
+### Option 2: Modifying the Code Directly
+
+If you prefer, you can modify the application code to include your settings:
+
+1. Open `app.py` in your editor
+2. Find the section where the email manager is configured (usually after it's initialized)
+3. Update the configuration with your own settings:
+
+```python
+# Configure email manager with your settings
+email_mgr.configure({
+    'smtp_server': 'smtp.gmail.com',
+    'smtp_port': 587,
+    'smtp_user': 'your.email@gmail.com',
+    'smtp_password': 'yourapppasswordwithoutspaces',
+    'default_sender': 'Your Name <your.email@gmail.com>',
+    'default_subject_prefix': '[Your Company] ',
+})
+```
+
+## Using Other Email Providers
+
+While Gmail is recommended for simplicity, you can use other email providers:
+
+### Microsoft 365 / Outlook
+```
+SMTP_SERVER=smtp.office365.com
+SMTP_PORT=587
+```
 ## Development Notes
 This project was developed as part of the Caprae Capital Partners AI-Readiness Pre-Screening Challenge, with a 5-hour development constraint. The recent enhancements focus on adding robust security, comprehensive contact management, and intelligent lead validation capabilities.
 

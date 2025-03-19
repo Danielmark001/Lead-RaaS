@@ -681,15 +681,23 @@ def generate_json_export(leads):
     return json.dumps(leads, indent=2)
 
 # Mock email manager class - would be in separate module
-class EmailManager:
-    def send_export(self, recipient, subject, message, file_data, file_name, file_type):
-        """Mock email sending - would implement actual email sending"""
-        logger.info(f"Would send email to {recipient} with {file_type} attachment")
-        # In a real implementation, would use smtplib or a service like SendGrid
-        return {
-            'status': 'success',
-            'message': f'Email sent to {recipient}'
-        }
+# Configure email manager with SMTP settings from environment variables
+email_manager.configure({
+    'smtp_server': os.environ.get('SMTP_SERVER', 'smtp.gmail.com'),
+    'smtp_port': int(os.environ.get('SMTP_PORT', 587)),
+    'smtp_user': os.environ.get('SMTP_USER', 'leadgen12344@gmail.com'),
+    'smtp_password': os.environ.get('SMTP_PASSWORD', 'dvjyrfoziaojyorz'),
+    'default_sender': os.environ.get('DEFAULT_SENDER', 'leadgen12344@gmail.com'),
+    'default_subject_prefix': os.environ.get('EMAIL_SUBJECT_PREFIX', '[Caprae Capital] '),
+})
+
+# Test connection if SMTP credentials are provided
+if os.environ.get('SMTP_USER') and os.environ.get('SMTP_PASSWORD'):
+    connection_test = email_manager.test_connection()
+    if connection_test['status'] == 'success':
+        logger.info("Email system successfully configured")
+    else:
+        logger.warning(f"Email system configuration issue: {connection_test['message']}")
 
 if __name__ == '__main__':
     # Ensure the necessary directories exist

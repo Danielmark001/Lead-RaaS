@@ -8,3 +8,4 @@ torch==2.1.0
 transformers==4.30.0
 matplotlib==3.7.1
 python-dateutil==2.8.2
+sendgrid>=6.9.7

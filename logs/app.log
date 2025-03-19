@@ -245,3 +245,19 @@ AttributeError: 'CRMIntegrationManager' object has no attribute 'test_connection
 2025-03-19 15:24:47,120 - __main__ - INFO - Analysis completed successfully for URL: https://getcohesiveai.com
 2025-03-19 15:25:37,323 - __main__ - INFO - Exporting data as CSV
 2025-03-19 15:25:39,152 - __main__ - INFO - Exporting data as JSON
+2025-03-19 20:15:04,220 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-19 20:15:05,195 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-19 20:15:09,608 - __main__ - INFO - Starting analysis for URL: https://getcohesiveai.com
+2025-03-19 20:15:09,608 - __main__ - INFO - Scraping website content
+2025-03-19 20:15:15,961 - __main__ - INFO - Analyzing website content
+2025-03-19 20:15:16,227 - __main__ - INFO - Calculating AI readiness score
+2025-03-19 20:15:16,227 - __main__ - INFO - Generating lead qualification insights
+2025-03-19 20:15:16,227 - __main__ - INFO - Analysis completed successfully for URL: https://getcohesiveai.com
+2025-03-19 20:21:29,309 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-19 20:21:30,375 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-19 20:21:37,041 - __main__ - INFO - Starting analysis for URL: https://getcohesiveai.com
+2025-03-19 20:21:37,041 - __main__ - INFO - Scraping website content
+2025-03-19 20:21:42,441 - __main__ - INFO - Analyzing website content
+2025-03-19 20:21:42,612 - __main__ - INFO - Calculating AI readiness score
+2025-03-19 20:21:42,615 - __main__ - INFO - Generating lead qualification insights
+2025-03-19 20:21:42,615 - __main__ - INFO - Analysis completed successfully for URL: https://getcohesiveai.com
