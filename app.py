@@ -31,55 +31,12 @@ except LookupError:
 app = Flask(__name__)
 
 # Initialize components
-
-def create_app():
-    """
-    Application factory function for creating Flask app
-    Enables better compatibility with Vercel and allows for easier testing
-    """
-    app = Flask(__name__)
-
-    # Initialize components
-    scraper = WebScraper()
-    analyzer = ContentAnalyzer()
-    ai_scorer = AIReadinessScorer()
-    lead_scorer = LeadScorer()
-    crm_manager = CRMIntegrationManager()
-    email_manager = EmailManager()  # New component for email functionality
-
-    # In-memory data store for leads (in a production app, this would be a database)
-    leads_store = {}
-
-    # All your existing route handlers go here (copied from the original app.py)
-    @app.route('/')
-    def home():
-        """Render the main application page"""
-        return render_template('index.html')
-
-    # [All other route handlers from the original app.py would be indented here]
-    # ... (rest of the routes remain exactly the same as in the original file)
-
-    return app
-
-# Create the app instance for Vercel and local development
-app = create_app()
-
-# Remove or comment out the __main__ block for Vercel deployment
-# For local development, you can uncomment this block
-if __name__ == '__main__':
-    # Ensure the necessary directories exist
-    os.makedirs('logs', exist_ok=True)
-    
-    # Set up file handler for logging
-    file_handler = logging.FileHandler('logs/app.log')
-    file_handler.setLevel(logging.INFO)
-    file_handler.setFormatter(logging.Formatter(
-        '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-    ))
-    logger.addHandler(file_handler)
-    
-    logger.info("Starting Enhanced AI-Readiness Lead Generation Tool")
-    app.run(debug=True, host='0.0.0.0', port=5000)
+scraper = WebScraper()
+analyzer = ContentAnalyzer()
+ai_scorer = AIReadinessScorer()
+lead_scorer = LeadScorer()
+crm_manager = CRMIntegrationManager()
+email_manager = EmailManager()  # New component for email functionality
 
 # In-memory data store for leads (in a production app, this would be a database)
 # For demo purposes, we'll use a simple dictionary to store leads
