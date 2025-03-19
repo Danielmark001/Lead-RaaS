@@ -4,6 +4,10 @@ A web-based tool that analyzes company websites to assess their AI readiness pot
 ## Overview
 This tool helps private equity firms and investment professionals quickly evaluate a company's AI readiness by analyzing their public web presence. It extracts technology indicators, leadership information, and growth signals to provide an overall AI readiness score, now with enhanced features for security, contact management, and lead qualification.
 
+
+https://github.com/user-attachments/assets/d0e5f553-1e3c-4b74-a571-a058f9306c91
+
+
 ## Installation
 1. Clone this repository
 ```bash
