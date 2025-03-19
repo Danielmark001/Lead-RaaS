@@ -210,10 +210,4 @@ This project was developed as part of the Caprae Capital Partners AI-Readiness P
 - Global market expansion features
 
 ## License
-This project is proprietary and confidential. All rights reserved by Caprae Capital Partners.
-
-## Security and Compliance
-- GDPR compliant data handling
-- Advanced encryption for sensitive information
-- Regular security audits and penetration testing
-- Continuous monitoring and threat detection
+This project is proprietary and confidential. 
