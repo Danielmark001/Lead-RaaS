@@ -11,8 +11,8 @@ https://github.com/user-attachments/assets/d0e5f553-1e3c-4b74-a571-a058f9306c91
 ## Installation
 1. Clone this repository
 ```bash
-git clone https://github.com/yourusername/ai-readiness-assessment.git
-cd ai-readiness-assessment
+git clone https://github.com/yourusername/caprae-ai-readiness.git
+cd caprae-ai-readiness
 ```
 
 2. Create a virtual environment and install dependencies
