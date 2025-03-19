@@ -20,10 +20,19 @@
                 </div>
                 <p class="tagline">AI-powered lead qualification</p>
             </div>
+            <div class="header-actions">
+                <button id="saved-leads-btn" class="secondary-btn">
+                    <i class="fas fa-folder"></i> Saved Leads
+                </button>
+                <button id="settings-btn" class="secondary-btn">
+                    <i class="fas fa-cog"></i> Settings
+                </button>
+            </div>
         </header>
 
         <main class="app-content">
-            <section class="hero">
+            <!-- Search & Analysis Section -->
+            <section class="hero" id="search-section">
                 <div class="hero-content">
                     <h1>AI-Readiness Lead Generation</h1>
                     <p class="hero-subtitle">Transform company websites into qualified leads with AI analysis</p>
@@ -38,17 +47,681 @@
                         <p class="search-help">We'll analyze the company's website to evaluate their AI readiness and lead potential</p>
                     </div>
                 </div>
+                
+                <div class="hero-actions">
+                    <div class="toggle-option">
+                        <input type="checkbox" id="enable-verification" checked>
+                        <label for="enable-verification">Enable Lead Verification</label>
+                    </div>
+                    <div class="toggle-option">
+                        <input type="checkbox" id="crm-auto-sync" checked>
+                        <label for="crm-auto-sync">Auto-sync to CRM</label>
+                    </div>
+                </div>
             </section>
 
+            <!-- Loading Indicator -->
             <div class="loading-container" id="loading">
                 <div class="spinner"></div>
                 <p>Analyzing website...</p>
-                <p class="loading-detail">This usually under 3 seconds</p>
+                <p class="loading-detail">This usually takes under 3 seconds</p>
             </div>
 
+            <!-- Results Section -->
             <section class="results-container" id="results-section">
                 <div id="results"></div>
             </section>
+            
+            <!-- Saved Leads Dashboard -->
+            <section class="dashboard-container" id="leads-dashboard">
+                <div class="dashboard-header">
+                    <h2><i class="fas fa-folder-open"></i> Saved Leads</h2>
+                    <div class="dashboard-actions">
+                        <button id="batch-export-btn" class="action-btn">
+                            <i class="fas fa-file-export"></i> Batch Export
+                        </button>
+                        <button id="crm-sync-btn" class="action-btn">
+                            <i class="fas fa-sync"></i> Sync to CRM
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Filter Panel -->
+                <div class="filter-panel">
+                    <div class="filter-header" id="filter-toggle">
+                        <h3><i class="fas fa-filter"></i> Filters</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="filter-body" id="filter-body">
+                        <div class="filter-group">
+                            <label>Lead Tier</label>
+                            <div class="filter-options">
+                                <div class="filter-option">
+                                    <input type="checkbox" id="filter-hot" checked>
+                                    <label for="filter-hot" class="tier-hot">Hot</label>
+                                </div>
+                                <div class="filter-option">
+                                    <input type="checkbox" id="filter-warm" checked>
+                                    <label for="filter-warm" class="tier-warm">Warm</label>
+                                </div>
+                                <div class="filter-option">
+                                    <input type="checkbox" id="filter-nurture" checked>
+                                    <label for="filter-nurture" class="tier-nurture">Nurture</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label>AI Readiness Score</label>
+                            <div class="range-slider">
+                                <div class="range-values">
+                                    <span id="score-min">0</span>
+                                    <span id="score-max">10</span>
+                                </div>
+                                <div class="slider-container">
+                                    <input type="range" id="score-range-min" min="0" max="10" value="0" step="1">
+                                    <input type="range" id="score-range-max" min="0" max="10" value="10" step="1">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label>Technology Focus</label>
+                            <div class="filter-options multi-select">
+                                <div class="filter-option">
+                                    <input type="checkbox" id="filter-ai-ml" checked>
+                                    <label for="filter-ai-ml">AI & ML</label>
+                                </div>
+                                <div class="filter-option">
+                                    <input type="checkbox" id="filter-data" checked>
+                                    <label for="filter-data">Data Infrastructure</label>
+                                </div>
+                                <div class="filter-option">
+                                    <input type="checkbox" id="filter-cloud" checked>
+                                    <label for="filter-cloud">Cloud</label>
+                                </div>
+                                <div class="filter-option">
+                                    <input type="checkbox" id="filter-integration" checked>
+                                    <label for="filter-integration">Integration</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label>Company Size</label>
+                            <div class="filter-options">
+                                <div class="filter-option">
+                                    <input type="checkbox" id="filter-small" checked>
+                                    <label for="filter-small">Small</label>
+                                </div>
+                                <div class="filter-option">
+                                    <input type="checkbox" id="filter-medium" checked>
+                                    <label for="filter-medium">Medium</label>
+                                </div>
+                                <div class="filter-option">
+                                    <input type="checkbox" id="filter-large" checked>
+                                    <label for="filter-large">Large</label>
+                                </div>
+                                <div class="filter-option">
+                                    <input type="checkbox" id="filter-enterprise" checked>
+                                    <label for="filter-enterprise">Enterprise</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label>Verification Status</label>
+                            <div class="filter-options">
+                                <div class="filter-option">
+                                    <input type="checkbox" id="filter-verified" checked>
+                                    <label for="filter-verified">Verified</label>
+                                </div>
+                                <div class="filter-option">
+                                    <input type="checkbox" id="filter-pending" checked>
+                                    <label for="filter-pending">Pending</label>
+                                </div>
+                                <div class="filter-option">
+                                    <input type="checkbox" id="filter-flagged" checked>
+                                    <label for="filter-flagged">Flagged</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label>Date Added</label>
+                            <div class="date-filter">
+                                <select id="date-filter">
+                                    <option value="all">All Time</option>
+                                    <option value="today">Today</option>
+                                    <option value="week">This Week</option>
+                                    <option value="month">This Month</option>
+                                    <option value="custom">Custom Range</option>
+                                </select>
+                                <div class="custom-date-range" id="custom-date-container">
+                                    <input type="date" id="date-from">
+                                    <span>to</span>
+                                    <input type="date" id="date-to">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="filter-actions">
+                            <button id="apply-filters" class="primary-btn">Apply Filters</button>
+                            <button id="reset-filters" class="secondary-btn">Reset</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Leads List -->
+                <div class="leads-table-container">
+                    <table class="leads-table">
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox" id="select-all-leads"></th>
+                                <th class="sortable" data-sort="company">Company <i class="fas fa-sort"></i></th>
+                                <th class="sortable" data-sort="score">AI Score <i class="fas fa-sort"></i></th>
+                                <th class="sortable" data-sort="tier">Lead Tier <i class="fas fa-sort"></i></th>
+                                <th>Primary Contact</th>
+                                <th class="sortable" data-sort="verification">Verification <i class="fas fa-sort"></i></th>
+                                <th class="sortable" data-sort="crm">CRM Status <i class="fas fa-sort"></i></th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="leads-table-body">
+                            <!-- Table rows will be added dynamically via JavaScript -->
+                        </tbody>
+                    </table>
+                    <div class="table-pagination">
+                        <button id="prev-page" class="pagination-btn" disabled><i class="fas fa-chevron-left"></i></button>
+                        <span id="page-indicator">Page 1 of 1</span>
+                        <button id="next-page" class="pagination-btn" disabled><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- CRM Integration Settings Panel -->
+            <section class="settings-panel" id="crm-settings">
+                <div class="settings-header">
+                    <h2><i class="fas fa-cog"></i> CRM Integration Settings</h2>
+                    <button class="close-btn" id="close-settings"><i class="fas fa-times"></i></button>
+                </div>
+                
+                <div class="settings-body">
+                    <div class="setting-group">
+                        <h3>CRM Provider</h3>
+                        <div class="crm-selection">
+                            <select id="crm-provider">
+                                <option value="salesforce">Salesforce</option>
+                                <option value="hubspot">HubSpot</option>
+                                <option value="zoho">Zoho CRM</option>
+                                <option value="pipedrive">Pipedrive</option>
+                                <option value="dynamics">Microsoft Dynamics</option>
+                                <option value="custom">Custom API</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="setting-group">
+                        <h3>Authentication</h3>
+                        <div class="auth-settings">
+                            <div class="setting-field">
+                                <label for="api-key">API Key</label>
+                                <input type="password" id="api-key" placeholder="Enter your API key">
+                            </div>
+                            <div class="setting-field">
+                                <label for="api-secret">API Secret (if required)</label>
+                                <input type="password" id="api-secret" placeholder="Enter your API secret">
+                            </div>
+                            <div id="custom-fields" style="display: none;">
+                                <div class="setting-field">
+                                    <label for="api-url">API Endpoint URL</label>
+                                    <input type="text" id="api-url" placeholder="https://api.example.com/crm">
+                                </div>
+                            </div>
+                            <button id="test-connection" class="secondary-btn">Test Connection</button>
+                        </div>
+                    </div>
+                    
+                    <div class="setting-group">
+                        <h3>Field Mapping</h3>
+                        <p class="setting-description">Map lead data fields to your CRM fields</p>
+                        <div class="field-mapping">
+                            <div class="mapping-row">
+                                <div class="mapping-label">Lead Score</div>
+                                <div class="mapping-field">
+                                    <select>
+                                        <option value="lead_score">Lead Score</option>
+                                        <option value="rating">Rating</option>
+                                        <option value="score">Score</option>
+                                        <option value="custom">Custom Field</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="mapping-row">
+                                <div class="mapping-label">AI Readiness Score</div>
+                                <div class="mapping-field">
+                                    <select>
+                                        <option value="ai_readiness">AI Readiness Score</option>
+                                        <option value="tech_score">Technology Score</option>
+                                        <option value="custom">Custom Field</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="mapping-row">
+                                <div class="mapping-label">Lead Tier</div>
+                                <div class="mapping-field">
+                                    <select>
+                                        <option value="lead_tier">Lead Tier</option>
+                                        <option value="priority">Priority</option>
+                                        <option value="status">Status</option>
+                                        <option value="custom">Custom Field</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="mapping-row">
+                                <div class="mapping-label">Technology Indicators</div>
+                                <div class="mapping-field">
+                                    <select>
+                                        <option value="technology_indicators">Technology Stack</option>
+                                        <option value="tech_stack">Tech Stack</option>
+                                        <option value="technologies">Technologies</option>
+                                        <option value="custom">Custom Field</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button id="add-mapping" class="text-btn"><i class="fas fa-plus"></i> Add Custom Field Mapping</button>
+                        </div>
+                    </div>
+                    
+                    <div class="setting-group">
+                        <h3>Sync Settings</h3>
+                        <div class="sync-settings">
+                            <div class="toggle-option">
+                                <input type="checkbox" id="auto-sync" checked>
+                                <label for="auto-sync">Auto-sync new leads to CRM</label>
+                            </div>
+                            <div class="toggle-option">
+                                <input type="checkbox" id="sync-updates" checked>
+                                <label for="sync-updates">Sync lead updates to CRM</label>
+                            </div>
+                            <div class="toggle-option">
+                                <input type="checkbox" id="bi-directional-sync">
+                                <label for="bi-directional-sync">Enable bi-directional sync</label>
+                            </div>
+                            <div class="sync-frequency">
+                                <label>Sync Frequency</label>
+                                <select id="sync-frequency">
+                                    <option value="realtime">Real-time</option>
+                                    <option value="hourly">Hourly</option>
+                                    <option value="daily">Daily</option>
+                                    <option value="manual">Manual only</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-actions">
+                        <button id="save-settings" class="primary-btn">Save Settings</button>
+                        <button id="cancel-settings" class="secondary-btn">Cancel</button>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Lead Verification Panel -->
+            <section class="verification-panel" id="verification-panel">
+                <div class="verification-header">
+                    <h2><i class="fas fa-clipboard-check"></i> Lead Verification</h2>
+                    <button class="close-btn" id="close-verification"><i class="fas fa-times"></i></button>
+                </div>
+                
+                <div class="verification-body">
+                    <div class="verification-company">
+                        <h3 id="verification-company-name">Company Name</h3>
+                        <span class="verification-url" id="verification-company-url">company.com</span>
+                    </div>
+                    
+                    <div class="verification-sections">
+                        <div class="verification-section">
+                            <h4>Company Information</h4>
+                            <div class="verification-fields">
+                                <div class="verification-field">
+                                    <label>Company Size</label>
+                                    <div class="editable-field">
+                                        <span class="field-value" id="company-size-value">Medium (50-250 employees)</span>
+                                        <button class="edit-field-btn"><i class="fas fa-pen"></i></button>
+                                    </div>
+                                </div>
+                                <div class="verification-field">
+                                    <label>Industry</label>
+                                    <div class="editable-field">
+                                        <span class="field-value" id="company-industry-value">Software & Technology</span>
+                                        <button class="edit-field-btn"><i class="fas fa-pen"></i></button>
+                                    </div>
+                                </div>
+                                <div class="verification-field">
+                                    <label>Location</label>
+                                    <div class="editable-field">
+                                        <span class="field-value" id="company-location-value">611 N. Brand Blvd, Glendale CA 91214A</span>
+                                        <button class="edit-field-btn"><i class="fas fa-pen"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="verification-section">
+                            <h4>Contact Information</h4>
+                            <div class="verification-fields">
+                                <div class="verification-field">
+                                    <label>Primary Contact</label>
+                                    <div class="editable-field">
+                                        <span class="field-value" id="contact-name-value">Kevin Hong</span>
+                                        <button class="edit-field-btn"><i class="fas fa-pen"></i></button>
+                                    </div>
+                                </div>
+                                <div class="verification-field">
+                                    <label>Title</label>
+                                    <div class="editable-field">
+                                        <span class="field-value" id="contact-title-value">Chief Executive Officer</span>
+                                        <button class="edit-field-btn"><i class="fas fa-pen"></i></button>
+                                    </div>
+                                </div>
+                                <div class="verification-field">
+                                    <label>Email</label>
+                                    <div class="editable-field">
+                                        <span class="field-value" id="contact-email-value">john.smith@company.com</span>
+                                        <button class="edit-field-btn"><i class="fas fa-pen"></i></button>
+                                    </div>
+                                </div>
+                                <div class="verification-field">
+                                    <label>Phone</label>
+                                    <div class="editable-field">
+                                        <span class="field-value" id="contact-phone-value">818-636-0839</span>
+                                        <button class="edit-field-btn"><i class="fas fa-pen"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="verification-section">
+                            <h4>Technology Assessment</h4>
+                            <div class="verification-fields">
+                                <div class="verification-field">
+                                    <label>AI Readiness Score</label>
+                                    <div class="editable-field">
+                                        <span class="field-value" id="ai-score-value">7.5 / 10</span>
+                                        <button class="edit-field-btn"><i class="fas fa-pen"></i></button>
+                                    </div>
+                                </div>
+                                <div class="verification-field">
+                                    <label>Technology Stack</label>
+                                    <div class="editable-field scrollable">
+                                        <div class="field-value tech-indicators" id="tech-stack-value">
+                                            <span class="tech-indicator">Python</span>
+                                            <span class="tech-indicator">TensorFlow</span>
+                                            <span class="tech-indicator">AWS</span>
+                                            <span class="tech-indicator">Docker</span>
+                                            <span class="tech-indicator">Kubernetes</span>
+                                        </div>
+                                        <button class="edit-field-btn"><i class="fas fa-pen"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="verification-section">
+                            <h4>Lead Qualification</h4>
+                            <div class="verification-fields">
+                                <div class="verification-field">
+                                    <label>Lead Score</label>
+                                    <div class="editable-field">
+                                        <span class="field-value" id="lead-score-value">85 / 100</span>
+                                        <button class="edit-field-btn"><i class="fas fa-pen"></i></button>
+                                    </div>
+                                </div>
+                                <div class="verification-field">
+                                    <label>Lead Tier</label>
+                                    <div class="editable-field">
+                                        <span class="field-value tier-hot" id="lead-tier-value">Hot</span>
+                                        <button class="edit-field-btn"><i class="fas fa-pen"></i></button>
+                                    </div>
+                                </div>
+                                <div class="verification-field">
+                                    <label>Recommended Approach</label>
+                                    <div class="editable-field">
+                                        <span class="field-value" id="approach-value">Data Strategy Focus</span>
+                                        <button class="edit-field-btn"><i class="fas fa-pen"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="verification-section">
+                            <h4>Verification Notes</h4>
+                            <div class="verification-note">
+                                <textarea id="verification-notes" placeholder="Add verification notes, corrections, or additional information here..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="verification-actions">
+                        <div class="action-buttons">
+                            <button id="verify-lead" class="primary-btn">
+                                <i class="fas fa-check"></i> Verify Lead
+                            </button>
+                            <button id="flag-lead" class="warning-btn">
+                                <i class="fas fa-flag"></i> Flag for Review
+                            </button>
+                            <button id="discard-lead" class="danger-btn">
+                                <i class="fas fa-trash"></i> Discard Lead
+                            </button>
+                        </div>
+                        <div class="additional-actions">
+                            <button id="export-verification" class="text-btn">
+                                <i class="fas fa-file-export"></i> Export Verification Report
+                            </button>
+                            <button id="send-to-crm" class="text-btn">
+                                <i class="fas fa-sync"></i> Send to CRM
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Batch Export Modal -->
+            <div class="modal" id="export-modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3><i class="fas fa-file-export"></i> Batch Export</h3>
+                        <button class="close-modal" id="close-export-modal"><i class="fas fa-times"></i></button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="modal-description">Configure export options for the selected leads</p>
+                        
+                        <div class="export-options">
+                            <div class="option-group">
+                                <h4>Export Format</h4>
+                                <div class="option-buttons">
+                                    <div class="option-button active" data-format="csv">
+                                        <i class="fas fa-file-csv"></i>
+                                        <span>CSV</span>
+                                    </div>
+                                    <div class="option-button" data-format="json">
+                                        <i class="fas fa-file-code"></i>
+                                        <span>JSON</span>
+                                    </div>
+                                    <div class="option-button" data-format="pdf">
+                                        <i class="fas fa-file-pdf"></i>
+                                        <span>PDF</span>
+                                    </div>
+                                    <div class="option-button" data-format="xlsx">
+                                        <i class="fas fa-file-excel"></i>
+                                        <span>Excel</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="option-group">
+                                <h4>Field Selection</h4>
+                                <p class="option-description">Select fields to include in export</p>
+                                <div class="field-selection">
+                                    <div class="field-category">
+                                        <div class="category-header">
+                                            <div class="category-toggle">
+                                                <input type="checkbox" id="company-fields-toggle" checked>
+                                                <label for="company-fields-toggle">Company Information</label>
+                                            </div>
+                                            <i class="fas fa-chevron-down"></i>
+                                        </div>
+                                        <div class="category-fields">
+                                            <div class="field-checkbox">
+                                                <input type="checkbox" id="field-company-name" checked>
+                                                <label for="field-company-name">Company Name</label>
+                                            </div>
+                                            <div class="field-checkbox">
+                                                <input type="checkbox" id="field-website" checked>
+                                                <label for="field-website">Website</label>
+                                            </div>
+                                            <div class="field-checkbox">
+                                                <input type="checkbox" id="field-company-size" checked>
+                                                <label for="field-company-size">Company Size</label>
+                                            </div>
+                                            <div class="field-checkbox">
+                                                <input type="checkbox" id="field-industry" checked>
+                                                <label for="field-industry">Industry</label>
+                                            </div>
+                                            <div class="field-checkbox">
+                                                <input type="checkbox" id="field-location" checked>
+                                                <label for="field-location">Location</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="field-category">
+                                        <div class="category-header">
+                                            <div class="category-toggle">
+                                                <input type="checkbox" id="contact-fields-toggle" checked>
+                                                <label for="contact-fields-toggle">Contact Information</label>
+                                            </div>
+                                            <i class="fas fa-chevron-down"></i>
+                                        </div>
+                                        <div class="category-fields">
+                                            <div class="field-checkbox">
+                                                <input type="checkbox" id="field-contact-name" checked>
+                                                <label for="field-contact-name">Name</label>
+                                            </div>
+                                            <div class="field-checkbox">
+                                                <input type="checkbox" id="field-title" checked>
+                                                <label for="field-title">Title</label>
+                                            </div>
+                                            <div class="field-checkbox">
+                                                <input type="checkbox" id="field-email" checked>
+                                                <label for="field-email">Email</label>
+                                            </div>
+                                            <div class="field-checkbox">
+                                                <input type="checkbox" id="field-phone" checked>
+                                                <label for="field-phone">Phone</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="field-category">
+                                        <div class="category-header">
+                                            <div class="category-toggle">
+                                                <input type="checkbox" id="assessment-fields-toggle" checked>
+                                                <label for="assessment-fields-toggle">Assessment Data</label>
+                                            </div>
+                                            <i class="fas fa-chevron-down"></i>
+                                        </div>
+                                        <div class="category-fields">
+                                            <div class="field-checkbox">
+                                                <input type="checkbox" id="field-ai-score" checked>
+                                                <label for="field-ai-score">AI Readiness Score</label>
+                                            </div>
+                                            <div class="field-checkbox">
+                                                <input type="checkbox" id="field-lead-score" checked>
+                                                <label for="field-lead-score">Lead Score</label>
+                                            </div>
+                                            <div class="field-checkbox">
+                                                <input type="checkbox" id="field-lead-tier" checked>
+                                                <label for="field-lead-tier">Lead Tier</label>
+                                            </div>
+                                            <div class="field-checkbox">
+                                                <input type="checkbox" id="field-tech-indicators" checked>
+                                                <label for="field-tech-indicators">Technology Indicators</label>
+                                            </div>
+                                            <div class="field-checkbox">
+                                                <input type="checkbox" id="field-approach" checked>
+                                                <label for="field-approach">Recommended Approach</label>
+                                            </div>
+                                            <div class="field-checkbox">
+                                                <input type="checkbox" id="field-pain-points" checked>
+                                                <label for="field-pain-points">Pain Points</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="field-category">
+                                        <div class="category-header">
+                                            <div class="category-toggle">
+                                                <input type="checkbox" id="verification-fields-toggle" checked>
+                                                <label for="verification-fields-toggle">Verification Data</label>
+                                            </div>
+                                            <i class="fas fa-chevron-down"></i>
+                                        </div>
+                                        <div class="category-fields">
+                                            <div class="field-checkbox">
+                                                <input type="checkbox" id="field-verification-status" checked>
+                                                <label for="field-verification-status">Verification Status</label>
+                                            </div>
+                                            <div class="field-checkbox">
+                                                <input type="checkbox" id="field-verification-date" checked>
+                                                <label for="field-verification-date">Verification Date</label>
+                                            </div>
+                                            <div class="field-checkbox">
+                                                <input type="checkbox" id="field-verification-notes" checked>
+                                                <label for="field-verification-notes">Verification Notes</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="option-group">
+                                <h4>Delivery Options</h4>
+                                <div class="delivery-options">
+                                    <div class="delivery-option active" data-delivery="download">
+                                        <i class="fas fa-download"></i>
+                                        <span>Download File</span>
+                                    </div>
+                                    <div class="delivery-option" data-delivery="email">
+                                        <i class="fas fa-envelope"></i>
+                                        <span>Send via Email</span>
+                                    </div>
+                                </div>
+                                
+                                <div id="email-options" style="display: none;">
+                                    <div class="email-field">
+                                        <label for="email-recipient">Recipient Email</label>
+                                        <input type="email" id="email-recipient" placeholder="Enter recipient email">
+                                    </div>
+                                    <div class="email-field">
+                                        <label for="email-subject">Subject Line</label>
+                                        <input type="text" id="email-subject" value="Caprae Capital - Lead Export">
+                                    </div>
+                                    <div class="email-field">
+                                        <label for="email-message">Message (Optional)</label>
+                                        <textarea id="email-message" placeholder="Add a message to accompany the export..."></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="export-action" class="primary-btn">Export 0 Leads</button>
+                        <button id="cancel-export" class="secondary-btn">Cancel</button>
+                    </div>
+                </div>
+            </div>
         </main>
 
         <footer class="app-footer">
@@ -57,6 +730,7 @@
         </footer>
     </div>
 
+    <!-- Original Templates (hidden, used for rendering) -->
     <template id="results-template">
         <div class="results-header">
             <h2>AI Readiness Assessment</h2>
@@ -169,10 +843,31 @@
                 <div class="lead-section">
                     <div class="section-header">
                         <i class="fas fa-file-export"></i>
-                        <h3>Export Lead Data</h3>
+                        <h3>Actions</h3>
                     </div>
-                    <div class="export-container">
-                        <p class="export-description">Export lead data for your CRM or sales workflow</p>
+                    <div class="lead-actions-container">
+                        <div class="lead-action-group">
+                            <button id="save-lead" class="action-btn">
+                                <i class="fas fa-save"></i> Save Lead
+                            </button>
+                            <button id="verify-now" class="action-btn">
+                                <i class="fas fa-clipboard-check"></i> Verify Now
+                            </button>
+                            <button id="send-to-crm-btn" class="action-btn">
+                                <i class="fas fa-sync"></i> Send to CRM
+                            </button>
+                        </div>
+                        <div class="export-container">
+                            <p class="export-description">Export lead data for your CRM or sales workflow</p>
+                            <div class="export-buttons">
+                                <button class="export-btn csv-btn">
+                                    <i class="fas fa-file-csv"></i> Export to CSV
+                                </button>
+                                <button class="export-btn json-btn">
+                                    <i class="fas fa-file-code"></i> Export JSON
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

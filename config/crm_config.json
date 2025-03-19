@@ -1,0 +1,11 @@
+{
+  "enabled_crms": ["hubspot", "salesforce"],
+  "default_crm": "hubspot",
+  "hubspot": {
+    "api_key": "your_hubspot_api_key"
+  },
+  "salesforce": {
+    "client_id": "your_salesforce_client_id",
+    "client_secret": "your_salesforce_client_secret"
+  }
+}
