@@ -71,3 +71,177 @@ Traceback (most recent call last):
     connection_result = crm_manager.test_connection(settings)
                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 AttributeError: 'CRMIntegrationManager' object has no attribute 'test_connection'
+2025-03-19 12:51:03,857 - __main__ - INFO - Starting analysis for URL: https://capraecapital.com
+2025-03-19 12:51:03,858 - __main__ - INFO - Scraping website content
+2025-03-19 12:51:06,843 - __main__ - INFO - Analyzing website content
+2025-03-19 12:51:07,236 - __main__ - INFO - Calculating AI readiness score
+2025-03-19 12:51:07,236 - __main__ - INFO - Generating lead qualification insights
+2025-03-19 12:51:07,236 - __main__ - INFO - Analysis completed successfully for URL: https://capraecapital.com
+2025-03-19 12:51:19,182 - __main__ - INFO - Starting analysis for URL: https://getcohesiveai.com
+2025-03-19 12:51:19,182 - __main__ - INFO - Scraping website content
+2025-03-19 12:51:23,838 - __main__ - INFO - Analyzing website content
+2025-03-19 12:51:24,137 - __main__ - INFO - Calculating AI readiness score
+2025-03-19 12:51:24,140 - __main__ - INFO - Generating lead qualification insights
+2025-03-19 12:51:24,141 - __main__ - INFO - Analysis completed successfully for URL: https://getcohesiveai.com
+2025-03-19 12:56:55,452 - __main__ - INFO - Starting analysis for URL: https://getcohesiveai.com
+2025-03-19 12:56:55,452 - __main__ - INFO - Scraping website content
+2025-03-19 12:57:00,267 - __main__ - INFO - Analyzing website content
+2025-03-19 12:57:00,517 - __main__ - INFO - Calculating AI readiness score
+2025-03-19 12:57:00,518 - __main__ - INFO - Generating lead qualification insights
+2025-03-19 12:57:00,520 - __main__ - INFO - Analysis completed successfully for URL: https://getcohesiveai.com
+2025-03-19 12:57:29,320 - __main__ - INFO - Exporting data as JSON
+2025-03-19 12:57:31,487 - __main__ - INFO - Exporting data as CSV
+2025-03-19 13:03:45,361 - __main__ - INFO - Starting analysis for URL: https://getcohesiveai.com
+2025-03-19 13:03:45,361 - __main__ - INFO - Scraping website content
+2025-03-19 13:03:49,742 - __main__ - INFO - Analyzing website content
+2025-03-19 13:03:49,903 - __main__ - INFO - Calculating AI readiness score
+2025-03-19 13:03:49,903 - __main__ - INFO - Generating lead qualification insights
+2025-03-19 13:03:49,903 - __main__ - INFO - Analysis completed successfully for URL: https://getcohesiveai.com
+2025-03-19 13:49:35,010 - __main__ - INFO - Starting analysis for URL: https://getcohesiveai.com
+2025-03-19 13:49:35,010 - __main__ - INFO - Scraping website content
+2025-03-19 13:49:39,479 - __main__ - INFO - Analyzing website content
+2025-03-19 13:49:39,700 - __main__ - INFO - Calculating AI readiness score
+2025-03-19 13:49:39,710 - __main__ - INFO - Generating lead qualification insights
+2025-03-19 13:49:39,710 - __main__ - INFO - Analysis completed successfully for URL: https://getcohesiveai.com
+2025-03-19 13:54:03,361 - __main__ - INFO - Starting analysis for URL: https://getcohesiveai.com
+2025-03-19 13:54:03,362 - __main__ - INFO - Scraping website content
+2025-03-19 13:54:08,027 - __main__ - INFO - Analyzing website content
+2025-03-19 13:54:08,230 - __main__ - INFO - Calculating AI readiness score
+2025-03-19 13:54:08,230 - __main__ - INFO - Generating lead qualification insights
+2025-03-19 13:54:08,236 - __main__ - INFO - Analysis completed successfully for URL: https://getcohesiveai.com
+2025-03-19 13:58:31,961 - __main__ - INFO - Starting analysis for URL: https://getcohesiveai.com
+2025-03-19 13:58:31,961 - __main__ - INFO - Scraping website content
+2025-03-19 13:58:36,218 - __main__ - INFO - Analyzing website content
+2025-03-19 13:58:36,400 - __main__ - INFO - Calculating AI readiness score
+2025-03-19 13:58:36,402 - __main__ - INFO - Generating lead qualification insights
+2025-03-19 13:58:36,402 - __main__ - INFO - Analysis completed successfully for URL: https://getcohesiveai.com
+2025-03-19 13:59:14,603 - __main__ - INFO - Starting analysis for URL: https://getcohesiveai.com
+2025-03-19 13:59:14,603 - __main__ - INFO - Scraping website content
+2025-03-19 13:59:19,016 - __main__ - INFO - Analyzing website content
+2025-03-19 13:59:19,240 - __main__ - INFO - Calculating AI readiness score
+2025-03-19 13:59:19,240 - __main__ - INFO - Generating lead qualification insights
+2025-03-19 13:59:19,242 - __main__ - INFO - Analysis completed successfully for URL: https://getcohesiveai.com
+2025-03-19 14:01:34,452 - __main__ - INFO - Starting analysis for URL: https://netflix.com
+2025-03-19 14:01:34,452 - __main__ - INFO - Scraping website content
+2025-03-19 14:01:38,831 - __main__ - INFO - Analyzing website content
+2025-03-19 14:01:38,870 - __main__ - INFO - Calculating AI readiness score
+2025-03-19 14:01:38,875 - __main__ - INFO - Generating lead qualification insights
+2025-03-19 14:01:38,876 - __main__ - INFO - Analysis completed successfully for URL: https://netflix.com
+2025-03-19 14:01:48,300 - __main__ - INFO - Starting analysis for URL: https://google.com
+2025-03-19 14:01:48,300 - __main__ - INFO - Scraping website content
+2025-03-19 14:01:51,700 - __main__ - INFO - Analyzing website content
+2025-03-19 14:01:52,041 - __main__ - INFO - Calculating AI readiness score
+2025-03-19 14:01:52,041 - __main__ - INFO - Generating lead qualification insights
+2025-03-19 14:01:52,042 - __main__ - INFO - Analysis completed successfully for URL: https://google.com
+2025-03-19 14:10:11,335 - __main__ - INFO - Starting analysis for URL: https://capraecapital.com
+2025-03-19 14:10:11,336 - __main__ - INFO - Scraping website content
+2025-03-19 14:10:14,421 - __main__ - INFO - Analyzing website content
+2025-03-19 14:10:14,879 - __main__ - INFO - Calculating AI readiness score
+2025-03-19 14:10:14,881 - __main__ - INFO - Generating lead qualification insights
+2025-03-19 14:10:14,881 - __main__ - INFO - Analysis completed successfully for URL: https://capraecapital.com
+2025-03-19 14:21:40,412 - __main__ - INFO - Starting analysis for URL: https://getcohesiveai.com
+2025-03-19 14:21:40,412 - __main__ - INFO - Scraping website content
+2025-03-19 14:21:45,010 - __main__ - INFO - Analyzing website content
+2025-03-19 14:21:45,225 - __main__ - INFO - Calculating AI readiness score
+2025-03-19 14:21:45,229 - __main__ - INFO - Generating lead qualification insights
+2025-03-19 14:21:45,230 - __main__ - INFO - Analysis completed successfully for URL: https://getcohesiveai.com
+2025-03-19 14:22:05,087 - __main__ - INFO - Starting analysis for URL: https://getcohesiveai.com
+2025-03-19 14:22:05,089 - __main__ - INFO - Scraping website content
+2025-03-19 14:22:08,475 - __main__ - INFO - Analyzing website content
+2025-03-19 14:22:08,871 - __main__ - INFO - Calculating AI readiness score
+2025-03-19 14:22:08,871 - __main__ - INFO - Generating lead qualification insights
+2025-03-19 14:22:08,871 - __main__ - INFO - Analysis completed successfully for URL: https://getcohesiveai.com
+2025-03-19 14:31:45,475 - __main__ - INFO - Starting analysis for URL: https://getcohesiveai.com
+2025-03-19 14:31:45,475 - __main__ - INFO - Scraping website content
+2025-03-19 14:31:52,350 - __main__ - INFO - Analyzing website content
+2025-03-19 14:31:52,580 - __main__ - INFO - Calculating AI readiness score
+2025-03-19 14:31:52,582 - __main__ - INFO - Generating lead qualification insights
+2025-03-19 14:31:52,582 - __main__ - INFO - Analysis completed successfully for URL: https://getcohesiveai.com
+2025-03-19 14:43:26,999 - __main__ - INFO - Starting analysis for URL: https://getcohesiveai.com
+2025-03-19 14:43:27,001 - __main__ - INFO - Scraping website content
+2025-03-19 14:43:31,659 - __main__ - INFO - Analyzing website content
+2025-03-19 14:43:31,871 - __main__ - INFO - Calculating AI readiness score
+2025-03-19 14:43:31,871 - __main__ - INFO - Generating lead qualification insights
+2025-03-19 14:43:31,871 - __main__ - INFO - Analysis completed successfully for URL: https://getcohesiveai.com
+2025-03-19 14:43:39,901 - __main__ - INFO - Starting analysis for URL: https://salesforce.com
+2025-03-19 14:43:39,901 - __main__ - INFO - Scraping website content
+2025-03-19 14:43:46,193 - __main__ - INFO - Analyzing website content
+2025-03-19 14:43:46,562 - __main__ - INFO - Calculating AI readiness score
+2025-03-19 14:43:46,562 - __main__ - INFO - Generating lead qualification insights
+2025-03-19 14:43:46,562 - __main__ - INFO - Analysis completed successfully for URL: https://salesforce.com
+2025-03-19 14:56:49,912 - __main__ - INFO - Starting analysis for URL: https://getcohesiveai.com
+2025-03-19 14:56:49,913 - __main__ - INFO - Scraping website content
+2025-03-19 14:56:54,331 - __main__ - INFO - Analyzing website content
+2025-03-19 14:56:54,605 - __main__ - INFO - Calculating AI readiness score
+2025-03-19 14:56:54,606 - __main__ - INFO - Generating lead qualification insights
+2025-03-19 14:56:54,607 - __main__ - INFO - Analysis completed successfully for URL: https://getcohesiveai.com
+2025-03-19 14:57:22,185 - __main__ - INFO - Starting analysis for URL: https://getcohesiveai.com
+2025-03-19 14:57:22,185 - __main__ - INFO - Scraping website content
+2025-03-19 14:57:26,096 - __main__ - INFO - Analyzing website content
+2025-03-19 14:57:26,310 - __main__ - INFO - Calculating AI readiness score
+2025-03-19 14:57:26,310 - __main__ - INFO - Generating lead qualification insights
+2025-03-19 14:57:26,310 - __main__ - INFO - Analysis completed successfully for URL: https://getcohesiveai.com
+2025-03-19 15:02:07,022 - __main__ - INFO - Starting analysis for URL: https://DoorDash.com
+2025-03-19 15:02:07,028 - __main__ - INFO - Scraping website content
+2025-03-19 15:02:07,931 - __main__ - WARNING - No content found for URL: https://DoorDash.com
+2025-03-19 15:02:24,427 - __main__ - INFO - Starting analysis for URL: https://doordash.com
+2025-03-19 15:02:24,427 - __main__ - INFO - Scraping website content
+2025-03-19 15:02:24,586 - __main__ - WARNING - No content found for URL: https://doordash.com
+2025-03-19 15:05:42,816 - __main__ - INFO - Starting analysis for URL: https://DoorDash.com
+2025-03-19 15:05:42,817 - __main__ - INFO - Scraping website content
+2025-03-19 15:05:43,115 - __main__ - WARNING - No content found for URL: https://DoorDash.com
+2025-03-19 15:05:44,432 - __main__ - INFO - Starting analysis for URL: https://DoorDash.com
+2025-03-19 15:05:44,432 - __main__ - INFO - Scraping website content
+2025-03-19 15:05:44,574 - __main__ - WARNING - No content found for URL: https://DoorDash.com
+2025-03-19 15:13:36,892 - __main__ - INFO - Starting analysis for URL: https://getcohesiveai.com
+2025-03-19 15:13:36,892 - __main__ - INFO - Scraping website content
+2025-03-19 15:13:42,431 - __main__ - INFO - Analyzing website content
+2025-03-19 15:13:42,648 - __main__ - INFO - Calculating AI readiness score
+2025-03-19 15:13:42,648 - __main__ - INFO - Generating lead qualification insights
+2025-03-19 15:13:42,650 - __main__ - INFO - Analysis completed successfully for URL: https://getcohesiveai.com
+2025-03-19 15:14:01,535 - __main__ - INFO - Starting analysis for URL: https://getcohesiveai.com
+2025-03-19 15:14:01,535 - __main__ - INFO - Scraping website content
+2025-03-19 15:14:05,291 - __main__ - INFO - Analyzing website content
+2025-03-19 15:14:05,512 - __main__ - INFO - Calculating AI readiness score
+2025-03-19 15:14:05,513 - __main__ - INFO - Generating lead qualification insights
+2025-03-19 15:14:05,515 - __main__ - INFO - Analysis completed successfully for URL: https://getcohesiveai.com
+2025-03-19 15:14:15,222 - __main__ - INFO - Starting analysis for URL: https://getcohesiveai.com
+2025-03-19 15:14:15,222 - __main__ - INFO - Scraping website content
+2025-03-19 15:14:19,424 - __main__ - INFO - Analyzing website content
+2025-03-19 15:14:19,652 - __main__ - INFO - Calculating AI readiness score
+2025-03-19 15:14:19,652 - __main__ - INFO - Generating lead qualification insights
+2025-03-19 15:14:19,656 - __main__ - INFO - Analysis completed successfully for URL: https://getcohesiveai.com
+2025-03-19 15:14:31,793 - __main__ - INFO - Starting analysis for URL: https://getcohesiveai.com
+2025-03-19 15:14:31,793 - __main__ - INFO - Scraping website content
+2025-03-19 15:14:35,808 - __main__ - INFO - Analyzing website content
+2025-03-19 15:14:36,012 - __main__ - INFO - Calculating AI readiness score
+2025-03-19 15:14:36,012 - __main__ - INFO - Generating lead qualification insights
+2025-03-19 15:14:36,012 - __main__ - INFO - Analysis completed successfully for URL: https://getcohesiveai.com
+2025-03-19 15:14:42,522 - __main__ - INFO - Starting analysis for URL: https://getcohesiveai.com
+2025-03-19 15:14:42,525 - __main__ - INFO - Scraping website content
+2025-03-19 15:14:48,791 - __main__ - INFO - Analyzing website content
+2025-03-19 15:14:49,012 - __main__ - INFO - Calculating AI readiness score
+2025-03-19 15:14:49,012 - __main__ - INFO - Generating lead qualification insights
+2025-03-19 15:14:49,012 - __main__ - INFO - Analysis completed successfully for URL: https://getcohesiveai.com
+2025-03-19 15:15:00,444 - __main__ - INFO - Starting analysis for URL: https://getcohesiveai.com
+2025-03-19 15:15:00,445 - __main__ - INFO - Scraping website content
+2025-03-19 15:15:04,379 - __main__ - INFO - Analyzing website content
+2025-03-19 15:15:04,610 - __main__ - INFO - Calculating AI readiness score
+2025-03-19 15:15:04,610 - __main__ - INFO - Generating lead qualification insights
+2025-03-19 15:15:04,615 - __main__ - INFO - Analysis completed successfully for URL: https://getcohesiveai.com
+2025-03-19 15:16:33,855 - __main__ - INFO - Starting analysis for URL: https://getcohesiveai.com
+2025-03-19 15:16:33,856 - __main__ - INFO - Scraping website content
+2025-03-19 15:16:39,376 - __main__ - INFO - Analyzing website content
+2025-03-19 15:16:39,513 - __main__ - INFO - Calculating AI readiness score
+2025-03-19 15:16:39,514 - __main__ - INFO - Generating lead qualification insights
+2025-03-19 15:16:39,515 - __main__ - INFO - Analysis completed successfully for URL: https://getcohesiveai.com
+2025-03-19 15:17:44,713 - __main__ - INFO - Exporting data as CSV
+2025-03-19 15:17:47,895 - __main__ - INFO - Exporting data as JSON
+2025-03-19 15:24:41,598 - __main__ - INFO - Starting analysis for URL: https://getcohesiveai.com
+2025-03-19 15:24:41,598 - __main__ - INFO - Scraping website content
+2025-03-19 15:24:47,014 - __main__ - INFO - Analyzing website content
+2025-03-19 15:24:47,118 - __main__ - INFO - Calculating AI readiness score
+2025-03-19 15:24:47,120 - __main__ - INFO - Generating lead qualification insights
+2025-03-19 15:24:47,120 - __main__ - INFO - Analysis completed successfully for URL: https://getcohesiveai.com
+2025-03-19 15:25:37,323 - __main__ - INFO - Exporting data as CSV
+2025-03-19 15:25:39,152 - __main__ - INFO - Exporting data as JSON

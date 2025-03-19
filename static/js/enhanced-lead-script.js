@@ -451,29 +451,6 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
   });
-  // Example implementation using a CAPTCHA-solving service
-  async function solveCaptcha(captchaURL) {
-    try {
-      // Send CAPTCHA to solving service
-      const response = await fetch(
-        "https://api.captchasolverservice.com/solve",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            apiKey: "your_api_key",
-            captchaUrl: captchaURL,
-          }),
-        }
-      );
-
-      const data = await response.json();
-      return data.solution;
-    } catch (error) {
-      console.error("Error solving CAPTCHA:", error);
-      return null;
-    }
-  }
 
   // Function to analyze website
   async function analyzeWebsite(url) {
@@ -502,21 +479,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Hide loading indicator
       loadingElement.style.display = "none";
-
-      const hasCaptcha = await page.evaluate(() => {
-        return (
-          document.body.innerHTML.includes("captcha") ||
-          document.querySelector('iframe[src*="recaptcha"]') !== null
-        );
-      });
-
-      if (hasCaptcha) {
-        // Send notification for manual intervention
-        showNotification(
-          "CAPTCHA detected. Please solve it manually",
-          "warning"
-        );
-      }
 
       // Display results or error
       if (data.error) {
@@ -1260,15 +1222,13 @@ document.addEventListener("DOMContentLoaded", () => {
       lead.company_size_indicator || "Unknown";
 
     // Fill AI score
-    document.getElementById("ai-score-value").textContent = `${
-      lead.ai_readiness_score || 0
-    } / 10`;
+    document.getElementById("ai-score-value").textContent = `${lead.ai_readiness_score || 0
+      } / 10`;
 
     // Fill lead score and tier
     if (lead.sales_insights) {
-      document.getElementById("lead-score-value").textContent = `${
-        lead.sales_insights.lead_score || 0
-      } / 100`;
+      document.getElementById("lead-score-value").textContent = `${lead.sales_insights.lead_score || 0
+        } / 100`;
 
       const tierElement = document.getElementById("lead-tier-value");
       tierElement.textContent = lead.sales_insights.lead_tier || "Unknown";
@@ -1381,9 +1341,8 @@ document.addEventListener("DOMContentLoaded", () => {
     ).length;
     document.getElementById(
       "export-action"
-    ).textContent = `Export ${selectedCount} Lead${
-      selectedCount !== 1 ? "s" : ""
-    }`;
+    ).textContent = `Export ${selectedCount} Lead${selectedCount !== 1 ? "s" : ""
+      }`;
   }
 
   // Function to add overlay
@@ -1498,8 +1457,8 @@ document.addEventListener("DOMContentLoaded", () => {
             lead.sales_insights.lead_tier === "Hot"
               ? "tier-hot"
               : lead.sales_insights.lead_tier === "Warm"
-              ? "tier-warm"
-              : "tier-nurture";
+                ? "tier-warm"
+                : "tier-nurture";
           tierBadge = `<span class="${tierClass}">${lead.sales_insights.lead_tier}</span>`;
         } else {
           tierBadge = '<span class="tier-nurture">Nurture</span>';
@@ -1512,14 +1471,14 @@ document.addEventListener("DOMContentLoaded", () => {
             lead.verification.status === "Verified"
               ? "status-verified"
               : lead.verification.status === "Flagged"
-              ? "status-flagged"
-              : "status-pending";
+                ? "status-flagged"
+                : "status-pending";
           const statusIcon =
             lead.verification.status === "Verified"
               ? "fa-check-circle"
               : lead.verification.status === "Flagged"
-              ? "fa-flag"
-              : "fa-clock";
+                ? "fa-flag"
+                : "fa-clock";
           verificationBadge = `
             <span class="status-badge ${statusClass}">
               <i class="fas ${statusIcon}"></i> ${lead.verification.status}
@@ -1540,18 +1499,18 @@ document.addEventListener("DOMContentLoaded", () => {
             lead.crm.status === "Synced"
               ? "status-synced"
               : lead.crm.status === "Failed"
-              ? "status-failed"
-              : lead.crm.status === "Queued"
-              ? "status-queued"
-              : "status-pending";
+                ? "status-failed"
+                : lead.crm.status === "Queued"
+                  ? "status-queued"
+                  : "status-pending";
           const crmIcon =
             lead.crm.status === "Synced"
               ? "fa-check-circle"
               : lead.crm.status === "Failed"
-              ? "fa-exclamation-circle"
-              : lead.crm.status === "Queued"
-              ? "fa-sync"
-              : "fa-times-circle";
+                ? "fa-exclamation-circle"
+                : lead.crm.status === "Queued"
+                  ? "fa-sync"
+                  : "fa-times-circle";
           crmBadge = `
             <span class="status-badge ${crmClass}">
               <i class="fas ${crmIcon}"></i> ${lead.crm.status}
@@ -2586,99 +2545,96 @@ document.addEventListener("DOMContentLoaded", () => {
         },
       },
       {
-        id: "lead_" + Date.now(),
-        url: "https://getcohesiveai.com",
-        company_name: "Cohesive AI",
-        date_added: new Date().toISOString(),
-        ai_readiness_score: 9.0,
-        company_size_indicator: "Unknown",
-        tech_indicators: {
-          ai_ml: {
-            total: 67,
-            indicators: {
-              AI: 65,
-              ML: 2,
-            },
-          },
-          automation: {
-            total: 2,
-            indicators: {
-              Automation: 2,
-            },
-          },
-          integration: {
-            total: 10,
-            indicators: {
-              API: 8,
-              Integration: 2,
-            },
-          },
+      id: "lead_" + Date.now(),
+      url: "https://getcohesiveai.com",
+      company_name: "Cohesive AI",
+      date_added: new Date().toISOString(),
+      ai_readiness_score: 9.0,
+      company_size_indicator: "Unknown",
+      tech_indicators: {
+        ai_ml: {
+          total: 67,
+          indicators: {
+            "AI": 65,
+            "ML": 2
+          }
         },
-        leadership_team: [],
-        growth_indicators: ["launch"],
-        contact_info: {
-          emails: ["kevin@cohesiveapp.com"],
+        automation: {
+          total: 2,
+          indicators: {
+            "Automation": 2
+          }
+        },
+        integration: {
+          total: 10,
+          indicators: {
+            "API": 8,
+            "Integration": 2
+          }
+        }
+      },
+      leadership_team: [],
+      growth_indicators: ["launch"],
+      contact_info: {
+        emails: ["kevin@cohesiveapp.com"]
+      },
+      score_components: {
+        technology_score: 18.5,
+        leadership_score: 0.0,
+        growth_score: 0.4
+      },
+      sales_insights: {
+        lead_score: 4.5,
+        lead_tier: "Nurture",
+        primary_contact: null,
+        pain_points: [
+          "Company size: Unknown Growth indicators: launch Our company is focused on improving efficiency and reducing costs",
+          "We're challenged by legacy systems and manual processes",
+          "Our team is committed to innovation and transformation"
+        ],
+        outreach_recommendation: {
+          timing: "Medium-term",
+          approach: {
+            focus: "Partnership",
+            message: "Explore advanced AI implementation and optimization",
+            conversation_starters: [
+              "Company size: Unknown Growth indicators: launch Our company is focused on improving efficiency and reducing costs",
+              "We're challenged by legacy systems and manual processes"
+            ]
+          }
         },
         score_components: {
-          technology_score: 18.5,
-          leadership_score: 0.0,
-          growth_score: 0.4,
-        },
-        sales_insights: {
-          lead_score: 4.5,
-          lead_tier: "Nurture",
-          primary_contact: null,
-          pain_points: [
-            "Company size: Unknown Growth indicators: launch Our company is focused on improving efficiency and reducing costs",
-            "We're challenged by legacy systems and manual processes",
-            "Our team is committed to innovation and transformation",
-          ],
-          outreach_recommendation: {
-            timing: "Medium-term",
-            approach: {
-              focus: "Partnership",
-              message: "Explore advanced AI implementation and optimization",
-              conversation_starters: [
-                "Company size: Unknown Growth indicators: launch Our company is focused on improving efficiency and reducing costs",
-                "We're challenged by legacy systems and manual processes",
-              ],
-            },
-          },
-          score_components: {
-            decision_maker_score: 0.0,
-            tech_investment_score: 10.0,
-            growth_score: 1.0,
-            ai_readiness_factor: 1.8,
-          },
-        },
-        transformation_opportunities: [
-          {
-            title: "Advanced AI Solution Deployment",
-            description:
-              "Implement sophisticated AI models to enhance decision-making and create competitive advantages.",
-          },
-          {
-            title: "Predictive Analytics Enhancement",
-            description:
-              "Leverage existing data infrastructure for forecasting and predictive business intelligence.",
-          },
-          {
-            title: "Robust Data Infrastructure Development",
-            description:
-              "Build comprehensive data pipeline to fully leverage existing AI capabilities.",
-          },
-        ],
-        verification: {
-          status: "Pending",
-          date: new Date().toISOString(),
-          notes: "Need to verify company size and identify leadership team.",
-        },
-        crm: {
-          status: "Not Synced",
-          date: null,
-          crm_id: null,
-        },
+          decision_maker_score: 0.0,
+          tech_investment_score: 10.0,
+          growth_score: 1.0,
+          ai_readiness_factor: 1.8
+        }
       },
+      transformation_opportunities: [
+        {
+          title: "Advanced AI Solution Deployment",
+          description: "Implement sophisticated AI models to enhance decision-making and create competitive advantages."
+        },
+        {
+          title: "Predictive Analytics Enhancement",
+          description: "Leverage existing data infrastructure for forecasting and predictive business intelligence."
+        },
+        {
+          title: "Robust Data Infrastructure Development", 
+          description: "Build comprehensive data pipeline to fully leverage existing AI capabilities."
+        }
+      ],
+      verification: {
+        status: "Pending",
+        date: new Date().toISOString(),
+        notes: "Need to verify company size and identify leadership team."
+      },
+      crm: {
+        status: "Not Synced",
+        date: null,
+        crm_id: null
+        }
+      }
     ];
 
     // Save to localStorage
@@ -2693,12 +2649,14 @@ document.addEventListener("DOMContentLoaded", () => {
   // Replace your current savedLeads initialization with this:
   // let savedLeads = initializeSampleLeads();
   // Function to initialize sample leads data
+ 
 
   // Save to localStorage
   localStorage.setItem("savedLeads", JSON.stringify(sampleLeads));
   console.log("Sample leads initialized");
 
   return sampleLeads;
+
 
   // Call this function at the start of your application
   // Replace your current savedLeads initialization with this:
@@ -2881,6 +2839,7 @@ document.addEventListener("DOMContentLoaded", () => {
         date: null,
         crm_id: null,
       },
+      
     };
 
     // To add this lead to the existing savedLeads array:
@@ -3753,8 +3712,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Verification data
     filteredleads.verification = {};
     if (fields.verification.status)
-      filteredleads.verification.status =
-        lead.verification?.status || "Pending";
+      filteredleads.verification.status = lead.verification?.status || "Pending";
     if (fields.verification.date)
       filteredleads.verification.date = lead.verification?.date;
     if (fields.verification.notes)
