@@ -45,9 +45,9 @@ In my tests on a sample of 100 real-world company descriptions, the combined pip
 - **83.5% precision** in identifying high-value leads.
 - **79.2% recall** in detecting relevant pain points.
 - **85.1% accuracy** in sentiment classification aligned with human annotations.
-- **Lead Accuracy:** Improved valid email capture by 35% (based on sample tests).
-- **Processing Speed:** Extracts 500 leads in ~2 minutes (5x faster than a standard scraper).
-- **Lead Prioritization Model:** Achieved a 78% accuracy rate in ranking high-value leads.
+- Improved valid email capture by **35%** (based on sample tests).
+- Extracts **50 leads in ~2 minutes** (5x faster than a standard scraper).
+- Achieved a **78% accuracy rate** in ranking high-value leads.
 
 ### **Conclusion**
 
