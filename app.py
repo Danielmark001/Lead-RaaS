@@ -16,6 +16,10 @@ from modules.scorer import AIReadinessScorer
 from modules.lead_scorer import LeadScorer
 from modules.crm_integration import CRMIntegrationManager
 from modules.email_manager import EmailManager  
+from modules.financial_api_integration import FinancialAPIIntegration
+from modules.investment_criteria import InvestmentCriteriaValidator
+
+# Initialize these components with your other initializations
 
 # Set up logging
 logging.basicConfig(level=logging.INFO, 
@@ -28,7 +32,7 @@ try:
 except LookupError:
     nltk.download('punkt')
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static')
 
 # Initialize components
 scraper = WebScraper()
@@ -37,7 +41,8 @@ ai_scorer = AIReadinessScorer()
 lead_scorer = LeadScorer()
 crm_manager = CRMIntegrationManager()
 email_manager = EmailManager()  # New component for email functionality
-
+financial_api = FinancialAPIIntegration()
+investment_validator = InvestmentCriteriaValidator()
 # In-memory data store for leads (in a production app, this would be a database)
 # For demo purposes, we'll use a simple dictionary to store leads
 leads_store = {}
@@ -117,6 +122,45 @@ def analyze():
             'date': None,
             'crm_id': None
         }
+                # Add financial analysis if company name is available
+        if 'company_name' in final_results:
+            try:
+                logger.debug(f"Getting financial data for {final_results['company_name']}")
+                company_financials = financial_api.get_company_financials(final_results['company_name'])
+                if company_financials:
+                    logger.debug(f"Financial data found: {company_financials}")
+                    # Add financial data to results
+                    final_results['financials'] = company_financials
+                    
+                    # Estimate recurring revenue
+                    recurring_revenue = financial_api.estimate_recurring_revenue(
+                        final_results, company_financials
+                    )
+                    if recurring_revenue:
+                        logger.debug(f"Estimated recurring revenue: {recurring_revenue}%")
+                        final_results['financials']['recurring_revenue_percentage'] = recurring_revenue
+                    
+                    logger.info(f"Financial data added for {final_results['company_name']}")
+                else:
+                    logger.warning(f"No financial data found for {final_results['company_name']}")
+            except Exception as e:
+                logger.error(f"Error adding financial data: {str(e)}", exc_info=True)
+
+        # Add investment criteria match
+        try:
+            logger.debug("Calculating investment criteria match")
+            investment_match = investment_validator.validate(
+                analysis_results, 
+                final_results.get('sales_insights', {}),
+                final_results.get('financials', {}),
+                final_results.get('business_details', {}),
+                final_results.get('industry_details', {})
+            )
+            logger.debug(f"Investment match results: {investment_match}")
+            final_results['investment_match'] = investment_match
+            logger.info("Investment criteria match added to results")
+        except Exception as e:
+            logger.error(f"Error adding investment match: {str(e)}", exc_info=True)
         
         # Store lead in memory
         leads_store[analysis_id] = final_results
@@ -713,4 +757,60 @@ if __name__ == '__main__':
     
     logger.info("Starting Enhanced AI-Readiness Lead Generation Tool")
     app.run(debug=True, host='0.0.0.0', port=5000)
+    
+# Add these imports at the top with your other import
+
+# Add new route for financial data
+@app.route('/get-financials', methods=['POST'])
+def get_financials():
+    """Get financial data for a company"""
+    try:
+        if not request.is_json:
+            return jsonify({"error": "Request must be in JSON format"}), 400
+        
+        data = request.json
+        company_name = data.get('company_name')
+        ticker = data.get('ticker')
+        
+        if not company_name and not ticker:
+            return jsonify({"error": "Company name or ticker symbol is required"}), 400
+        
+        # Get financial data
+        financials = financial_api.get_company_financials(company_name, ticker)
+        
+        if not financials:
+            return jsonify({"error": "Could not retrieve financial data"}), 404
+        
+        return jsonify({
+            'status': 'success',
+            'financials': financials
+        })
+        
+    except Exception as e:
+        logger.error(f"Error getting financials: {str(e)}", exc_info=True)
+        return jsonify({"error": f"Failed to get financial data: {str(e)}"}), 500
+
+# Add new route for investment criteria check
+@app.route('/check-investment-criteria', methods=['POST'])
+def check_investment_criteria():
+    """Check a company against investment criteria"""
+    try:
+        data = request.json
+        company_data = data.get('company_data', {})
+        financials = data.get('financials', {})
+        
+        if not company_data:
+            return jsonify({"error": "Company data is required"}), 400
+        
+        # Analyze investment fit
+        investment_fit = financial_api.analyze_investment_fit(company_data, financials)
+        
+        return jsonify({
+            'status': 'success',
+            'investment_fit': investment_fit
+        })
+        
+    except Exception as e:
+        logger.error(f"Error checking investment criteria: {str(e)}", exc_info=True)
+        return jsonify({"error": f"Failed to check investment criteria: {str(e)}"}), 500
     

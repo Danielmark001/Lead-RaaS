@@ -1011,12 +1011,335 @@ document.addEventListener("DOMContentLoaded", () => {
       resultsElement.appendChild(leadContent);
     }
 
+    // Add Investment Criteria Match if available
+    if (data.investment_match) {
+      try {
+        displayInvestmentMatch(data.investment_match);
+        console.log("Investment match data displayed");
+      } catch (error) {
+        console.error("Error displaying investment match:", error);
+      }
+    }
+
     // Animate score count up
     animateScoreCount(".score-value", data.ai_readiness_score);
 
     // Animate lead score if available
     if (data.sales_insights) {
       animateScoreCount(".lead-score-value", data.sales_insights.lead_score);
+    }
+  }
+
+  // Function to display investment match data
+  function displayInvestmentMatch(matchData) {
+    console.log("Displaying investment match data:", matchData);
+
+    // Create investment match section
+    const matchSection = document.createElement("div");
+    matchSection.className = "dashboard-section";
+
+    // Create header
+    const header = document.createElement("div");
+    header.className = "section-header";
+    header.innerHTML =
+      '<i class="fas fa-chart-bar"></i><h3>Investment Criteria Match</h3>';
+    matchSection.appendChild(header);
+
+    // Create content container
+    const content = document.createElement("div");
+    content.className = "investment-match-container";
+    content.style.padding = "1.5rem";
+
+    // Calculate score and get match tier
+    const overallMatch = Math.round(matchData.overall_match || 0);
+    const matchTier = matchData.match_tier || "Unknown";
+    const confidence = Math.round(matchData.confidence || 0);
+
+    // Get appropriate colors based on score
+    const scoreColor = getScoreColor(overallMatch);
+
+    // Create score overview
+    const scoreOverview = document.createElement("div");
+    scoreOverview.className = "score-overview";
+    scoreOverview.style.display = "flex";
+    scoreOverview.style.flexDirection = "column";
+    scoreOverview.style.alignItems = "center";
+    scoreOverview.style.marginBottom = "2rem";
+
+    // Create score ring
+    const scoreHtml = `
+      <div class="score-card" style="display: flex; flex-direction: column; align-items: center; margin-bottom: 1rem;">
+        <div class="score-ring" style="width: 120px; height: 120px; border-radius: 50%; background-color: ${scoreColor}25; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); margin-bottom: 1rem;">
+          <div class="investment-score" id="investment-score" style="font-size: 3rem; font-weight: 700; color: ${scoreColor};">0</div>
+          <div class="score-max" style="font-size: 1.25rem; color: ${scoreColor}80;">%</div>
+        </div>
+        <div class="score-label" style="font-size: 1.25rem; font-weight: 600;">Investment Fit</div>
+      </div>
+      
+      <div style="display: flex; align-items: center; padding: 0.5rem 1rem; background-color: #f1f5f9; border-radius: 8px; margin-top: 0.5rem;">
+        <span style="font-weight: 600; margin-right: 0.5rem;">Match Tier:</span>
+        <span style="color: ${scoreColor}; font-weight: 500;">${matchTier}</span>
+      </div>
+      
+      <div style="display: flex; align-items: center; padding: 0.5rem 1rem; background-color: #f1f5f9; border-radius: 8px; margin-top: 0.5rem;">
+        <span style="font-weight: 600; margin-right: 0.5rem;">Confidence:</span>
+        <span>${confidence}%</span>
+      </div>
+    `;
+
+    scoreOverview.innerHTML = scoreHtml;
+    content.appendChild(scoreOverview);
+
+    // Create criteria breakdown
+    const breakdownSection = document.createElement("div");
+    breakdownSection.style.marginTop = "2rem";
+
+    // Create breakdown header
+    const breakdownHeader = document.createElement("h4");
+    breakdownHeader.style.marginBottom = "1rem";
+    breakdownHeader.style.paddingBottom = "0.5rem";
+    breakdownHeader.style.borderBottom = "1px solid #e2e8f0";
+    breakdownHeader.textContent = "Criteria Breakdown";
+    breakdownSection.appendChild(breakdownHeader);
+
+    // Create breakdown charts
+    const breakdownCharts = document.createElement("div");
+    breakdownCharts.style.display = "flex";
+    breakdownCharts.style.flexDirection = "column";
+    breakdownCharts.style.gap = "1rem";
+
+    // Business criteria
+    const businessScore = Math.round(matchData.business_criteria?.score || 0);
+    const businessColor = getScoreColor(businessScore);
+
+    const businessChart = `
+      <div style="display: flex; align-items: center">
+        <span style="width: 150px; font-weight: 500">Business Criteria</span>
+        <div style="flex: 1; height: 10px; background-color: #e2e8f0; border-radius: 5px; overflow: hidden; margin-right: 10px">
+          <div style="height: 100%; width: ${businessScore}%; background-color: ${businessColor}; border-radius: 5px"></div>
+        </div>
+        <span style="font-weight: 500; min-width: 45px; text-align: right">${businessScore}%</span>
+      </div>
+    `;
+
+    // Industry criteria
+    const industryScore = Math.round(matchData.industry_criteria?.score || 0);
+    const industryColor = getScoreColor(industryScore);
+
+    const industryChart = `
+      <div style="display: flex; align-items: center">
+        <span style="width: 150px; font-weight: 500">Industry Criteria</span>
+        <div style="flex: 1; height: 10px; background-color: #e2e8f0; border-radius: 5px; overflow: hidden; margin-right: 10px">
+          <div style="height: 100%; width: ${industryScore}%; background-color: ${industryColor}; border-radius: 5px"></div>
+        </div>
+        <span style="font-weight: 500; min-width: 45px; text-align: right">${industryScore}%</span>
+      </div>
+    `;
+
+    // Financial criteria
+    const financialScore = Math.round(matchData.financial_criteria?.score || 0);
+    const financialColor = getScoreColor(financialScore);
+
+    const financialChart = `
+      <div style="display: flex; align-items: center">
+        <span style="width: 150px; font-weight: 500">Financial Criteria</span>
+        <div style="flex: 1; height: 10px; background-color: #e2e8f0; border-radius: 5px; overflow: hidden; margin-right: 10px">
+          <div style="height: 100%; width: ${financialScore}%; background-color: ${financialColor}; border-radius: 5px"></div>
+        </div>
+        <span style="font-weight: 500; min-width: 45px; text-align: right">${financialScore}%</span>
+      </div>
+    `;
+
+    breakdownCharts.innerHTML = businessChart + industryChart + financialChart;
+    breakdownSection.appendChild(breakdownCharts);
+    content.appendChild(breakdownSection);
+
+    // Create strengths and concerns section
+    const strengthsConcerns = document.createElement("div");
+    strengthsConcerns.style.display = "grid";
+    strengthsConcerns.style.gridTemplateColumns = "1fr 1fr";
+    strengthsConcerns.style.gap = "1.5rem";
+    strengthsConcerns.style.marginTop = "2rem";
+
+    // Strengths section
+    const strengths = document.createElement("div");
+
+    const strengthsHeader = document.createElement("h4");
+    strengthsHeader.style.marginBottom = "1rem";
+    strengthsHeader.style.paddingBottom = "0.5rem";
+    strengthsHeader.style.borderBottom = "1px solid #e2e8f0";
+    strengthsHeader.textContent = "Key Strengths";
+    strengths.appendChild(strengthsHeader);
+
+    const strengthsList = document.createElement("ul");
+    strengthsList.style.listStyle = "none";
+    strengthsList.style.padding = "0";
+
+    if (matchData.key_strengths && matchData.key_strengths.length > 0) {
+      matchData.key_strengths.forEach((strength) => {
+        const li = document.createElement("li");
+        li.style.display = "flex";
+        li.style.alignItems = "flex-start";
+        li.style.padding = "0.75rem";
+        li.style.backgroundColor = "#f1f5f9";
+        li.style.borderRadius = "8px";
+        li.style.marginBottom = "0.75rem";
+        li.style.fontSize = "0.95rem";
+        li.innerHTML = `<i class="fas fa-check-circle" style="color: #10b981; margin-right: 0.75rem; margin-top: 0.25rem"></i>${strength}`;
+        strengthsList.appendChild(li);
+      });
+    } else {
+      const li = document.createElement("li");
+      li.style.fontStyle = "italic";
+      li.style.color = "#64748b";
+      li.textContent = "No key strengths identified yet";
+      strengthsList.appendChild(li);
+    }
+
+    strengths.appendChild(strengthsList);
+    strengthsConcerns.appendChild(strengths);
+
+    // Concerns section
+    const concerns = document.createElement("div");
+
+    const concernsHeader = document.createElement("h4");
+    concernsHeader.style.marginBottom = "1rem";
+    concernsHeader.style.paddingBottom = "0.5rem";
+    concernsHeader.style.borderBottom = "1px solid #e2e8f0";
+    concernsHeader.textContent = "Key Concerns";
+    concerns.appendChild(concernsHeader);
+
+    const concernsList = document.createElement("ul");
+    concernsList.style.listStyle = "none";
+    concernsList.style.padding = "0";
+
+    if (matchData.key_concerns && matchData.key_concerns.length > 0) {
+      matchData.key_concerns.forEach((concern) => {
+        const li = document.createElement("li");
+        li.style.display = "flex";
+        li.style.alignItems = "flex-start";
+        li.style.padding = "0.75rem";
+        li.style.backgroundColor = "#f1f5f9";
+        li.style.borderRadius = "8px";
+        li.style.marginBottom = "0.75rem";
+        li.style.fontSize = "0.95rem";
+        li.innerHTML = `<i class="fas fa-exclamation-circle" style="color: #ef4444; margin-right: 0.75rem; margin-top: 0.25rem"></i>${concern}`;
+        concernsList.appendChild(li);
+      });
+    } else {
+      const li = document.createElement("li");
+      li.style.fontStyle = "italic";
+      li.style.color = "#64748b";
+      li.textContent = "No key concerns identified yet";
+      concernsList.appendChild(li);
+    }
+
+    concerns.appendChild(concernsList);
+    strengthsConcerns.appendChild(concerns);
+
+    content.appendChild(strengthsConcerns);
+
+    // Add data completeness section if available
+    if (matchData.data_completeness) {
+      const completeness = matchData.data_completeness;
+
+      const completenessSection = document.createElement("div");
+      completenessSection.style.marginTop = "2rem";
+
+      const completenessHeader = document.createElement("h4");
+      completenessHeader.style.marginBottom = "1rem";
+      completenessHeader.style.paddingBottom = "0.5rem";
+      completenessHeader.style.borderBottom = "1px solid #e2e8f0";
+      completenessHeader.textContent = "Data Completeness";
+      completenessSection.appendChild(completenessHeader);
+
+      const completenessCharts = document.createElement("div");
+      completenessCharts.style.display = "flex";
+      completenessCharts.style.flexDirection = "column";
+      completenessCharts.style.gap = "1rem";
+
+      // Financial data completeness
+      const financialCompleteness = Math.round(completeness.financial || 0);
+      const financialCompleteColor = getCompletenessColor(
+        financialCompleteness
+      );
+
+      const financialChart = `
+        <div style="display: flex; align-items: center">
+          <span style="width: 150px; font-weight: 500">Financial Data</span>
+          <div style="flex: 1; height: 8px; background-color: #e2e8f0; border-radius: 4px; overflow: hidden; margin-right: 10px">
+            <div style="height: 100%; width: ${financialCompleteness}%; background-color: ${financialCompleteColor}; border-radius: 4px"></div>
+          </div>
+          <span style="font-weight: 500; min-width: 45px; text-align: right">${financialCompleteness}%</span>
+        </div>
+      `;
+
+      // Business data completeness
+      const businessCompleteness = Math.round(completeness.business || 0);
+      const businessCompleteColor = getCompletenessColor(businessCompleteness);
+
+      const businessChart = `
+        <div style="display: flex; align-items: center">
+          <span style="width: 150px; font-weight: 500">Business Data</span>
+          <div style="flex: 1; height: 8px; background-color: #e2e8f0; border-radius: 4px; overflow: hidden; margin-right: 10px">
+            <div style="height: 100%; width: ${businessCompleteness}%; background-color: ${businessCompleteColor}; border-radius: 4px"></div>
+          </div>
+          <span style="font-weight: 500; min-width: 45px; text-align: right">${businessCompleteness}%</span>
+        </div>
+      `;
+
+      // Industry data completeness
+      const industryCompleteness = Math.round(completeness.industry || 0);
+      const industryCompleteColor = getCompletenessColor(industryCompleteness);
+
+      const industryChart = `
+        <div style="display: flex; align-items: center">
+          <span style="width: 150px; font-weight: 500">Industry Data</span>
+          <div style="flex: 1; height: 8px; background-color: #e2e8f0; border-radius: 4px; overflow: hidden; margin-right: 10px">
+            <div style="height: 100%; width: ${industryCompleteness}%; background-color: ${industryCompleteColor}; border-radius: 4px"></div>
+          </div>
+          <span style="font-weight: 500; min-width: 45px; text-align: right">${industryCompleteness}%</span>
+        </div>
+      `;
+
+      completenessCharts.innerHTML =
+        financialChart + businessChart + industryChart;
+      completenessSection.appendChild(completenessCharts);
+
+      content.appendChild(completenessSection);
+    }
+
+    // Add the content to the section
+    matchSection.appendChild(content);
+
+    // Add the section to the results
+    resultsElement.appendChild(matchSection);
+
+    // Animate the investment score
+    animateScoreCount("#investment-score", overallMatch);
+  }
+
+  // Helper function to get score color
+  function getScoreColor(score) {
+    if (score >= 80) {
+      return "#10b981"; // green
+    } else if (score >= 60) {
+      return "#3b82f6"; // blue
+    } else if (score >= 40) {
+      return "#f59e0b"; // yellow/orange
+    } else {
+      return "#ef4444"; // red
+    }
+  }
+
+  // Helper function to get completeness color
+  function getCompletenessColor(value) {
+    if (value >= 80) {
+      return "#10b981"; // green
+    } else if (value >= 50) {
+      return "#f59e0b"; // yellow/orange
+    } else {
+      return "#ef4444"; // red
     }
   }
 
@@ -1222,13 +1545,15 @@ document.addEventListener("DOMContentLoaded", () => {
       lead.company_size_indicator || "Unknown";
 
     // Fill AI score
-    document.getElementById("ai-score-value").textContent = `${lead.ai_readiness_score || 0
-      } / 10`;
+    document.getElementById("ai-score-value").textContent = `${
+      lead.ai_readiness_score || 0
+    } / 10`;
 
     // Fill lead score and tier
     if (lead.sales_insights) {
-      document.getElementById("lead-score-value").textContent = `${lead.sales_insights.lead_score || 0
-        } / 100`;
+      document.getElementById("lead-score-value").textContent = `${
+        lead.sales_insights.lead_score || 0
+      } / 100`;
 
       const tierElement = document.getElementById("lead-tier-value");
       tierElement.textContent = lead.sales_insights.lead_tier || "Unknown";
@@ -1305,7 +1630,139 @@ document.addEventListener("DOMContentLoaded", () => {
       lead.verification?.notes || "";
 
     // Set lead ID for reference
+    // Set lead ID for reference
     verificationPanel.setAttribute("data-lead-id", lead.id);
+
+    // Add financial details if available
+    if (lead.financials) {
+      const financials = lead.financials;
+
+      // Fill in financial details if the fields exist
+      const revenueField = document.getElementById("estimated-revenue-value");
+      if (revenueField && financials.estimated_revenue) {
+        revenueField.textContent = formatCurrency(financials.estimated_revenue);
+      }
+
+      const recurringField = document.getElementById("recurring-revenue-value");
+      if (recurringField && financials.recurring_revenue_percentage) {
+        recurringField.textContent = `${financials.recurring_revenue_percentage}%`;
+      }
+
+      const cashFlowField = document.getElementById("annual-cash-flow-value");
+      if (cashFlowField && financials.estimated_annual_cash_flow) {
+        cashFlowField.textContent = formatCurrency(
+          financials.estimated_annual_cash_flow
+        );
+      }
+
+      const profitabilityField = document.getElementById(
+        "profitability-years-value"
+      );
+      if (profitabilityField && financials.profitability_years) {
+        profitabilityField.textContent = financials.profitability_years;
+      }
+
+      const ebitdaField = document.getElementById("ebitda-margin-value");
+      if (ebitdaField && financials.ebitda_margin) {
+        ebitdaField.textContent = `${financials.ebitda_margin}%`;
+      }
+
+      const capexField = document.getElementById("capex-requirements-value");
+      if (capexField && financials.capex_requirements) {
+        capexField.textContent = financials.capex_requirements;
+      }
+    }
+
+    // Add business details if available
+    if (lead.business_details) {
+      const business = lead.business_details;
+
+      // Fill in business details if the fields exist
+      const marketPositionField = document.getElementById(
+        "market-position-value"
+      );
+      if (marketPositionField && business.market_position) {
+        marketPositionField.textContent = formatFieldValue(
+          business.market_position
+        );
+      }
+
+      const customerDiversityField = document.getElementById(
+        "customer-diversity-value"
+      );
+      if (customerDiversityField && business.customer_diversity) {
+        customerDiversityField.textContent = formatFieldValue(
+          business.customer_diversity
+        );
+      }
+
+      const operationsField = document.getElementById(
+        "operations-complexity-value"
+      );
+      if (operationsField && business.operations_complexity) {
+        operationsField.textContent = formatFieldValue(
+          business.operations_complexity
+        );
+      }
+
+      const managementField = document.getElementById(
+        "management-strength-value"
+      );
+      if (managementField && business.middle_management_strength) {
+        managementField.textContent = formatFieldValue(
+          business.middle_management_strength
+        );
+      }
+
+      const ownerField = document.getElementById("owner-status-value");
+      if (ownerField && business.owner_status) {
+        ownerField.textContent = formatFieldValue(business.owner_status);
+      }
+    }
+
+    // Add industry details if available
+    if (lead.industry_details) {
+      const industry = lead.industry_details;
+
+      // Fill in industry details if the fields exist
+      const industryTypeField = document.getElementById("industry-type-value");
+      if (industryTypeField && industry.industry_type) {
+        industryTypeField.textContent = industry.industry_type;
+      }
+
+      const revenueModelField = document.getElementById("revenue-model-value");
+      if (revenueModelField && industry.recurring_revenue_model) {
+        revenueModelField.textContent = formatFieldValue(
+          industry.recurring_revenue_model
+        );
+      }
+
+      const b2bField = document.getElementById("b2b-percentage-value");
+      if (b2bField && industry.b2b_percentage) {
+        b2bField.textContent = `${industry.b2b_percentage}%`;
+      }
+
+      const competitiveField = document.getElementById(
+        "competitive-landscape-value"
+      );
+      if (competitiveField && industry.competitive_landscape) {
+        competitiveField.textContent = formatFieldValue(
+          industry.competitive_landscape
+        );
+      }
+
+      const marketSizeField = document.getElementById("market-size-value");
+      if (marketSizeField && industry.total_market_size) {
+        marketSizeField.textContent = `$${(
+          industry.total_market_size / 1000000000
+        ).toFixed(1)}B`;
+      }
+
+      const growthField = document.getElementById("market-growth-value");
+      if (growthField && industry.market_growth_rate) {
+        growthField.textContent = `${industry.market_growth_rate}%`;
+      }
+    }
 
     // Show panel
     verificationPanel.classList.add("active");
@@ -1341,8 +1798,9 @@ document.addEventListener("DOMContentLoaded", () => {
     ).length;
     document.getElementById(
       "export-action"
-    ).textContent = `Export ${selectedCount} Lead${selectedCount !== 1 ? "s" : ""
-      }`;
+    ).textContent = `Export ${selectedCount} Lead${
+      selectedCount !== 1 ? "s" : ""
+    }`;
   }
 
   // Function to add overlay
@@ -1407,6 +1865,12 @@ document.addEventListener("DOMContentLoaded", () => {
         status: "Not Synced",
         date: null,
       },
+      // Include investment match data if available
+      investment_match: data.investment_match || null,
+      // Include financial data if available
+      financials: data.financials || null,
+      business_details: data.business_details || null,
+      industry_details: data.industry_details || null,
     };
 
     // Add to saved leads
@@ -1440,7 +1904,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (paginatedLeads.length === 0) {
       const emptyRow = document.createElement("tr");
       emptyRow.innerHTML = `
-        <td colspan="8" class="empty-table">
+        <td colspan="9" class="empty-table">
           <p>No leads found. Try adjusting your filters or adding new leads.</p>
         </td>
       `;
@@ -1457,8 +1921,8 @@ document.addEventListener("DOMContentLoaded", () => {
             lead.sales_insights.lead_tier === "Hot"
               ? "tier-hot"
               : lead.sales_insights.lead_tier === "Warm"
-                ? "tier-warm"
-                : "tier-nurture";
+              ? "tier-warm"
+              : "tier-nurture";
           tierBadge = `<span class="${tierClass}">${lead.sales_insights.lead_tier}</span>`;
         } else {
           tierBadge = '<span class="tier-nurture">Nurture</span>';
@@ -1471,14 +1935,14 @@ document.addEventListener("DOMContentLoaded", () => {
             lead.verification.status === "Verified"
               ? "status-verified"
               : lead.verification.status === "Flagged"
-                ? "status-flagged"
-                : "status-pending";
+              ? "status-flagged"
+              : "status-pending";
           const statusIcon =
             lead.verification.status === "Verified"
               ? "fa-check-circle"
               : lead.verification.status === "Flagged"
-                ? "fa-flag"
-                : "fa-clock";
+              ? "fa-flag"
+              : "fa-clock";
           verificationBadge = `
             <span class="status-badge ${statusClass}">
               <i class="fas ${statusIcon}"></i> ${lead.verification.status}
@@ -1499,18 +1963,18 @@ document.addEventListener("DOMContentLoaded", () => {
             lead.crm.status === "Synced"
               ? "status-synced"
               : lead.crm.status === "Failed"
-                ? "status-failed"
-                : lead.crm.status === "Queued"
-                  ? "status-queued"
-                  : "status-pending";
+              ? "status-failed"
+              : lead.crm.status === "Queued"
+              ? "status-queued"
+              : "status-pending";
           const crmIcon =
             lead.crm.status === "Synced"
               ? "fa-check-circle"
               : lead.crm.status === "Failed"
-                ? "fa-exclamation-circle"
-                : lead.crm.status === "Queued"
-                  ? "fa-sync"
-                  : "fa-times-circle";
+              ? "fa-exclamation-circle"
+              : lead.crm.status === "Queued"
+              ? "fa-sync"
+              : "fa-times-circle";
           crmBadge = `
             <span class="status-badge ${crmClass}">
               <i class="fas ${crmIcon}"></i> ${lead.crm.status}
@@ -1547,6 +2011,31 @@ document.addEventListener("DOMContentLoaded", () => {
           contactDisplay = `<span class="empty-contact">No contact found</span>`;
         }
 
+        // Create investment match badge
+        let investmentBadge = "";
+        if (lead.investment_match) {
+          const matchScore = Math.round(
+            lead.investment_match.overall_match || 0
+          );
+          const matchTier = lead.investment_match.match_tier || "Unknown";
+          const matchClass =
+            matchTier === "Strong Match"
+              ? "match-strong"
+              : matchTier === "Potential Match"
+              ? "match-potential"
+              : matchTier === "Partial Match"
+              ? "match-partial"
+              : "match-weak";
+
+          investmentBadge = `
+            <span class="match-indicator ${matchClass}">
+              <i class="fas fa-chart-bar"></i> ${matchScore}% ${matchTier}
+            </span>
+          `;
+        } else {
+          investmentBadge = `<span class="empty-contact">Not evaluated</span>`;
+        }
+
         // Create row HTML
         row.innerHTML = `
           <td><input type="checkbox" class="lead-select-checkbox" data-id="${lead.id}"></td>
@@ -1554,6 +2043,7 @@ document.addEventListener("DOMContentLoaded", () => {
           <td>${lead.ai_readiness_score}</td>
           <td>${tierBadge}</td>
           <td>${contactDisplay}</td>
+          <td>${investmentBadge}</td>
           <td>${verificationBadge}</td>
           <td>${crmBadge}</td>
           <td>
@@ -1809,6 +2299,10 @@ document.addEventListener("DOMContentLoaded", () => {
           aValue = a.crm?.status ? crmRank[a.crm.status] : 0;
           bValue = b.crm?.status ? crmRank[b.crm.status] : 0;
           break;
+        case "investment":
+          aValue = a.investment_match?.overall_match || 0;
+          bValue = b.investment_match?.overall_match || 0;
+          break;
         default:
           aValue = a[sortField] || 0;
           bValue = b[sortField] || 0;
@@ -1902,6 +2396,37 @@ document.addEventListener("DOMContentLoaded", () => {
       .notification-danger i:first-child {
         color: var(--danger-color);
       }
+      
+      /* Investment match styles */
+      .match-indicator {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        padding: 0.25rem 0.5rem;
+        border-radius: 1rem;
+        font-size: 0.75rem;
+        font-weight: 600;
+      }
+      
+      .match-strong {
+        background-color: rgba(16, 185, 129, 0.1);
+        color: #10b981;
+      }
+      
+      .match-potential {
+        background-color: rgba(59, 130, 246, 0.1);
+        color: #3b82f6;
+      }
+      
+      .match-partial {
+        background-color: rgba(245, 158, 11, 0.1);
+        color: #f59e0b;
+      }
+      
+      .match-weak {
+        background-color: rgba(239, 68, 68, 0.1);
+        color: #ef4444;
+      }
     `;
     document.head.appendChild(style);
   }
@@ -1911,8 +2436,125 @@ document.addEventListener("DOMContentLoaded", () => {
 
   localStorage.removeItem("savedLeads");
 
+  // Helper function to get selected leads
+  function getSelectedLeads() {
+    const selectedIds = Array.from(
+      document.querySelectorAll(".lead-select-checkbox:checked")
+    ).map((checkbox) => checkbox.getAttribute("data-id"));
+
+    return savedLeads.filter((lead) => selectedIds.includes(lead.id));
+  }
+
+  // Helper function to get selected export fields
+  function getSelectedExportFields() {
+    const fields = {};
+
+    // Company information
+    fields.company = {
+      name: document.getElementById("field-company-name").checked,
+      website: document.getElementById("field-website").checked,
+      size: document.getElementById("field-company-size").checked,
+      industry: document.getElementById("field-industry").checked,
+      location: document.getElementById("field-location").checked,
+    };
+
+    // Contact information
+    fields.contact = {
+      name: document.getElementById("field-contact-name").checked,
+      title: document.getElementById("field-title").checked,
+      email: document.getElementById("field-email").checked,
+      phone: document.getElementById("field-phone").checked,
+    };
+
+    // Assessment data
+    fields.assessment = {
+      aiScore: document.getElementById("field-ai-score").checked,
+      leadScore: document.getElementById("field-lead-score").checked,
+      leadTier: document.getElementById("field-lead-tier").checked,
+      techIndicators: document.getElementById("field-tech-indicators").checked,
+      approach: document.getElementById("field-approach").checked,
+      painPoints: document.getElementById("field-pain-points").checked,
+      investmentMatch: document.getElementById("field-investment-match")
+        .checked,
+    };
+
+    // Verification data
+    fields.verification = {
+      status: document.getElementById("field-verification-status").checked,
+      date: document.getElementById("field-verification-date").checked,
+      notes: document.getElementById("field-verification-notes").checked,
+    };
+
+    return fields;
+  }
+
+  // Helper function to format currency
+  function formatCurrency(amount) {
+    if (amount === null || amount === undefined) return "Unknown";
+
+    // Format as currency
+    const formatter = new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    });
+
+    return formatter.format(amount);
+  }
+
+  // Helper function to format field value (capitalize first letter of each word)
+  function formatFieldValue(value) {
+    if (!value) return "Unknown";
+
+    return value
+      .split("_")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+  }
+
   // Initialize backend communication handlers
-  // Function to initialize sample leads data
+  function initBackendHandlers() {
+    // API endpoint for saving leads to server
+    document.addEventListener("click", (e) => {
+      if (e.target.id === "save-lead" || e.target.closest("#save-lead")) {
+        if (lastAnalysisData) {
+          // First save locally
+          const savedLead = saveLead(lastAnalysisData);
+
+          // Then save to server for persistence
+          fetch("/save-lead", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(savedLead),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.status === "success") {
+                showNotification(
+                  `Lead "${savedLead.company_name}" saved successfully`,
+                  "success"
+                );
+              } else {
+                showNotification(`Warning: ${data.message}`, "warning");
+              }
+            })
+            .catch((error) => {
+              console.error("Error saving lead:", error);
+              showNotification(
+                "Lead saved locally but server sync failed",
+                "warning"
+              );
+            });
+        }
+      }
+    });
+  }
+
+  // Initialize sample leads data
+  // Initialize sample leads data
   function initializeSampleLeads() {
     // Check if we already have leads saved
     const existingLeads = localStorage.getItem("savedLeads");
@@ -1921,7 +2563,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return JSON.parse(existingLeads);
     }
 
-    // Create sample leads for notable companies
+    // Create sample leads
     const sampleLeads = [
       {
         id: "lead_1679012345678",
@@ -2011,6 +2653,49 @@ document.addEventListener("DOMContentLoaded", () => {
           date: new Date(Date.now() - 9 * 24 * 60 * 60 * 1000).toISOString(),
           crm_id: "CRM_NF123456",
         },
+        investment_match: {
+          overall_match: 32.5,
+          match_tier: "Weak Match",
+          confidence: 75,
+          business_criteria: { score: 45 },
+          industry_criteria: { score: 30 },
+          financial_criteria: { score: 25 },
+          key_strengths: ["Strong technical team", "Innovative culture"],
+          key_concerns: [
+            "Revenue above target range (>$50M)",
+            "EBITDA margin below target",
+            "High capital requirements",
+            "Not a service-based business model",
+          ],
+          data_completeness: {
+            financial: 80,
+            business: 60,
+            industry: 70,
+          },
+        },
+        financials: {
+          estimated_revenue: 25000000000, // $25B
+          recurring_revenue_percentage: 95,
+          estimated_annual_cash_flow: 5000000000, // $5B
+          profitability_years: 10,
+          ebitda_margin: 12,
+          capex_requirements: "high",
+        },
+        business_details: {
+          market_position: "strong",
+          customer_diversity: "diverse",
+          operations_complexity: "complex",
+          middle_management_strength: "strong",
+          owner_status: "public",
+        },
+        industry_details: {
+          industry_type: "Entertainment & Media",
+          recurring_revenue_model: "strong",
+          b2b_percentage: 5,
+          competitive_landscape: "concentrated",
+          total_market_size: 290000000000, // $290B
+          market_growth_rate: 8.5,
+        },
       },
       {
         id: "lead_1679012345679",
@@ -2099,343 +2784,117 @@ document.addEventListener("DOMContentLoaded", () => {
           date: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000).toISOString(),
           crm_id: "CRM_SF789012",
         },
-      },
-      {
-        id: "lead_1679012345680",
-        url: "https://spotify.com",
-        company_name: "Spotify",
-        date_added: new Date(
-          Date.now() - 3 * 24 * 60 * 60 * 1000
-        ).toISOString(), // 3 days ago
-        ai_readiness_score: 7.9,
-        company_size_indicator: "Large Business (251-1000 employees)",
-        tech_indicators: {
-          ai_ml: {
-            total: 4,
-            indicators: {
-              "Recommendation Systems": 5,
-              "Machine Learning": 4,
-              "Audio Analysis": 5,
-              Personalization: 5,
-            },
-          },
-          data: {
-            total: 3,
-            indicators: {
-              "Big Data Processing": 4,
-              "Data Streaming": 5,
-              "Event Data": 4,
-            },
-          },
-          cloud: {
-            total: 3,
-            indicators: {
-              "Google Cloud": 4,
-              Microservices: 5,
-              Kubernetes: 4,
-            },
-          },
-        },
-        leadership_team: [
-          { name: "Daniel Ek", title: "CEO" },
-          { name: "Gustav Söderström", title: "Co-President" },
-          { name: "Alex Norström", title: "Co-President" },
-        ],
-        sales_insights: {
-          lead_score: 79,
-          lead_tier: "Warm",
-          primary_contact: {
-            name: "Sam Taylor",
-            title: "Head of AI & Machine Learning",
-            email: "sam.taylor@example.com",
-            phone: "+1-555-672-3941",
-          },
-          pain_points: [
-            "Audio content recommendation accuracy",
-            "Real-time personalization at scale",
-            "Balancing exploration and exploitation in recommendations",
+        investment_match: {
+          overall_match: 36,
+          match_tier: "Weak Match",
+          confidence: 85,
+          business_criteria: { score: 42 },
+          industry_criteria: { score: 50 },
+          financial_criteria: { score: 20 },
+          key_strengths: [
+            "Strong B2B focus",
+            "Service-based business",
+            "Strong recurring revenue",
           ],
-          outreach_recommendation: {
-            timing: "This Week",
-            approach: {
-              focus: "Audio Content Recommendation Optimization",
-              message: "Innovation-focused",
-              conversation_starters: [
-                "How are you balancing user preference data with discovery in your recommendation systems?",
-                "What techniques are you using to improve cold-start recommendations?",
-                "Our specialized audio content analysis has helped similar platforms increase engagement by 28%",
-              ],
-            },
-          },
-          score_components: {
-            decision_maker_score: 8.2,
-            tech_investment_score: 7.9,
-            growth_score: 7.8,
-            ai_readiness_factor: 7.6,
-          },
-        },
-        verification: {
-          status: "Pending",
-          date: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
-          notes: "Need to verify primary contact's role and contact details.",
-        },
-        crm: {
-          status: "Not Synced",
-          date: null,
-          crm_id: null,
-        },
-      },
-      {
-        id: "lead_1679012345681",
-        url: "https://tesla.com",
-        company_name: "Tesla",
-        date_added: new Date(
-          Date.now() - 20 * 24 * 60 * 60 * 1000
-        ).toISOString(), // 20 days ago
-        ai_readiness_score: 9.5,
-        company_size_indicator: "Enterprise (1000+ employees)",
-        tech_indicators: {
-          ai_ml: {
-            total: 6,
-            indicators: {
-              "Computer Vision": 5,
-              "Deep Learning": 5,
-              "Neural Networks": 5,
-              "Reinforcement Learning": 4,
-              "Autonomous Systems": 5,
-              "Machine Learning": 5,
-            },
-          },
-          data: {
-            total: 4,
-            indicators: {
-              "Sensor Data": 5,
-              "Big Data": 5,
-              "Data Lakes": 4,
-              "Real-time Analytics": 5,
-            },
-          },
-          cloud: {
-            total: 2,
-            indicators: {
-              "Edge Computing": 5,
-              "Distributed Systems": 5,
-            },
-          },
-          automation: {
-            total: 3,
-            indicators: {
-              Robotics: 5,
-              "Manufacturing Automation": 5,
-              "Workflow Automation": 4,
-            },
-          },
-        },
-        leadership_team: [
-          { name: "Elon Musk", title: "CEO" },
-          { name: "Vaibhav Taneja", title: "CFO" },
-          {
-            name: "Drew Baglino",
-            title: "SVP, Powertrain and Energy Engineering",
-          },
-        ],
-        sales_insights: {
-          lead_score: 95,
-          lead_tier: "Hot",
-          primary_contact: {
-            name: "Morgan Lee",
-            title: "Director of Autonomous Systems",
-            email: "morgan.lee@example.com",
-            phone: "+1-555-459-7823",
-          },
-          pain_points: [
-            "Scaling AI training for autonomous driving",
-            "Edge AI optimization",
-            "Data processing pipeline efficiency",
+          key_concerns: [
+            "Revenue above target range (>$50M)",
+            "Cash flow above target range (>$5M)",
+            "Enterprise size too large for criteria",
           ],
-          outreach_recommendation: {
-            timing: "Immediate",
-            approach: {
-              focus: "Edge AI & Distributed Training",
-              message: "Innovation-focused",
-              conversation_starters: [
-                "How are you currently addressing the challenge of training AI models with massive real-world driving datasets?",
-                "What's your approach to optimizing AI inference on edge devices?",
-                "Our distributed training platform has helped similar companies reduce training time by 65%",
-              ],
-            },
-          },
-          score_components: {
-            decision_maker_score: 9.4,
-            tech_investment_score: 9.8,
-            growth_score: 9.2,
-            ai_readiness_factor: 9.6,
+          data_completeness: {
+            financial: 90,
+            business: 80,
+            industry: 75,
           },
         },
-        verification: {
-          status: "Verified",
-          date: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toISOString(),
-          notes:
-            "Verified through industry conference contacts. Company is investing heavily in AI infrastructure.",
+        financials: {
+          estimated_revenue: 21000000000, // $21B
+          recurring_revenue_percentage: 90,
+          estimated_annual_cash_flow: 4200000000, // $4.2B
+          profitability_years: 20,
+          ebitda_margin: 19,
+          capex_requirements: "low",
         },
-        crm: {
-          status: "Synced",
-          date: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString(),
-          crm_id: "CRM_TS456789",
+        business_details: {
+          market_position: "strong",
+          customer_diversity: "diverse",
+          operations_complexity: "moderate",
+          middle_management_strength: "strong",
+          owner_status: "public",
         },
-      },
-      {
-        id: "lead_1679012345682",
-        url: "https://slack.com",
-        company_name: "Slack",
-        date_added: new Date(
-          Date.now() - 10 * 24 * 60 * 60 * 1000
-        ).toISOString(), // 10 days ago
-        ai_readiness_score: 7.5,
-        company_size_indicator: "Large Business (251-1000 employees)",
-        tech_indicators: {
-          ai_ml: {
-            total: 3,
-            indicators: {
-              "Natural Language Processing": 4,
-              "Machine Learning": 3,
-              "Search Algorithms": 4,
-            },
-          },
-          data: {
-            total: 3,
-            indicators: {
-              "Data Processing": 4,
-              "Real-time Data": 5,
-              "Message Data": 5,
-            },
-          },
-          cloud: {
-            total: 4,
-            indicators: {
-              AWS: 5,
-              Microservices: 4,
-              Containerization: 4,
-              "Cloud-Native": 4,
-            },
-          },
-        },
-        leadership_team: [
-          { name: "Denise Dresser", title: "CEO" },
-          { name: "Ali Rayl", title: "SVP of Product" },
-          { name: "Tamar Yehoshua", title: "Chief Product Officer" },
-        ],
-        sales_insights: {
-          lead_score: 75,
-          lead_tier: "Warm",
-          primary_contact: {
-            name: "Taylor Wong",
-            title: "Senior Director of Engineering",
-            email: "taylor.wong@example.com",
-            phone: "+1-555-329-6847",
-          },
-          pain_points: [
-            "Scaling search and message indexing",
-            "Improving message relevance with NLP",
-            "Real-time communication analytics",
-          ],
-          outreach_recommendation: {
-            timing: "This Week",
-            approach: {
-              focus: "Communication AI & NLP",
-              message: "Efficiency-focused",
-              conversation_starters: [
-                "How are you currently using NLP to improve the search experience?",
-                "What challenges are you facing with message relevance at scale?",
-                "Our communication NLP solutions have helped platforms improve search accuracy by 45%",
-              ],
-            },
-          },
-          score_components: {
-            decision_maker_score: 7.8,
-            tech_investment_score: 7.3,
-            growth_score: 7.5,
-            ai_readiness_factor: 7.4,
-          },
-        },
-        verification: {
-          status: "Flagged",
-          date: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
-          notes:
-            "Need to verify if contact is still with the company. LinkedIn shows a recent job change.",
-        },
-        crm: {
-          status: "Failed",
-          date: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
-          crm_id: null,
-          error: "Invalid contact information",
+        industry_details: {
+          industry_type: "Software & Technology",
+          recurring_revenue_model: "strong",
+          b2b_percentage: 95,
+          competitive_landscape: "concentrated",
+          total_market_size: 150000000000, // $150B
+          market_growth_rate: 12,
         },
       },
       {
         id: "lead_1679012345683",
-        url: "https://airbnb.com",
-        company_name: "Airbnb",
+        url: "https://getcarecircle.com",
+        company_name: "Care Circle",
         date_added: new Date(
           Date.now() - 5 * 24 * 60 * 60 * 1000
         ).toISOString(), // 5 days ago
-        ai_readiness_score: 8.1,
-        company_size_indicator: "Large Business (251-1000 employees)",
+        ai_readiness_score: 7.8,
+        company_size_indicator: "Medium Business (50-250 employees)",
         tech_indicators: {
           ai_ml: {
-            total: 4,
+            total: 3,
             indicators: {
-              "Machine Learning": 4,
-              "Search Ranking": 5,
-              "Recommendation Systems": 4,
-              "Computer Vision": 3,
+              "Machine Learning": 3,
+              "Predictive Analytics": 2,
+              "Natural Language Processing": 1,
             },
           },
           data: {
             total: 4,
             indicators: {
-              "Big Data": 4,
-              "Data Science": 5,
-              "Data Analytics": 4,
-              "Predictive Analytics": 4,
+              "Data Analytics": 3,
+              "Healthcare Data": 4,
+              "Data Security": 4,
+              "Patient Records": 3,
             },
           },
           cloud: {
             total: 3,
             indicators: {
-              AWS: 5,
-              Microservices: 4,
-              "Cloud Infrastructure": 4,
+              "Cloud Infrastructure": 3,
+              "HIPAA Compliance": 4,
+              "Secure Storage": 3,
             },
           },
         },
         leadership_team: [
-          { name: "Brian Chesky", title: "Co-founder and CEO" },
-          { name: "Dave Stephenson", title: "CFO" },
-          { name: "Catherine Powell", title: "Global Head of Hosting" },
+          { name: "Sarah Johnson", title: "CEO" },
+          { name: "Michael Chen", title: "CTO" },
+          { name: "Rebecca Garcia", title: "COO" },
         ],
         sales_insights: {
           lead_score: 81,
           lead_tier: "Warm",
           primary_contact: {
-            name: "Jamie Patel",
-            title: "VP of Data Science",
-            email: "jamie.patel@example.com",
+            name: "Michael Chen",
+            title: "CTO",
+            email: "mchen@careclrcle.com",
             phone: "+1-555-218-9034",
           },
           pain_points: [
-            "Property recommendation accuracy",
-            "Pricing optimization algorithms",
-            "Fraud detection and security",
+            "Patient data integration",
+            "Healthcare compliance",
+            "Scaling technical infrastructure",
           ],
           outreach_recommendation: {
             timing: "Next Week",
             approach: {
-              focus: "Recommendation & Pricing AI",
+              focus: "Healthcare AI Integration",
               message: "Value-focused",
               conversation_starters: [
-                "How are you currently balancing supply and demand in your pricing algorithms?",
-                "What challenges are you facing with property matching at scale?",
-                "Our recommendation optimization approach has helped similar marketplaces increase conversion by 24%",
+                "How are you currently handling patient data integration across platforms?",
+                "What challenges are you facing with HIPAA compliance in your AI initiatives?",
+                "Our healthcare AI approach has helped similar startups improve patient outcomes by 30%",
               ],
             },
           },
@@ -2449,671 +2908,201 @@ document.addEventListener("DOMContentLoaded", () => {
         verification: {
           status: "Pending",
           date: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
-          notes: "Need to verify current technology stack and AI initiatives.",
+          notes: "Need to verify leadership team and funding status.",
         },
         crm: {
           status: "Queued",
           date: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
           crm_id: null,
         },
+        investment_match: {
+          overall_match: 87,
+          match_tier: "Strong Match",
+          confidence: 80,
+          business_criteria: { score: 85 },
+          industry_criteria: { score: 90 },
+          financial_criteria: { score: 85 },
+          key_strengths: [
+            "Revenue in target range ($5-50M)",
+            "Cash flow in target range ($1-5M)",
+            "B2B service-based business",
+            "Strong recurring revenue model",
+            "Owner seeking growth capital",
+          ],
+          key_concerns: [
+            "Healthcare regulatory constraints",
+            "Verify financial performance details",
+          ],
+          data_completeness: {
+            financial: 65,
+            business: 75,
+            industry: 85,
+          },
+        },
+        financials: {
+          estimated_revenue: 18000000, // $18M
+          recurring_revenue_percentage: 85,
+          estimated_annual_cash_flow: 3500000, // $3.5M
+          profitability_years: 4,
+          ebitda_margin: 19.5,
+          capex_requirements: "low",
+        },
+        business_details: {
+          market_position: "strong",
+          customer_diversity: "moderate",
+          operations_complexity: "straightforward",
+          middle_management_strength: "strong",
+          owner_status: "seeking_reduced_role",
+        },
+        industry_details: {
+          industry_type: "Healthcare Technology",
+          recurring_revenue_model: "strong",
+          b2b_percentage: 80,
+          competitive_landscape: "fragmented",
+          total_market_size: 15000000000, // $15B
+          market_growth_rate: 18,
+        },
       },
       {
-        id: "lead_1679012345684",
-        url: "https://doordash.com",
-        company_name: "DoorDash",
+        id: "lead_1679012345687",
+        url: "https://supplychainpro.com",
+        company_name: "Supply Chain Pro",
         date_added: new Date(
-          Date.now() - 1 * 24 * 60 * 60 * 1000
-        ).toISOString(), // 1 day ago
-        ai_readiness_score: 8.4,
-        company_size_indicator: "Large Business (251-1000 employees)",
+          Date.now() - 2 * 24 * 60 * 60 * 1000
+        ).toISOString(), // 2 days ago
+        ai_readiness_score: 6.9,
+        company_size_indicator: "Medium Business (50-250 employees)",
         tech_indicators: {
           ai_ml: {
-            total: 5,
+            total: 3,
             indicators: {
-              "Machine Learning": 4,
-              "Route Optimization": 5,
-              "Demand Prediction": 5,
-              "Location-based AI": 4,
-              "Recommendation Systems": 3,
+              "Predictive Analytics": 3,
+              "Forecasting Algorithms": 4,
+              "Machine Learning": 2,
             },
           },
           data: {
-            total: 4,
+            total: 5,
             indicators: {
-              "Real-time Data": 5,
-              "Geospatial Data": 5,
-              "Data Science": 4,
-              "Data Analytics": 4,
+              "Supply Chain Data": 5,
+              "Inventory Management": 4,
+              "Logistics Tracking": 5,
+              "Vendor Management": 3,
+              "Business Intelligence": 4,
             },
           },
-          cloud: {
-            total: 3,
+          integration: {
+            total: 4,
             indicators: {
-              AWS: 4,
-              Microservices: 5,
-              Containerization: 4,
+              "ERP Integration": 5,
+              "API Connections": 4,
+              "Data Pipelines": 3,
+              "Third-party Systems": 4,
             },
           },
         },
         leadership_team: [
-          { name: "Tony Xu", title: "CEO and Co-founder" },
-          { name: "Christopher Payne", title: "President" },
-          { name: "Prabir Adarkar", title: "CFO" },
+          { name: "Robert Smith", title: "CEO" },
+          { name: "Lisa Wong", title: "COO" },
+          { name: "James Peterson", title: "CTO" },
         ],
         sales_insights: {
-          lead_score: 84,
+          lead_score: 76,
           lead_tier: "Warm",
           primary_contact: {
-            name: "Riley Garcia",
-            title: "Director of Machine Learning Engineering",
-            email: "riley.garcia@example.com",
-            phone: "+1-555-847-6231",
+            name: "Robert Smith",
+            title: "CEO",
+            email: "robert@supplychainpro.com",
+            phone: "+1-555-332-7789",
           },
           pain_points: [
-            "Delivery time estimation accuracy",
-            "Route optimization at scale",
-            "Real-time demand prediction",
+            "Demand forecasting accuracy",
+            "Supply chain visibility",
+            "Vendor performance monitoring",
           ],
           outreach_recommendation: {
             timing: "This Week",
             approach: {
-              focus: "Logistics AI & Optimization",
+              focus: "Supply Chain Intelligence",
               message: "Efficiency-focused",
               conversation_starters: [
-                "How are you currently addressing the challenge of real-time route optimization?",
-                "What are your biggest pain points with delivery time predictions?",
-                "Our AI-driven logistics solution has helped similar companies reduce delivery times by 18%",
+                "What challenges are you facing with demand forecasting in today's volatile market?",
+                "How are you currently measuring supply chain performance?",
+                "Our predictive supply chain platform has helped similar companies reduce stockouts by 35%",
               ],
             },
           },
           score_components: {
-            decision_maker_score: 8.5,
-            tech_investment_score: 8.4,
-            growth_score: 8.6,
-            ai_readiness_factor: 8.2,
+            decision_maker_score: 8.0,
+            tech_investment_score: 7.2,
+            growth_score: 7.8,
+            ai_readiness_factor: 6.5,
           },
         },
         verification: {
-          status: "Pending",
-          date: new Date().toISOString(),
-          notes: "New lead, verification process just started.",
+          status: "Verified",
+          date: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
+          notes:
+            "Verified through industry contacts. CEO is interested in potential investment.",
         },
         crm: {
           status: "Not Synced",
           date: null,
           crm_id: null,
         },
-      },
-      {
-      id: "lead_" + Date.now(),
-      url: "https://getcohesiveai.com",
-      company_name: "Cohesive AI",
-      date_added: new Date().toISOString(),
-      ai_readiness_score: 9.0,
-      company_size_indicator: "Unknown",
-      tech_indicators: {
-        ai_ml: {
-          total: 67,
-          indicators: {
-            "AI": 65,
-            "ML": 2
-          }
+        investment_match: {
+          overall_match: 92,
+          match_tier: "Strong Match",
+          confidence: 90,
+          business_criteria: { score: 95 },
+          industry_criteria: { score: 85 },
+          financial_criteria: { score: 95 },
+          key_strengths: [
+            "Revenue in target range ($5-50M)",
+            "Cash flow in target range ($1-5M)",
+            "EBITDA margin >15%",
+            "B2B service-based business",
+            "Owner seeking exit",
+          ],
+          key_concerns: ["Verify recurring revenue details"],
+          data_completeness: {
+            financial: 85,
+            business: 90,
+            industry: 80,
+          },
         },
-        automation: {
-          total: 2,
-          indicators: {
-            "Automation": 2
-          }
+        financials: {
+          estimated_revenue: 12000000, // $12M
+          recurring_revenue_percentage: 70,
+          estimated_annual_cash_flow: 2200000, // $2.2M
+          profitability_years: 5,
+          ebitda_margin: 18.5,
+          capex_requirements: "low",
         },
-        integration: {
-          total: 10,
-          indicators: {
-            "API": 8,
-            "Integration": 2
-          }
-        }
-      },
-      leadership_team: [],
-      growth_indicators: ["launch"],
-      contact_info: {
-        emails: ["kevin@cohesiveapp.com"]
-      },
-      score_components: {
-        technology_score: 18.5,
-        leadership_score: 0.0,
-        growth_score: 0.4
-      },
-      sales_insights: {
-        lead_score: 4.5,
-        lead_tier: "Nurture",
-        primary_contact: null,
-        pain_points: [
-          "Company size: Unknown Growth indicators: launch Our company is focused on improving efficiency and reducing costs",
-          "We're challenged by legacy systems and manual processes",
-          "Our team is committed to innovation and transformation"
-        ],
-        outreach_recommendation: {
-          timing: "Medium-term",
-          approach: {
-            focus: "Partnership",
-            message: "Explore advanced AI implementation and optimization",
-            conversation_starters: [
-              "Company size: Unknown Growth indicators: launch Our company is focused on improving efficiency and reducing costs",
-              "We're challenged by legacy systems and manual processes"
-            ]
-          }
+        business_details: {
+          market_position: "moderate",
+          customer_diversity: "diverse",
+          operations_complexity: "straightforward",
+          middle_management_strength: "strong",
+          owner_status: "seeking_exit",
         },
-        score_components: {
-          decision_maker_score: 0.0,
-          tech_investment_score: 10.0,
-          growth_score: 1.0,
-          ai_readiness_factor: 1.8
-        }
-      },
-      transformation_opportunities: [
-        {
-          title: "Advanced AI Solution Deployment",
-          description: "Implement sophisticated AI models to enhance decision-making and create competitive advantages."
+        industry_details: {
+          industry_type: "Supply Chain Management",
+          recurring_revenue_model: "strong",
+          b2b_percentage: 100,
+          competitive_landscape: "fragmented",
+          total_market_size: 8000000000, // $8B
+          market_growth_rate: 15,
         },
-        {
-          title: "Predictive Analytics Enhancement",
-          description: "Leverage existing data infrastructure for forecasting and predictive business intelligence."
-        },
-        {
-          title: "Robust Data Infrastructure Development", 
-          description: "Build comprehensive data pipeline to fully leverage existing AI capabilities."
-        }
-      ],
-      verification: {
-        status: "Pending",
-        date: new Date().toISOString(),
-        notes: "Need to verify company size and identify leadership team."
       },
-      crm: {
-        status: "Not Synced",
-        date: null,
-        crm_id: null
-        }
-      }
     ];
 
     // Save to localStorage
     localStorage.setItem("savedLeads", JSON.stringify(sampleLeads));
-    document.getElementById("leads-table-body").innerHTML = "";
-    window.renderLeadsTable();
+    console.log("Sample leads initialized");
 
     return sampleLeads;
   }
-
-  // Call this function at the start of your application
-  // Replace your current savedLeads initialization with this:
-  // let savedLeads = initializeSampleLeads();
-  // Function to initialize sample leads data
- 
-
-  // Save to localStorage
-  localStorage.setItem("savedLeads", JSON.stringify(sampleLeads));
-  console.log("Sample leads initialized");
-
-  return sampleLeads;
-
-
-  // Call this function at the start of your application
-  // Replace your current savedLeads initialization with this:
-  // let savedLeads = initializeSampleLeads();
-  function initBackendHandlers() {
-    // API endpoint for saving leads to server
-    document.addEventListener("click", (e) => {
-      if (e.target.id === "save-lead" || e.target.closest("#save-lead")) {
-        if (lastAnalysisData) {
-          // First save locally
-          const savedLead = saveLead(lastAnalysisData);
-
-          // Then save to server for persistence
-          fetch("/save-lead", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(savedLead),
-          })
-            .then((response) => response.json())
-            .then((data) => {
-              if (data.status === "success") {
-                showNotification(
-                  `Lead "${savedLead.company_name}" saved successfully`,
-                  "success"
-                );
-              } else {
-                showNotification(`Warning: ${data.message}`, "warning");
-              }
-            })
-            .catch((error) => {
-              console.error("Error saving lead:", error);
-              showNotification(
-                "Lead saved locally but server sync failed",
-                "warning"
-              );
-            });
-        }
-      }
-    });
-
-    // Sync lead verification with server
-    document.getElementById("verify-lead").addEventListener("click", () => {
-      const leadId = verificationPanel.getAttribute("data-lead-id");
-      const notes = document.getElementById("verification-notes").value;
-
-      // Update lead locally first
-      const leadIndex = savedLeads.findIndex((lead) => lead.id === leadId);
-      if (leadIndex !== -1) {
-        const verificationData = {
-          id: leadId,
-          status: "Verified",
-          notes: notes,
-          verified_by: "User", // Could be replaced with actual user information
-        };
-
-        // Update server
-        fetch("/verify-lead", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(verificationData),
-        })
-          .then((response) => response.json())
-          .then((data) => {
-            if (data.status === "success") {
-              // Update local data
-              savedLeads[leadIndex].verification = data.verification;
-              localStorage.setItem("savedLeads", JSON.stringify(savedLeads));
-
-              showNotification("Lead verified successfully", "success");
-              hideVerificationPanel();
-              renderLeadsTable();
-            } else {
-              showNotification(
-                `Verification error: ${data.message}`,
-                "warning"
-              );
-            }
-          })
-          .catch((error) => {
-            console.error("Error verifying lead:", error);
-            showNotification(
-              "Lead verified locally but server sync failed",
-              "warning"
-            );
-
-            // Still update locally as fallback
-            savedLeads[leadIndex].verification = {
-              status: "Verified",
-              date: new Date().toISOString(),
-              notes: notes,
-            };
-            localStorage.setItem("savedLeads", JSON.stringify(savedLeads));
-
-            hideVerificationPanel();
-            renderLeadsTable();
-          });
-      }
-    });
-    // Create a new sample lead object
-    const newSampleLead = {
-      id: `lead_${Date.now()}`, // Generate a unique ID using timestamp
-      url: "https://example.com", // Company website URL
-      company_name: "Example Company", // Company name
-      date_added: new Date().toISOString(), // Current date/time in ISO format
-      ai_readiness_score: 7.8, // Score from 0-10
-      company_size_indicator: "Medium Business (50-250 employees)", // Company size
-      tech_indicators: {
-        ai_ml: {
-          total: 3,
-          indicators: {
-            "Machine Learning": 3,
-            "Deep Learning": 2,
-            "Natural Language Processing": 4,
-          },
-        },
-        data: {
-          total: 2,
-          indicators: {
-            "Data Analytics": 4,
-            "Business Intelligence": 3,
-          },
-        },
-        cloud: {
-          total: 2,
-          indicators: {
-            "Cloud Migration": 3,
-            SaaS: 4,
-          },
-        },
-      },
-      leadership_team: [
-        { name: "Jane Smith", title: "CEO" },
-        { name: "John Doe", title: "CTO" },
-        { name: "Alex Johnson", title: "Head of Data Science" },
-      ],
-      sales_insights: {
-        lead_score: 78, // Score from 0-100
-        lead_tier: "Warm", // Hot, Warm, or Nurture
-        primary_contact: {
-          name: "Alex Johnson",
-          title: "Head of Data Science",
-          email: "alex.johnson@example.com",
-          phone: "+1-555-123-4567",
-        },
-        pain_points: [
-          "Legacy system integration challenges",
-          "Scaling data processing capabilities",
-          "Talent acquisition for AI initiatives",
-        ],
-        outreach_recommendation: {
-          timing: "This Week",
-          approach: {
-            focus: "Data Infrastructure Modernization",
-            message: "Solution-focused",
-            conversation_starters: [
-              "How are you currently handling integration between your legacy systems and newer data platforms?",
-              "What challenges are you facing with scaling your data processing capabilities?",
-              "Our data modernization approach has helped similar companies reduce processing time by 40%",
-            ],
-          },
-        },
-        score_components: {
-          decision_maker_score: 7.9,
-          tech_investment_score: 7.6,
-          growth_score: 8.0,
-          ai_readiness_factor: 7.5,
-        },
-      },
-      verification: {
-        status: "Pending", // Verified, Pending, or Flagged
-        date: new Date().toISOString(),
-        notes: "Need to verify contact information and recent AI initiatives.",
-      },
-      crm: {
-        status: "Not Synced", // Synced, Not Synced, Failed, or Queued
-        date: null,
-        crm_id: null,
-      },
-      
-    };
-
-    // To add this lead to the existing savedLeads array:
-    savedLeads.push(newSampleLead);
-
-    // To save the updated array to localStorage:
-    localStorage.setItem("savedLeads", JSON.stringify(savedLeads));
-
-    // If you need to refresh the table display after adding the lead:
-    renderLeadsTable();
-
-    // CRM sync with server
-    document.getElementById("crm-sync-btn").addEventListener("click", () => {
-      const selectedLeads = getSelectedLeads();
-
-      if (selectedLeads.length === 0) {
-        showNotification(
-          "Please select at least one lead to sync to CRM",
-          "warning"
-        );
-        return;
-      }
-
-      const leadIds = selectedLeads.map((lead) => lead.id);
-      const crmSettings = JSON.parse(localStorage.getItem("crmSettings")) || {};
-
-      showNotification(
-        `Syncing ${selectedLeads.length} leads to CRM...`,
-        "info"
-      );
-
-      fetch("/crm-sync", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          lead_ids: leadIds,
-          settings: crmSettings,
-        }),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          if (data.status === "success") {
-            // Update local leads with new CRM status
-            const results = data.results;
-            results.forEach((result) => {
-              const leadIndex = savedLeads.findIndex(
-                (lead) => lead.id === result.id
-              );
-              if (leadIndex !== -1 && result.status === "success") {
-                savedLeads[leadIndex].crm = {
-                  status: "Synced",
-                  date: new Date().toISOString(),
-                  crm_id: result.crm_id,
-                };
-              } else if (leadIndex !== -1) {
-                savedLeads[leadIndex].crm = {
-                  status: "Failed",
-                  date: new Date().toISOString(),
-                  error: result.message,
-                };
-              }
-            });
-
-            // Save updated leads
-            localStorage.setItem("savedLeads", JSON.stringify(savedLeads));
-
-            // Refresh the table
-            renderLeadsTable();
-
-            showNotification(`Successfully synced leads to CRM`, "success");
-          } else {
-            showNotification(`CRM sync error: ${data.message}`, "danger");
-          }
-        })
-        .catch((error) => {
-          console.error("Error syncing to CRM:", error);
-          showNotification("CRM sync failed. Please try again.", "danger");
-        });
-    });
-
-    // Email export functionality
-    document.addEventListener("click", (e) => {
-      const exportAction = document.getElementById("export-action");
-      if (e.target === exportAction || e.target.closest("#export-action")) {
-        const format = document
-          .querySelector(".option-button[data-format].active")
-          .getAttribute("data-format");
-        const delivery = document
-          .querySelector(".delivery-option.active")
-          .getAttribute("data-delivery");
-
-        if (delivery === "email") {
-          const selectedLeads = getSelectedLeads();
-          const selectedFields = getSelectedExportFields();
-          const recipientEmail =
-            document.getElementById("email-recipient").value;
-          const subject = document.getElementById("email-subject").value;
-          const message = document.getElementById("email-message").value;
-
-          if (!recipientEmail) {
-            showNotification(
-              "Please enter a recipient email address",
-              "warning"
-            );
-            return;
-          }
-
-          if (selectedLeads.length === 0) {
-            showNotification(
-              "Please select at least one lead to export",
-              "warning"
-            );
-            return;
-          }
-
-          showNotification(
-            `Preparing to email ${selectedLeads.length} leads...`,
-            "info"
-          );
-
-          fetch("/email-export", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              recipient: recipientEmail,
-              subject: subject,
-              message: message,
-              format: format,
-              leads: selectedLeads,
-              field_selection: selectedFields,
-            }),
-          })
-            .then((response) => response.json())
-            .then((data) => {
-              if (data.status === "success") {
-                showNotification(
-                  `Export successfully sent to ${recipientEmail}`,
-                  "success"
-                );
-                hideExportModal();
-              } else {
-                showNotification(`Email error: ${data.message}`, "danger");
-              }
-            })
-            .catch((error) => {
-              console.error("Error sending email:", error);
-              showNotification(
-                "Failed to send email. Please try again.",
-                "danger"
-              );
-            });
-        }
-      }
-    });
-
-    // Load saved leads from server
-    function loadLeadsFromServer() {
-      fetch("/get-leads")
-        .then((response) => response.json())
-        .then((data) => {
-          if (data.status === "success" && data.leads) {
-            // Merge with local leads
-            const serverLeads = data.leads;
-            const localLeads = loadSavedLeads();
-
-            // Create a map of existing leads by ID
-            const leadMap = {};
-            localLeads.forEach((lead) => {
-              leadMap[lead.id] = lead;
-            });
-
-            // Add or update with server leads
-            serverLeads.forEach((lead) => {
-              leadMap[lead.id] = lead;
-            });
-
-            // Convert back to array
-            savedLeads = Object.values(leadMap);
-
-            // Save to localStorage
-            localStorage.setItem("savedLeads", JSON.stringify(savedLeads));
-
-            // If we're on the dashboard, refresh the table
-            if (leadsDashboard.style.display === "block") {
-              renderLeadsTable();
-            }
-          }
-        })
-        .catch((error) => {
-          console.error("Error loading leads from server:", error);
-        });
-    }
-
-    // Test CRM connection
-    document.getElementById("test-connection").addEventListener("click", () => {
-      const settings = {
-        provider: document.getElementById("crm-provider").value,
-        apiKey: document.getElementById("api-key").value,
-        apiSecret: document.getElementById("api-secret").value,
-        apiUrl: document.getElementById("api-url").value,
-      };
-
-      showNotification("Testing CRM connection...", "info");
-
-      fetch("/test-crm-connection", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(settings),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          if (data.status === "success") {
-            showNotification(
-              `CRM connection successful: ${data.message}`,
-              "success"
-            );
-          } else {
-            showNotification(
-              `CRM connection failed: ${data.message}`,
-              "danger"
-            );
-          }
-        })
-        .catch((error) => {
-          console.error("Error testing CRM connection:", error);
-          showNotification(
-            "Connection test failed. Please check your network.",
-            "danger"
-          );
-        });
-    });
-
-    // Initial load
-    loadLeadsFromServer();
-  }
-
-  // Initialize backend handlers
-  initBackendHandlers();
-
-  // Set up slider events for range inputs
-  const minSlider = document.getElementById("score-range-min");
-  const maxSlider = document.getElementById("score-range-max");
-  const minDisplay = document.getElementById("score-min");
-  const maxDisplay = document.getElementById("score-max");
-
-  minSlider.addEventListener("input", () => {
-    const minVal = parseInt(minSlider.value);
-    const maxVal = parseInt(maxSlider.value);
-
-    if (minVal > maxVal) {
-      minSlider.value = maxVal;
-      minDisplay.textContent = maxVal;
-    } else {
-      minDisplay.textContent = minVal;
-    }
-  });
-
-  maxSlider.addEventListener("input", () => {
-    const minVal = parseInt(minSlider.value);
-    const maxVal = parseInt(maxSlider.value);
-
-    if (maxVal < minVal) {
-      maxSlider.value = minVal;
-      maxDisplay.textContent = minVal;
-    } else {
-      maxDisplay.textContent = maxVal;
-    }
-  });
 
   // Function to update filters from UI
   function updateFilters() {
@@ -3237,56 +3226,6 @@ document.addEventListener("DOMContentLoaded", () => {
     renderLeadsTable();
   }
 
-  // Function to get selected leads
-  function getSelectedLeads() {
-    const selectedIds = Array.from(
-      document.querySelectorAll(".lead-select-checkbox:checked")
-    ).map((checkbox) => checkbox.getAttribute("data-id"));
-
-    return savedLeads.filter((lead) => selectedIds.includes(lead.id));
-  }
-
-  // Function to get selected export fields
-  function getSelectedExportFields() {
-    const fields = {};
-
-    // Company information
-    fields.company = {
-      name: document.getElementById("field-company-name").checked,
-      website: document.getElementById("field-website").checked,
-      size: document.getElementById("field-company-size").checked,
-      industry: document.getElementById("field-industry").checked,
-      location: document.getElementById("field-location").checked,
-    };
-
-    // Contact information
-    fields.contact = {
-      name: document.getElementById("field-contact-name").checked,
-      title: document.getElementById("field-title").checked,
-      email: document.getElementById("field-email").checked,
-      phone: document.getElementById("field-phone").checked,
-    };
-
-    // Assessment data
-    fields.assessment = {
-      aiScore: document.getElementById("field-ai-score").checked,
-      leadScore: document.getElementById("field-lead-score").checked,
-      leadTier: document.getElementById("field-lead-tier").checked,
-      techIndicators: document.getElementById("field-tech-indicators").checked,
-      approach: document.getElementById("field-approach").checked,
-      painPoints: document.getElementById("field-pain-points").checked,
-    };
-
-    // Verification data
-    fields.verification = {
-      status: document.getElementById("field-verification-status").checked,
-      date: document.getElementById("field-verification-date").checked,
-      notes: document.getElementById("field-verification-notes").checked,
-    };
-
-    return fields;
-  }
-
   // Function to export selected leads
   function exportSelectedLeads(leads, format, fields) {
     // Simulate export
@@ -3382,6 +3321,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (fields.assessment.techIndicators) headers.push("Technology Indicators");
     if (fields.assessment.approach) headers.push("Recommended Approach");
     if (fields.assessment.painPoints) headers.push("Pain Points");
+    if (fields.assessment.investmentMatch) headers.push("Investment Match");
 
     if (fields.verification.status) headers.push("Verification Status");
     if (fields.verification.date) headers.push("Verification Date");
@@ -3397,7 +3337,11 @@ document.addEventListener("DOMContentLoaded", () => {
       if (fields.company.website) row.push(`"${lead.url || ""}"`);
       if (fields.company.size)
         row.push(`"${lead.company_size_indicator || ""}"`);
-      if (fields.company.industry) row.push(`"Software & Technology"`); // Placeholder
+      if (fields.company.industry) {
+        const industry =
+          lead.industry_details?.industry_type || "Software & Technology";
+        row.push(`"${industry}"`);
+      }
       if (fields.company.location) row.push(`"San Francisco, CA"`); // Placeholder
 
       const contact = lead.sales_insights?.primary_contact || {};
@@ -3436,6 +3380,12 @@ document.addEventListener("DOMContentLoaded", () => {
         row.push(`"${painPoints.join(", ")}"`);
       }
 
+      if (fields.assessment.investmentMatch) {
+        const match = lead.investment_match?.overall_match || 0;
+        const tier = lead.investment_match?.match_tier || "Not Evaluated";
+        row.push(`"${match}% - ${tier}"`);
+      }
+
       if (fields.verification.status)
         row.push(`"${lead.verification?.status || "Pending"}"`);
       if (fields.verification.date)
@@ -3462,7 +3412,8 @@ document.addEventListener("DOMContentLoaded", () => {
       if (fields.company.size)
         filteredLead.company.size = lead.company_size_indicator;
       if (fields.company.industry)
-        filteredLead.company.industry = "Software & Technology"; // Placeholder
+        filteredLead.company.industry =
+          lead.industry_details?.industry_type || "Software & Technology";
       if (fields.company.location)
         filteredLead.company.location = "San Francisco, CA"; // Placeholder
 
@@ -3505,6 +3456,15 @@ document.addEventListener("DOMContentLoaded", () => {
           lead.sales_insights?.pain_points || [];
       }
 
+      if (fields.assessment.investmentMatch && lead.investment_match) {
+        filteredLead.assessment.investmentMatch = {
+          score: lead.investment_match.overall_match,
+          tier: lead.investment_match.match_tier,
+          strengths: lead.investment_match.key_strengths,
+          concerns: lead.investment_match.key_concerns,
+        };
+      }
+
       // Verification data
       filteredLead.verification = {};
       if (fields.verification.status)
@@ -3521,79 +3481,7 @@ document.addEventListener("DOMContentLoaded", () => {
     return JSON.stringify(filteredLeads, null, 2);
   }
 
-  // Helper function to show notification
-  function showNotification(message, type = "info") {
-    // Check if notification container exists
-    let notificationContainer = document.querySelector(
-      ".notification-container"
-    );
-    if (!notificationContainer) {
-      // Create notification container
-      notificationContainer = document.createElement("div");
-      notificationContainer.className = "notification-container";
-      document.body.appendChild(notificationContainer);
-    }
-
-    // Create notification element
-    const notification = document.createElement("div");
-    notification.className = `notification notification-${type}`;
-
-    // Set icon based on type
-    let icon;
-    switch (type) {
-      case "success":
-        icon = "fa-check-circle";
-        break;
-      case "warning":
-        icon = "fa-exclamation-triangle";
-        break;
-      case "danger":
-        icon = "fa-exclamation-circle";
-        break;
-      default:
-        icon = "fa-info-circle";
-    }
-
-    // Set notification content
-    notification.innerHTML = `
-      <i class="fas ${icon}"></i>
-      <span>${message}</span>
-      <button class="notification-close"><i class="fas fa-times"></i></button>
-    `;
-
-    // Add to container
-    notificationContainer.appendChild(notification);
-
-    // Add close event
-    notification
-      .querySelector(".notification-close")
-      .addEventListener("click", () => {
-        notification.classList.add("notification-hide");
-        setTimeout(() => {
-          notification.remove();
-        }, 300);
-      });
-
-    // Auto remove after 5 seconds
-    setTimeout(() => {
-      if (notification.parentNode) {
-        notification.classList.add("notification-hide");
-        setTimeout(() => {
-          if (notification.parentNode) {
-            notification.remove();
-          }
-        }, 300);
-      }
-    }, 5000);
-  }
-
-  // Function to load saved leads from localStorage
-  function loadSavedLeads() {
-    const savedLeadsJSON = localStorage.getItem("savedLeads");
-    return savedLeadsJSON ? JSON.parse(savedLeadsJSON) : [];
-  }
-
-  // Function to load saved CRM settings
+  // Function to load saved settings
   function loadSavedSettings() {
     const settings = JSON.parse(localStorage.getItem("crmSettings")) || {};
 
@@ -3674,59 +3562,141 @@ document.addEventListener("DOMContentLoaded", () => {
         );
       }
     }, 1500);
-    if (fields.contact.name) filteredleads.contact.name = contact.name;
-    if (fields.contact.title) filteredleads.contact.title = contact.title;
-    if (fields.contact.email) filteredleads.contact.email = contact.email;
-    if (fields.contact.phone) filteredleads.contact.phone = contact.phone;
+  }
 
-    // Assessment data
-    filteredleads.assessment = {};
-    if (fields.assessment.aiScore)
-      filteredleads.assessment.aiReadinessScore = lead.ai_readiness_score;
-    if (fields.assessment.leadScore)
-      filteredleads.assessment.leadScore = lead.sales_insights?.lead_score;
-    if (fields.assessment.leadTier)
-      filteredleads.assessment.leadTier = lead.sales_insights?.lead_tier;
+  // Helper function to show notification
+  function showNotification(message, type = "info") {
+    // Check if notification container exists
+    let notificationContainer = document.querySelector(
+      ".notification-container"
+    );
+    if (!notificationContainer) {
+      // Create notification container
+      notificationContainer = document.createElement("div");
+      notificationContainer.className = "notification-container";
+      document.body.appendChild(notificationContainer);
+    }
 
-    // Tech indicators
-    if (fields.assessment.techIndicators) {
-      filteredleads.assessment.techIndicators = [];
-      if (lead.tech_indicators) {
-        for (const category in lead.tech_indicators) {
-          for (const indicator in lead.tech_indicators[category].indicators) {
-            filteredleads.assessment.techIndicators.push(indicator);
+    // Create notification element
+    const notification = document.createElement("div");
+    notification.className = `notification notification-${type}`;
+
+    // Set icon based on type
+    let icon;
+    switch (type) {
+      case "success":
+        icon = "fa-check-circle";
+        break;
+      case "warning":
+        icon = "fa-exclamation-triangle";
+        break;
+      case "danger":
+        icon = "fa-exclamation-circle";
+        break;
+      default:
+        icon = "fa-info-circle";
+    }
+
+    // Set notification content
+    notification.innerHTML = `
+      <i class="fas ${icon}"></i>
+      <span>${message}</span>
+      <button class="notification-close"><i class="fas fa-times"></i></button>
+    `;
+
+    // Add to container
+    notificationContainer.appendChild(notification);
+
+    // Add close event
+    notification
+      .querySelector(".notification-close")
+      .addEventListener("click", () => {
+        notification.classList.add("notification-hide");
+        setTimeout(() => {
+          notification.remove();
+        }, 300);
+      });
+
+    // Auto remove after 5 seconds
+    setTimeout(() => {
+      if (notification.parentNode) {
+        notification.classList.add("notification-hide");
+        setTimeout(() => {
+          if (notification.parentNode) {
+            notification.remove();
           }
-        }
+        }, 300);
       }
-    }
-    if (fields.assessment.approach) {
-      filteredleads.assessment.recommendedApproach =
-        lead.sales_insights?.outreach_recommendation?.approach?.focus;
-    }
+    }, 5000);
+  }
 
-    if (fields.assessment.painPoints) {
-      filteredleads.assessment.painPoints =
-        lead.sales_insights?.pain_points || [];
-    }
+  // Initialize the page
+  initBackendHandlers();
 
-    // Verification data
-    filteredleads.verification = {};
-    if (fields.verification.status)
-      filteredleads.verification.status = lead.verification?.status || "Pending";
-    if (fields.verification.date)
-      filteredleads.verification.date = lead.verification?.date;
-    if (fields.verification.notes)
-      filteredleads.verification.notes = lead.verification?.notes;
+  // Add investment criteria filter functionality
+  // Setup investment criteria filter sliders (if they exist)
+  const revenueMinSlider = document.getElementById("revenue-range-min");
+  const revenueMaxSlider = document.getElementById("revenue-range-max");
+  const cashFlowMinSlider = document.getElementById("cash-flow-range-min");
+  const cashFlowMaxSlider = document.getElementById("cash-flow-range-max");
+  const ebitdaSlider = document.getElementById("ebitda-slider");
 
-    // CRM data
-    if (lead.crm) {
-      filteredleads.crm = {
-        status: lead.crm.status || "Not Synced",
-        date: lead.crm.date,
-        crm_id: lead.crm.crm_id,
-      };
-    }
+  if (revenueMinSlider && revenueMaxSlider) {
+    setupRangeSlider(
+      revenueMinSlider,
+      revenueMaxSlider,
+      document.getElementById("revenue-min"),
+      document.getElementById("revenue-max"),
+      "M"
+    );
+  }
 
-    return filteredleads;
+  if (cashFlowMinSlider && cashFlowMaxSlider) {
+    setupRangeSlider(
+      cashFlowMinSlider,
+      cashFlowMaxSlider,
+      document.getElementById("cash-flow-min"),
+      document.getElementById("cash-flow-max"),
+      "M"
+    );
+  }
+
+  if (ebitdaSlider) {
+    ebitdaSlider.addEventListener("input", () => {
+      document.getElementById("ebitda-min").textContent = ebitdaSlider.value;
+    });
+  }
+
+  // Helper function to setup range sliders
+  function setupRangeSlider(
+    minSlider,
+    maxSlider,
+    minDisplay,
+    maxDisplay,
+    suffix = ""
+  ) {
+    minSlider.addEventListener("input", () => {
+      const minVal = parseInt(minSlider.value);
+      const maxVal = parseInt(maxSlider.value);
+
+      if (minVal > maxVal) {
+        minSlider.value = maxVal;
+        minDisplay.textContent = `${maxVal}${suffix}`;
+      } else {
+        minDisplay.textContent = `${minVal}${suffix}`;
+      }
+    });
+
+    maxSlider.addEventListener("input", () => {
+      const minVal = parseInt(minSlider.value);
+      const maxVal = parseInt(maxSlider.value);
+
+      if (maxVal < minVal) {
+        maxSlider.value = minVal;
+        maxDisplay.textContent = `${minVal}${suffix}`;
+      } else {
+        maxDisplay.textContent = `${maxVal}${suffix}`;
+      }
+    });
   }
 });

@@ -2214,3 +2214,419 @@ a:hover {
     display: none;
   }
 }
+
+/* Investment Criteria CSS Styles */
+
+/* Investment Match Container */
+.investment-match-container {
+  padding: 1.5rem;
+}
+
+/* Score Ring Specific to Investment */
+.investment-score-ring {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-md);
+  position: relative;
+  margin-bottom: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.investment-score {
+  font-size: 3rem;
+  font-weight: 700;
+  line-height: 1;
+  transition: color 0.3s ease;
+}
+
+/* Match Tier and Confidence */
+.match-tier,
+.confidence-level {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 1rem;
+  background-color: var(--gray-100);
+  border-radius: var(--border-radius);
+  margin-top: 0.5rem;
+}
+
+.tier-label,
+.confidence-label {
+  font-weight: 600;
+  margin-right: 0.5rem;
+}
+
+.tier-value,
+.confidence-value {
+  transition: color 0.3s ease;
+}
+
+/* Criteria Breakdown */
+.criteria-breakdown {
+  margin-top: 2rem;
+}
+
+.criteria-breakdown h4 {
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.breakdown-charts {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.breakdown-chart {
+  display: flex;
+  align-items: center;
+}
+
+.chart-label {
+  width: 150px;
+  font-weight: 500;
+}
+
+.chart-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.chart-bar {
+  flex: 1;
+  height: 10px;
+  background-color: var(--gray-200);
+  border-radius: 5px;
+  overflow: hidden;
+  margin-right: 1rem;
+}
+
+.chart-fill {
+  height: 100%;
+  background-color: var(--primary-color);
+  border-radius: 5px;
+  transition: width 1s ease, background-color 0.3s ease;
+}
+
+.chart-percentage {
+  font-weight: 500;
+  min-width: 45px;
+  text-align: right;
+}
+
+/* Criteria Details */
+.criteria-details {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.criteria-strengths h4,
+.criteria-concerns h4 {
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.criteria-list {
+  list-style: none;
+}
+
+.criteria-list li {
+  display: flex;
+  align-items: flex-start;
+  padding: 0.75rem;
+  background-color: var(--gray-100);
+  border-radius: var(--border-radius);
+  margin-bottom: 0.75rem;
+  font-size: 0.95rem;
+  color: var(--text-color);
+}
+
+.criteria-list li:last-child {
+  margin-bottom: 0;
+}
+
+.criteria-list li i {
+  margin-right: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+.strength-item i {
+  color: var(--success-color);
+}
+
+.concern-item i {
+  color: var(--danger-color);
+}
+
+.empty-item {
+  color: var(--text-light);
+  font-style: italic;
+}
+
+/* Data Completeness */
+.data-completeness {
+  margin-top: 2rem;
+}
+
+.data-completeness h4 {
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.completeness-charts {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.completeness-item {
+  display: flex;
+  align-items: center;
+}
+
+.completeness-label {
+  width: 150px;
+  font-weight: 500;
+}
+
+.completeness-bar {
+  flex: 1;
+  height: 8px;
+  background-color: var(--gray-200);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-right: 1rem;
+}
+
+.completeness-fill {
+  height: 100%;
+  background-color: var(--primary-color);
+  border-radius: 4px;
+  transition: width 1s ease, background-color 0.3s ease;
+}
+
+.completeness-percentage {
+  font-weight: 500;
+  min-width: 45px;
+  text-align: right;
+}
+
+/* Financial Details Form */
+.edit-field-input {
+  width: 100%;
+  padding: 0.25rem 0.5rem;
+  border: 1px solid var(--primary-color);
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+/* Investment Criteria Filters */
+.investment-filter-container {
+  margin-top: 1.5rem;
+}
+
+.investment-filter-header {
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.investment-filter-group {
+  margin-bottom: 1.5rem;
+}
+
+.investment-filter-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.investment-range-slider {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.range-values {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--text-light);
+}
+
+/* Investment Table Column */
+.investment-match-column {
+  font-weight: 500;
+}
+
+.match-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 1rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.match-strong {
+  background-color: rgba(16, 185, 129, 0.1);
+  color: var(--success-color);
+}
+
+.match-potential {
+  background-color: rgba(59, 130, 246, 0.1);
+  color: var(--primary-color);
+}
+
+.match-partial {
+  background-color: rgba(245, 158, 11, 0.1);
+  color: var(--warning-color);
+}
+
+.match-weak {
+  background-color: rgba(239, 68, 68, 0.1);
+  color: var(--danger-color);
+}
+
+/* Yahoo Finance Integration */
+.financial-data-section {
+  margin-top: 2rem;
+}
+
+.financial-data-section h4 {
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.financial-data-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.financial-data-item {
+  background-color: var(--gray-100);
+  padding: 1rem;
+  border-radius: var(--border-radius);
+  display: flex;
+  flex-direction: column;
+}
+
+.data-label {
+  font-size: 0.8rem;
+  color: var(--text-light);
+  margin-bottom: 0.25rem;
+}
+
+.data-value {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.data-trend {
+  display: flex;
+  align-items: center;
+  margin-top: 0.25rem;
+  font-size: 0.8rem;
+}
+
+.trend-up {
+  color: var(--success-color);
+}
+
+.trend-down {
+  color: var(--danger-color);
+}
+
+.financial-charts {
+  margin-top: 2rem;
+}
+
+.chart-container {
+  width: 100%;
+  height: 300px;
+  background-color: var(--card-background);
+  border-radius: var(--border-radius);
+  padding: 1rem;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 1.5rem;
+}
+
+/* Investment Criteria Widget */
+.criteria-widget {
+  background-color: var(--primary-lightest);
+  border-radius: var(--border-radius);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.criteria-widget-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--primary-dark);
+}
+
+.criteria-categories {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.criteria-category {
+  background-color: var(--card-background);
+  border-radius: var(--border-radius);
+  padding: 1.25rem;
+  box-shadow: var(--shadow-sm);
+}
+
+.category-header {
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--primary-color);
+  display: flex;
+  align-items: center;
+}
+
+.category-header i {
+  margin-right: 0.5rem;
+}
+
+.criteria-items {
+  list-style: none;
+}
+
+.criteria-item {
+  display: flex;
+  margin-bottom: 0.75rem;
+  font-size: 0.95rem;
+}
+
+.criteria-item i {
+  color: var(--primary-color);
+  margin-right: 0.5rem;
+  margin-top: 0.2rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .criteria-details {
+    grid-template-columns: 1fr;
+  }
+  
+  .criteria-categories {
+    grid-template-columns: 1fr;
+  }
+}

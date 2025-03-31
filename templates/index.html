@@ -874,6 +874,303 @@
         </div>
     </template>
 
-<script src="static/js/enhanced-lead-script.js"></script>
+    <!-- Investment Criteria Match Section Template -->
+    <template id="investment-match-template">
+    <div class="dashboard-section">
+        <div class="section-header">
+        <i class="fas fa-chart-bar"></i>
+        <h3>Investment Criteria Match</h3>
+        </div>
+        <div class="investment-match-container">
+        <div class="score-overview">
+            <div class="score-card">
+            <div class="score-ring investment-score-ring">
+                <div class="score-value investment-score">0</div>
+                <div class="score-max">%</div>
+            </div>
+            <div class="score-label">Investment Fit</div>
+            </div>
+            <div class="match-tier">
+            <span class="tier-label">Match Tier:</span>
+            <span class="tier-value">Analyzing...</span>
+            </div>
+            <div class="confidence-level">
+            <span class="confidence-label">Confidence:</span>
+            <span class="confidence-value">Analyzing...</span>
+            </div>
+        </div>
+        
+        <div class="criteria-breakdown">
+            <h4>Criteria Breakdown</h4>
+            <div class="breakdown-charts">
+            <div class="breakdown-chart">
+                <div class="chart-label">Business Criteria</div>
+                <div class="chart-container">
+                <div class="chart-bar">
+                    <div class="chart-fill business-fill" style="width: 0%"></div>
+                </div>
+                <div class="chart-percentage business-percentage">0%</div>
+                </div>
+            </div>
+            <div class="breakdown-chart">
+                <div class="chart-label">Industry Criteria</div>
+                <div class="chart-container">
+                <div class="chart-bar">
+                    <div class="chart-fill industry-fill" style="width: 0%"></div>
+                </div>
+                <div class="chart-percentage industry-percentage">0%</div>
+                </div>
+            </div>
+            <div class="breakdown-chart">
+                <div class="chart-label">Financial Criteria</div>
+                <div class="chart-container">
+                <div class="chart-bar">
+                    <div class="chart-fill financial-fill" style="width: 0%"></div>
+                </div>
+                <div class="chart-percentage financial-percentage">0%</div>
+                </div>
+            </div>
+            </div>
+        </div>
+        
+        <div class="criteria-details">
+            <div class="criteria-strengths">
+            <h4>Key Strengths</h4>
+            <ul class="criteria-list strengths-list">
+                <li>Loading strengths...</li>
+            </ul>
+            </div>
+            <div class="criteria-concerns">
+            <h4>Key Concerns</h4>
+            <ul class="criteria-list concerns-list">
+                <li>Loading concerns...</li>
+            </ul>
+            </div>
+        </div>
+        
+        <div class="data-completeness">
+            <h4>Data Completeness</h4>
+            <div class="completeness-charts">
+            <div class="completeness-item">
+                <div class="completeness-label">Financial Data</div>
+                <div class="completeness-bar">
+                <div class="completeness-fill financial-fill" style="width: 0%"></div>
+                </div>
+                <div class="completeness-percentage financial-completeness">0%</div>
+            </div>
+            <div class="completeness-item">
+                <div class="completeness-label">Business Data</div>
+                <div class="completeness-bar">
+                <div class="completeness-fill business-completeness-fill" style="width: 0%"></div>
+                </div>
+                <div class="completeness-percentage business-completeness">0%</div>
+            </div>
+            <div class="completeness-item">
+                <div class="completeness-label">Industry Data</div>
+                <div class="completeness-bar">
+                <div class="completeness-fill industry-completeness-fill" style="width: 0%"></div>
+                </div>
+                <div class="completeness-percentage industry-completeness">0%</div>
+            </div>
+            </div>
+        </div>
+        </div>
+    </div>
+    </template>
+
+    <!-- Financial Details Form Template for Verification Panel -->
+    <template id="financial-details-template">
+    <div class="verification-section">
+        <h4>Financial Information</h4>
+        <div class="verification-fields">
+        <div class="verification-field">
+            <label for="estimated-revenue">Estimated Annual Revenue ($)</label>
+            <div class="editable-field">
+            <span class="field-value">Unknown</span>
+            <button class="edit-field-btn"><i class="fas fa-pen"></i></button>
+            </div>
+        </div>
+        <div class="verification-field">
+            <label for="recurring-revenue">Recurring Revenue Percentage (%)</label>
+            <div class="editable-field">
+            <span class="field-value">Unknown</span>
+            <button class="edit-field-btn"><i class="fas fa-pen"></i></button>
+            </div>
+        </div>
+        <div class="verification-field">
+            <label for="annual-cash-flow">Estimated Annual Cash Flow ($)</label>
+            <div class="editable-field">
+            <span class="field-value">Unknown</span>
+            <button class="edit-field-btn"><i class="fas fa-pen"></i></button>
+            </div>
+        </div>
+        <div class="verification-field">
+            <label for="profitability-years">Years of Profitability</label>
+            <div class="editable-field">
+            <span class="field-value">Unknown</span>
+            <button class="edit-field-btn"><i class="fas fa-pen"></i></button>
+            </div>
+        </div>
+        <div class="verification-field">
+            <label for="ebitda-margin">EBITDA Margin (%)</label>
+            <div class="editable-field">
+            <span class="field-value">Unknown</span>
+            <button class="edit-field-btn"><i class="fas fa-pen"></i></button>
+            </div>
+        </div>
+        <div class="verification-field">
+            <label for="capex-requirements">Capital Expenditure Requirements</label>
+            <div class="editable-field">
+            <span class="field-value">Unknown</span>
+            <button class="edit-field-btn"><i class="fas fa-pen"></i></button>
+            </div>
+        </div>
+        </div>
+    </div>
+    </template>
+
+    <!-- Business Details Form Template for Verification Panel -->
+    <template id="business-details-template">
+    <div class="verification-section">
+        <h4>Business Information</h4>
+        <div class="verification-fields">
+        <div class="verification-field">
+            <label for="market-position">Market Position</label>
+            <div class="editable-field">
+            <span class="field-value">Unknown</span>
+            <button class="edit-field-btn"><i class="fas fa-pen"></i></button>
+            </div>
+        </div>
+        <div class="verification-field">
+            <label for="customer-diversity">Customer Diversity</label>
+            <div class="editable-field">
+            <span class="field-value">Unknown</span>
+            <button class="edit-field-btn"><i class="fas fa-pen"></i></button>
+            </div>
+        </div>
+        <div class="verification-field">
+            <label for="operations-complexity">Operations Complexity</label>
+            <div class="editable-field">
+            <span class="field-value">Unknown</span>
+            <button class="edit-field-btn"><i class="fas fa-pen"></i></button>
+            </div>
+        </div>
+        <div class="verification-field">
+            <label for="management-strength">Middle Management Strength</label>
+            <div class="editable-field">
+            <span class="field-value">Unknown</span>
+            <button class="edit-field-btn"><i class="fas fa-pen"></i></button>
+            </div>
+        </div>
+        <div class="verification-field">
+            <label for="owner-status">Owner Status</label>
+            <div class="editable-field">
+            <span class="field-value">Unknown</span>
+            <button class="edit-field-btn"><i class="fas fa-pen"></i></button>
+            </div>
+        </div>
+        </div>
+    </div>
+    </template>
+
+    <!-- Industry Details Form Template for Verification Panel -->
+    <template id="industry-details-template">
+    <div class="verification-section">
+        <h4>Industry Information</h4>
+        <div class="verification-fields">
+        <div class="verification-field">
+            <label for="industry-type">Industry Type</label>
+            <div class="editable-field">
+            <span class="field-value">Unknown</span>
+            <button class="edit-field-btn"><i class="fas fa-pen"></i></button>
+            </div>
+        </div>
+        <div class="verification-field">
+            <label for="revenue-model">Revenue Model</label>
+            <div class="editable-field">
+            <span class="field-value">Unknown</span>
+            <button class="edit-field-btn"><i class="fas fa-pen"></i></button>
+            </div>
+        </div>
+        <div class="verification-field">
+            <label for="b2b-percentage">B2B Percentage</label>
+            <div class="editable-field">
+            <span class="field-value">Unknown</span>
+            <button class="edit-field-btn"><i class="fas fa-pen"></i></button>
+            </div>
+        </div>
+        <div class="verification-field">
+            <label for="competitive-landscape">Competitive Landscape</label>
+            <div class="editable-field">
+            <span class="field-value">Unknown</span>
+            <button class="edit-field-btn"><i class="fas fa-pen"></i></button>
+            </div>
+        </div>
+        <div class="verification-field">
+            <label for="market-size">Total Market Size ($B)</label>
+            <div class="editable-field">
+            <span class="field-value">Unknown</span>
+            <button class="edit-field-btn"><i class="fas fa-pen"></i></button>
+            </div>
+        </div>
+        <div class="verification-field">
+            <label for="market-growth">Market Growth Rate (%)</label>
+            <div class="editable-field">
+            <span class="field-value">Unknown</span>
+            <button class="edit-field-btn"><i class="fas fa-pen"></i></button>
+            </div>
+        </div>
+        </div>
+    </div>
+    </template>
+
+    <!-- Investment Criteria Filter Panel -->
+    <template id="investment-filter-template">
+    <div class="filter-group">
+        <label>Investment Criteria</label>
+        <div class="filter-options">
+        <div class="range-slider">
+            <div class="range-values">
+            <span>Revenue: $</span>
+            <span id="revenue-min">5M</span>
+            <span>-</span>
+            <span id="revenue-max">50M</span>
+            </div>
+            <div class="slider-container">
+            <input type="range" id="revenue-range-min" min="0" max="100" value="5" class="slider">
+            <input type="range" id="revenue-range-max" min="0" max="100" value="50" class="slider">
+            </div>
+        </div>
+        
+        <div class="range-slider">
+            <div class="range-values">
+            <span>Cash Flow: $</span>
+            <span id="cash-flow-min">1M</span>
+            <span>-</span>
+            <span id="cash-flow-max">5M</span>
+            </div>
+            <div class="slider-container">
+            <input type="range" id="cash-flow-range-min" min="0" max="10" value="1" class="slider">
+            <input type="range" id="cash-flow-range-max" min="0" max="10" value="5" class="slider">
+            </div>
+        </div>
+        
+        <div class="range-slider">
+            <div class="range-values">
+            <span>Min EBITDA Margin:</span>
+            <span id="ebitda-min">15</span>
+            <span>%</span>
+            </div>
+            <div class="slider-container">
+                <input type="range" id="ebitda-slider" min="0" max="50" value="15" class="slider">
+            </div>
+        </div>
+        </div>
+    </div>
+    </template>
+
+
+<script src="{{ url_for('static', filename='js/enhanced-lead-script.js') }}"></script>
+
 </body>
 </html>

@@ -269,3 +269,251 @@ AttributeError: 'CRMIntegrationManager' object has no attribute 'test_connection
 2025-03-19 22:39:41,502 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
 2025-03-19 22:40:22,700 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
 2025-03-19 22:40:25,815 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-27 14:17:58,992 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-27 14:18:01,527 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-27 14:22:48,498 - __main__ - INFO - Starting analysis for URL: https://apple.com
+2025-03-27 14:22:48,499 - __main__ - INFO - Scraping website content
+2025-03-27 14:22:52,105 - __main__ - INFO - Analyzing website content
+2025-03-27 14:22:52,261 - __main__ - INFO - Calculating AI readiness score
+2025-03-27 14:22:52,261 - __main__ - INFO - Generating lead qualification insights
+2025-03-27 14:22:52,267 - __main__ - INFO - Analysis completed successfully for URL: https://apple.com
+2025-03-27 14:38:48,196 - __main__ - INFO - Starting analysis for URL: https://apple.com
+2025-03-27 14:38:48,196 - __main__ - INFO - Scraping website content
+2025-03-27 14:38:52,684 - __main__ - INFO - Analyzing website content
+2025-03-27 14:38:53,117 - __main__ - INFO - Calculating AI readiness score
+2025-03-27 14:38:53,123 - __main__ - INFO - Generating lead qualification insights
+2025-03-27 14:38:53,123 - __main__ - INFO - Analysis completed successfully for URL: https://apple.com
+2025-03-27 14:39:25,064 - __main__ - INFO - Exporting data as CSV
+2025-03-27 15:37:28,947 - __main__ - INFO - Starting analysis for URL: https://capraecapital.com/team
+2025-03-27 15:37:28,948 - __main__ - INFO - Scraping website content
+2025-03-27 15:37:32,650 - __main__ - WARNING - No content found for URL: https://capraecapital.com/team
+2025-03-27 15:37:35,732 - __main__ - INFO - Starting analysis for URL: https://capraecapital.com
+2025-03-27 15:37:35,732 - __main__ - INFO - Scraping website content
+2025-03-27 15:37:41,558 - __main__ - INFO - Analyzing website content
+2025-03-27 15:37:41,982 - __main__ - INFO - Calculating AI readiness score
+2025-03-27 15:37:41,982 - __main__ - INFO - Generating lead qualification insights
+2025-03-27 15:37:41,987 - __main__ - INFO - Analysis completed successfully for URL: https://capraecapital.com
+2025-03-28 23:15:02,422 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-28 23:15:12,723 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-28 23:15:16,066 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-28 23:25:47,206 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-28 23:27:49,899 - __main__ - INFO - Starting analysis for URL: https://apple.com
+2025-03-28 23:27:49,899 - __main__ - INFO - Scraping website content
+2025-03-28 23:27:54,219 - __main__ - INFO - Analyzing website content
+2025-03-28 23:27:54,704 - __main__ - INFO - Calculating AI readiness score
+2025-03-28 23:27:54,708 - __main__ - INFO - Generating lead qualification insights
+2025-03-28 23:27:54,711 - __main__ - INFO - Analysis completed successfully for URL: https://apple.com
+2025-03-28 23:34:51,493 - __main__ - INFO - Starting analysis for URL: https://apple.com
+2025-03-28 23:34:51,494 - __main__ - INFO - Scraping website content
+2025-03-28 23:34:56,007 - __main__ - INFO - Analyzing website content
+2025-03-28 23:34:56,547 - __main__ - INFO - Calculating AI readiness score
+2025-03-28 23:34:56,549 - __main__ - INFO - Generating lead qualification insights
+2025-03-28 23:34:56,551 - __main__ - INFO - Analysis completed successfully for URL: https://apple.com
+2025-03-28 23:50:32,323 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-28 23:50:42,826 - __main__ - INFO - Starting analysis for URL: https://getcohesiveai.com
+2025-03-28 23:50:42,827 - __main__ - INFO - Scraping website content
+2025-03-28 23:50:47,816 - __main__ - INFO - Analyzing website content
+2025-03-28 23:50:48,147 - __main__ - INFO - Calculating AI readiness score
+2025-03-28 23:50:48,148 - __main__ - INFO - Generating lead qualification insights
+2025-03-28 23:50:48,150 - __main__ - INFO - Analysis completed successfully for URL: https://getcohesiveai.com
+2025-03-31 16:17:50,003 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 16:17:52,383 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 16:19:32,373 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 16:20:56,911 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 16:21:19,321 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 16:21:22,451 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 16:21:25,555 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 16:21:32,732 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 16:21:36,741 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 16:21:43,881 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 16:21:48,961 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 16:21:52,044 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 16:21:55,050 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 16:21:59,142 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 16:22:01,181 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 16:22:03,283 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 16:22:05,311 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 16:22:08,408 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 16:22:12,524 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 16:22:14,591 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 16:22:16,593 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 16:22:19,657 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 16:22:23,704 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 16:22:27,783 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 16:22:29,802 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 16:22:38,010 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 16:29:21,041 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 16:29:30,430 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 16:29:35,573 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 16:29:47,743 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 16:29:53,900 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 16:29:57,006 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 16:30:01,176 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 16:30:10,316 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 16:30:12,349 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 16:34:07,125 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 16:34:12,396 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 16:34:17,623 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 16:34:20,717 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 16:38:14,548 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 16:46:05,533 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 16:46:07,712 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 16:55:58,706 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 16:56:08,953 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 16:57:34,908 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 16:57:37,197 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 16:58:47,680 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 16:58:47,680 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 16:58:52,928 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 16:58:52,928 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 16:58:59,110 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 16:58:59,115 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 16:59:09,395 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 16:59:09,400 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 16:59:15,641 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 16:59:15,641 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 16:59:25,881 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 16:59:25,881 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 19:08:07,254 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 19:08:08,687 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 19:17:52,539 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 19:17:53,728 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 19:19:36,220 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 19:19:37,664 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 19:20:05,741 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 19:20:05,785 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 19:20:05,907 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 19:20:08,315 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 19:20:08,357 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 19:20:08,450 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 19:20:47,678 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 19:20:47,683 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 19:20:47,736 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 19:22:30,289 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 19:22:30,374 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 19:22:30,379 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 19:22:47,665 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 19:22:48,903 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 19:25:38,890 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 19:25:38,893 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 19:25:38,896 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 19:25:39,084 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 19:28:40,969 - __main__ - INFO - Starting analysis for URL: https://getcohesiveai.com
+2025-03-31 19:28:40,969 - __main__ - INFO - Scraping website content
+2025-03-31 19:28:46,346 - __main__ - INFO - Analyzing website content
+2025-03-31 19:28:46,618 - __main__ - INFO - Calculating AI readiness score
+2025-03-31 19:28:46,618 - __main__ - INFO - Generating lead qualification insights
+2025-03-31 19:28:46,618 - __main__ - INFO - Analysis completed successfully for URL: https://getcohesiveai.com
+2025-03-31 19:34:37,871 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 19:34:38,213 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 19:34:38,483 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 19:34:38,550 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 19:34:40,180 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 20:10:36,123 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 20:10:39,182 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 20:14:02,429 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 20:14:05,508 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 20:14:17,584 - __main__ - INFO - Starting analysis for URL: https://apple.com
+2025-03-31 20:14:17,586 - __main__ - INFO - Scraping website content
+2025-03-31 20:14:21,584 - __main__ - INFO - Analyzing website content
+2025-03-31 20:14:22,087 - __main__ - INFO - Calculating AI readiness score
+2025-03-31 20:14:22,087 - __main__ - INFO - Generating lead qualification insights
+2025-03-31 20:14:22,087 - __main__ - INFO - Analysis completed successfully for URL: https://apple.com
+2025-03-31 20:20:48,330 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 20:20:50,801 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 20:25:26,699 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 20:27:49,815 - __main__ - INFO - Starting analysis for URL: https://getcohesiveai.com
+2025-03-31 20:27:49,815 - __main__ - INFO - Scraping website content
+2025-03-31 20:27:54,552 - __main__ - INFO - Analyzing website content
+2025-03-31 20:27:54,847 - __main__ - INFO - Calculating AI readiness score
+2025-03-31 20:27:54,847 - __main__ - INFO - Generating lead qualification insights
+2025-03-31 20:27:55,551 - __main__ - INFO - Financial data added for Getcohesiveai
+2025-03-31 20:27:55,552 - __main__ - ERROR - Error adding investment match: 'InvestmentCriteriaValidator' object has no attribute 'validate'
+Traceback (most recent call last):
+  File "C:\Users\vanes\caprae-ai-readiness\app.py", line 152, in analyze
+    investment_match = investment_validator.validate(
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'InvestmentCriteriaValidator' object has no attribute 'validate'
+2025-03-31 20:27:55,556 - __main__ - INFO - Analysis completed successfully for URL: https://getcohesiveai.com
+2025-03-31 20:39:46,207 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 20:39:54,128 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 20:40:00,663 - __main__ - INFO - Starting analysis for URL: https://apple.com
+2025-03-31 20:40:00,663 - __main__ - INFO - Scraping website content
+2025-03-31 20:40:04,597 - __main__ - INFO - Analyzing website content
+2025-03-31 20:40:04,907 - __main__ - INFO - Calculating AI readiness score
+2025-03-31 20:40:04,908 - __main__ - INFO - Generating lead qualification insights
+2025-03-31 20:40:09,877 - __main__ - INFO - Financial data added for Apple
+2025-03-31 20:40:09,877 - __main__ - ERROR - Error adding investment match: 'str' object has no attribute 'get'
+Traceback (most recent call last):
+  File "C:\Users\vanes\caprae-ai-readiness\app.py", line 152, in analyze
+    investment_match = investment_validator.validate(
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vanes\caprae-ai-readiness\modules\investment_criteria.py", line 78, in validate
+    industry_match = self._evaluate_industry_criteria(company_data)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vanes\caprae-ai-readiness\modules\investment_criteria.py", line 220, in _evaluate_industry_criteria
+    recurring_model = self._extract_recurring_revenue_model(company_data)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vanes\caprae-ai-readiness\modules\investment_criteria.py", line 743, in _extract_recurring_revenue_model
+    recurring_pct = self._extract_recurring_revenue_pct(company_data)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vanes\caprae-ai-readiness\modules\investment_criteria.py", line 619, in _extract_recurring_revenue_pct
+    if company_data.get('financials', {}).get('recurring_revenue_percentage') is not None:
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'str' object has no attribute 'get'
+2025-03-31 20:40:09,879 - __main__ - INFO - Analysis completed successfully for URL: https://apple.com
+2025-03-31 20:43:47,182 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 20:43:59,229 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 20:44:18,826 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 20:44:29,073 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 20:44:49,701 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 20:47:35,215 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 20:47:42,167 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 20:47:59,586 - __main__ - INFO - Starting analysis for URL: https://apple.com
+2025-03-31 20:47:59,587 - __main__ - INFO - Scraping website content
+2025-03-31 20:48:02,954 - __main__ - INFO - Analyzing website content
+2025-03-31 20:48:03,076 - __main__ - INFO - Calculating AI readiness score
+2025-03-31 20:48:03,077 - __main__ - INFO - Generating lead qualification insights
+2025-03-31 20:48:07,427 - __main__ - INFO - Financial data added for Apple
+2025-03-31 20:48:07,428 - __main__ - ERROR - Error adding investment match: 'str' object has no attribute 'get'
+Traceback (most recent call last):
+  File "C:\Users\vanes\caprae-ai-readiness\app.py", line 152, in analyze
+    investment_match = investment_validator.validate(
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vanes\caprae-ai-readiness\modules\investment_criteria.py", line 79, in validate
+    financial_match = self._evaluate_financial_criteria(company_data)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vanes\caprae-ai-readiness\modules\investment_criteria.py", line 301, in _evaluate_financial_criteria
+    revenue = self._extract_revenue(company_data)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vanes\caprae-ai-readiness\modules\investment_criteria.py", line 546, in _extract_revenue
+    if company_data.get('financials', {}).get('estimated_revenue') is not None:
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'str' object has no attribute 'get'
+2025-03-31 20:48:07,429 - __main__ - INFO - Analysis completed successfully for URL: https://apple.com
+2025-03-31 20:54:07,507 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 21:06:04,105 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 21:22:44,786 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 21:22:51,640 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-03-31 21:22:59,914 - __main__ - INFO - Starting analysis for URL: https://getcohesiveai.com
+2025-03-31 21:22:59,915 - __main__ - INFO - Scraping website content
+2025-03-31 21:23:04,979 - __main__ - INFO - Analyzing website content
+2025-03-31 21:23:05,047 - __main__ - INFO - Calculating AI readiness score
+2025-03-31 21:23:05,049 - __main__ - INFO - Generating lead qualification insights
+2025-03-31 21:23:05,474 - __main__ - INFO - Financial data added for Getcohesiveai
+2025-03-31 21:23:05,475 - __main__ - ERROR - Error adding investment match: 'str' object has no attribute 'get'
+Traceback (most recent call last):
+  File "C:\Users\vanes\caprae-ai-readiness\app.py", line 152, in analyze
+    investment_match = investment_validator.validate(
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vanes\caprae-ai-readiness\modules\investment_criteria.py", line 99, in validate
+    financial_match = self._evaluate_financial_criteria(company_data)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vanes\caprae-ai-readiness\modules\investment_criteria.py", line 339, in _evaluate_financial_criteria
+    revenue = self._extract_revenue(company_data)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vanes\caprae-ai-readiness\modules\investment_criteria.py", line 603, in _extract_revenue
+    if company_data.get('financials', {}).get('estimated_revenue') is not None:
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'str' object has no attribute 'get'
+2025-03-31 21:23:05,476 - __main__ - INFO - Analysis completed successfully for URL: https://getcohesiveai.com

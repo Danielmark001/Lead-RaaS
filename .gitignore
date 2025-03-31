@@ -1,0 +1,33 @@
+# Virtual environment
+new_env/
+venv/
+env/
+.new_env/
+
+# Python bytecode
+__pycache__/
+*.pyc
+*.pyo
+
+# Log files
+*.logs
+
+# IDE/editor files
+.vscode/
+.idea/
+
+# Python coverage and cache
+.coverage
+*.coveragerc
+*.tox/
+*.nox/
+*.hypothesis/
+
+# Django / Flask specific
+db.sqlite3
+*.db
+*.sqlite3
+
+# OS-specific files
+.DS_Store
+Thumbs.db
