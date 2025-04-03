@@ -611,3 +611,92 @@ AttributeError: 'str' object has no attribute 'get'
 2025-04-03 12:05:26,139 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
 2025-04-03 12:09:09,910 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
 2025-04-03 12:09:19,961 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-04-03 12:09:49,900 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-04-03 12:11:43,645 - __main__ - INFO - Starting analysis for URL: https://getcohesiveai.com
+2025-04-03 12:11:43,646 - __main__ - INFO - Scraping website content
+2025-04-03 12:11:48,329 - __main__ - INFO - Analyzing website content
+2025-04-03 12:11:48,522 - __main__ - INFO - Calculating AI readiness score
+2025-04-03 12:11:48,523 - __main__ - INFO - Generating lead qualification insights
+2025-04-03 12:11:49,062 - __main__ - INFO - Financial data added for Getcohesiveai
+2025-04-03 12:11:49,063 - __main__ - ERROR - Error adding investment match: 'str' object has no attribute 'get'
+Traceback (most recent call last):
+  File "C:\Users\vanes\caprae-ai-readiness\app.py", line 154, in analyze
+    investment_match = investment_validator.validate(
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vanes\caprae-ai-readiness\modules\investment_criteria.py", line 99, in validate
+    financial_match = self._evaluate_financial_criteria(company_data)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vanes\caprae-ai-readiness\modules\investment_criteria.py", line 339, in _evaluate_financial_criteria
+    revenue = self._extract_revenue(company_data)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vanes\caprae-ai-readiness\modules\investment_criteria.py", line 603, in _extract_revenue
+    if company_data.get('financials', {}).get('estimated_revenue') is not None:
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'str' object has no attribute 'get'
+2025-04-03 12:11:49,066 - __main__ - INFO - Analysis completed successfully for URL: https://getcohesiveai.com
+2025-04-03 12:23:48,616 - __main__ - INFO - Starting analysis for URL: https://getcohesiveai.com
+2025-04-03 12:23:48,617 - __main__ - INFO - Scraping website content
+2025-04-03 12:23:53,357 - __main__ - INFO - Analyzing website content
+2025-04-03 12:23:53,622 - __main__ - INFO - Calculating AI readiness score
+2025-04-03 12:23:53,624 - __main__ - INFO - Generating lead qualification insights
+2025-04-03 12:23:54,164 - __main__ - INFO - Financial data added for Getcohesiveai
+2025-04-03 12:23:54,168 - __main__ - ERROR - Error adding investment match: 'str' object has no attribute 'get'
+Traceback (most recent call last):
+  File "C:\Users\vanes\caprae-ai-readiness\app.py", line 154, in analyze
+    investment_match = investment_validator.validate(
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vanes\caprae-ai-readiness\modules\investment_criteria.py", line 99, in validate
+    financial_match = self._evaluate_financial_criteria(company_data)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vanes\caprae-ai-readiness\modules\investment_criteria.py", line 339, in _evaluate_financial_criteria
+    revenue = self._extract_revenue(company_data)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vanes\caprae-ai-readiness\modules\investment_criteria.py", line 603, in _extract_revenue
+    if company_data.get('financials', {}).get('estimated_revenue') is not None:
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'str' object has no attribute 'get'
+2025-04-03 12:23:54,175 - __main__ - INFO - Analysis completed successfully for URL: https://getcohesiveai.com
+2025-04-03 12:24:18,760 - __main__ - INFO - Starting analysis for URL: https://getcohesiveai.com
+2025-04-03 12:24:18,760 - __main__ - INFO - Scraping website content
+2025-04-03 12:24:22,241 - __main__ - INFO - Analyzing website content
+2025-04-03 12:24:22,477 - __main__ - INFO - Calculating AI readiness score
+2025-04-03 12:24:22,479 - __main__ - INFO - Generating lead qualification insights
+2025-04-03 12:24:23,777 - __main__ - INFO - Financial data added for Getcohesiveai
+2025-04-03 12:24:23,779 - __main__ - ERROR - Error adding investment match: 'str' object has no attribute 'get'
+Traceback (most recent call last):
+  File "C:\Users\vanes\caprae-ai-readiness\app.py", line 154, in analyze
+    investment_match = investment_validator.validate(
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vanes\caprae-ai-readiness\modules\investment_criteria.py", line 99, in validate
+    financial_match = self._evaluate_financial_criteria(company_data)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vanes\caprae-ai-readiness\modules\investment_criteria.py", line 339, in _evaluate_financial_criteria
+    revenue = self._extract_revenue(company_data)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vanes\caprae-ai-readiness\modules\investment_criteria.py", line 603, in _extract_revenue
+    if company_data.get('financials', {}).get('estimated_revenue') is not None:
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'str' object has no attribute 'get'
+2025-04-03 12:24:23,781 - __main__ - INFO - Analysis completed successfully for URL: https://getcohesiveai.com
+2025-04-03 12:24:36,718 - __main__ - INFO - Starting analysis for URL: https://getcohesiveai.com
+2025-04-03 12:24:36,719 - __main__ - INFO - Scraping website content
+2025-04-03 12:24:40,495 - __main__ - INFO - Analyzing website content
+2025-04-03 12:24:40,710 - __main__ - INFO - Calculating AI readiness score
+2025-04-03 12:24:40,711 - __main__ - INFO - Generating lead qualification insights
+2025-04-03 12:24:41,229 - __main__ - INFO - Financial data added for Getcohesiveai
+2025-04-03 12:24:41,231 - __main__ - ERROR - Error adding investment match: 'str' object has no attribute 'get'
+Traceback (most recent call last):
+  File "C:\Users\vanes\caprae-ai-readiness\app.py", line 154, in analyze
+    investment_match = investment_validator.validate(
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vanes\caprae-ai-readiness\modules\investment_criteria.py", line 99, in validate
+    financial_match = self._evaluate_financial_criteria(company_data)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vanes\caprae-ai-readiness\modules\investment_criteria.py", line 339, in _evaluate_financial_criteria
+    revenue = self._extract_revenue(company_data)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\vanes\caprae-ai-readiness\modules\investment_criteria.py", line 603, in _extract_revenue
+    if company_data.get('financials', {}).get('estimated_revenue') is not None:
+       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'str' object has no attribute 'get'
+2025-04-03 12:24:41,233 - __main__ - INFO - Analysis completed successfully for URL: https://getcohesiveai.com
