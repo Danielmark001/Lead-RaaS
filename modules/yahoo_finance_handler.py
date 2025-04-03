@@ -44,23 +44,121 @@ class YahooFinanceHandler:
                 'enableEnhancedTrivialQuery': True
             }
             
-            response = requests.get(self.search_url, headers=self.headers, params=params)
-            data = response.json()
+            # Use timeout and handle connection issues
+            response = requests.get(
+                self.search_url, 
+                headers=self.headers, 
+                params=params,
+                timeout=10  # 10 second timeout
+            )
             
+            # Check if the request was successful
+            if response.status_code != 200:
+                logger.warning(f"Search ticker API returned status code {response.status_code}")
+                return self._search_alternative(company_name)
+            
+            # Parse the JSON response
+            try:
+                data = response.json()
+            except (json.JSONDecodeError, ValueError) as e:
+                logger.error(f"Failed to parse JSON response: {str(e)}")
+                return self._search_alternative(company_name)
+            
+            # Check if the response has the expected structure
             if 'quotes' in data and data['quotes']:
                 # Filter quotes to get only equity type
                 equity_quotes = [quote for quote in data['quotes'] if quote.get('quoteType') == 'EQUITY']
                 
                 if equity_quotes:
-                    # Sort by name similarity to input
+                    # Sort by name similarity to input (basic implementation)
                     return equity_quotes[0]['symbol']
             
             # Try alternative method if no results
             return self._search_alternative(company_name)
             
+        except requests.RequestException as e:
+            logger.error(f"Request error searching for ticker: {str(e)}")
+            return self._search_alternative(company_name)
         except Exception as e:
-            logger.error(f"Error searching for ticker: {str(e)}")
+            logger.error(f"Unexpected error searching for ticker: {str(e)}")
             return None
+
+    def get_company_profile(self, ticker):
+        """Get company profile information with improved error handling"""
+        try:
+            url = self.company_url.format(symbol=ticker)
+            
+            # Use timeout and handle connection issues
+            response = requests.get(
+                url, 
+                headers=self.headers,
+                timeout=10  # 10 second timeout
+            )
+            
+            # Check if the request was successful
+            if response.status_code != 200:
+                logger.warning(f"Company profile API returned status code {response.status_code}")
+                return {}
+            
+            # Parse HTML with error handling
+            try:
+                soup = BeautifulSoup(response.text, 'html.parser')
+            except Exception as e:
+                logger.error(f"Failed to parse HTML: {str(e)}")
+                return {}
+            
+            profile = {}
+            
+            # Company name - with proper error handling
+            try:
+                name_element = soup.find('h1', {'class': 'D(ib)'})
+                if name_element:
+                    profile['name'] = name_element.text.strip()
+            except Exception as e:
+                logger.debug(f"Failed to extract company name: {str(e)}")
+            
+            # Company description
+            try:
+                desc_section = soup.find('section', {'class': 'quote-sub-section'})
+                if desc_section:
+                    desc_paragraph = desc_section.find('p')
+                    if desc_paragraph:
+                        profile['description'] = desc_paragraph.text.strip()
+            except Exception as e:
+                logger.debug(f"Failed to extract company description: {str(e)}")
+            
+            # Sector and industry
+            try:
+                sector_industry_div = soup.find('div', string=re.compile('Sector|Industry'))
+                if sector_industry_div:
+                    parent = sector_industry_div.parent
+                    spans = parent.find_all('span')
+                    if len(spans) >= 4:
+                        profile['sector'] = spans[1].text.strip()
+                        profile['industry'] = spans[3].text.strip()
+            except Exception as e:
+                logger.debug(f"Failed to extract sector/industry: {str(e)}")
+            
+            # Get number of employees
+            try:
+                employees_div = soup.find('div', string=re.compile('Full Time Employees'))
+                if employees_div:
+                    parent = employees_div.parent
+                    spans = parent.find_all('span')
+                    if len(spans) >= 2:
+                        employees_text = spans[1].text.strip()
+                        profile['employees'] = int(employees_text.replace(',', ''))
+            except Exception as e:
+                logger.debug(f"Failed to extract employee count: {str(e)}")
+            
+            return profile
+            
+        except requests.RequestException as e:
+            logger.error(f"Request error getting company profile for {ticker}: {str(e)}")
+            return {}
+        except Exception as e:
+            logger.error(f"Unexpected error getting company profile for {ticker}: {str(e)}")
+            return {}
     
     def _search_alternative(self, company_name):
         """Alternative search method using company description"""
@@ -139,51 +237,7 @@ class YahooFinanceHandler:
             logger.error(f"Error getting financials for {ticker}: {str(e)}")
             return None
     
-    def get_company_profile(self, ticker):
-        """Get company profile information"""
-        try:
-            url = self.company_url.format(symbol=ticker)
-            response = requests.get(url, headers=self.headers)
-            
-            # Parse HTML to extract company profile
-            soup = BeautifulSoup(response.text, 'html.parser')
-            
-            profile = {}
-            
-            # Company name
-            with suppress(Exception):
-                profile['name'] = soup.find('h1', {'class': 'D(ib)'}).text.strip()
-            
-            # Company description
-            with suppress(Exception):
-                profile['description'] = soup.find('section', {'class': 'quote-sub-section'}).find('p').text.strip()
-            
-            # Sector and industry
-            sector_industry_div = soup.find('div', string=re.compile('Sector|Industry'))
-            if sector_industry_div:
-                parent = sector_industry_div.parent
-                spans = parent.find_all('span')
-                if len(spans) >= 4:
-                    with suppress(Exception):
-                        profile['sector'] = spans[1].text.strip()
-                    with suppress(Exception):
-                        profile['industry'] = spans[3].text.strip()
-            
-            # Get number of employees
-            employees_div = soup.find('div', string=re.compile('Full Time Employees'))
-            if employees_div:
-                parent = employees_div.parent
-                spans = parent.find_all('span')
-                if len(spans) >= 2:
-                    with suppress(Exception):
-                        employees_text = spans[1].text.strip()
-                        profile['employees'] = int(employees_text.replace(',', ''))
-            
-            return profile
-            
-        except Exception as e:
-            logger.error(f"Error getting company profile for {ticker}: {str(e)}")
-            return {}
+    
     
     def get_stock_data(self, ticker):
         """Get stock price data"""

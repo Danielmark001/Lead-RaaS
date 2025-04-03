@@ -4,7 +4,6 @@ from sklearn.neural_network import MLPClassifier
 import logging
 import re
 import torch
-from transformers import BertTokenizer, BertModel
 import json
 
 logger = logging.getLogger(__name__)
@@ -21,14 +20,16 @@ class InvestmentCriteriaValidator:
         self.rf_model = RandomForestClassifier(n_estimators=200, random_state=42)
         self.mlp_model = MLPClassifier(hidden_layer_sizes=(100, 50), random_state=42)
         
-        # Initialize BERT for text analysis (pre-trained model)
+        # Initialize BERT for text analysis if available
+        self.has_bert = False
         try:
+            # Import BERT components only if available
+            from transformers import BertTokenizer, BertModel
             self.bert_tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
             self.bert_model = BertModel.from_pretrained('bert-base-uncased')
             self.has_bert = True
-        except Exception as e:
-            logger.warning(f"Could not load BERT model: {str(e)}. Falling back to rule-based analysis.")
-            self.has_bert = False
+        except (ImportError, ModuleNotFoundError) as e:
+            logger.warning(f"BERT not available: {str(e)}. Falling back to rule-based analysis.")
             
         # Define investment criteria thresholds
         self.criteria = {
@@ -53,44 +54,61 @@ class InvestmentCriteriaValidator:
                 'min': 1000000000  # $1 billion
             }
         }
-    def get_text_from_data(company_data, key='text_data'):
+    
+    def get_text_from_data(self, company_data, key='text_data'):
+        """Helper method to safely extract text from company_data"""
+        # Handle string input (JSON)
         if isinstance(company_data, str):
             try:
                 company_data = json.loads(company_data)
             except json.JSONDecodeError:
-                # Handle the case where the string isn't valid JSON
                 return None
-        """Helper method to safely extract text from company_data"""
-        text_data = company_data.get(key)
         
-        # If text_data is a dictionary, try to get the 'content' field or a similar field
-        
-        
+        # If we have a dictionary, extract the requested key
+        if isinstance(company_data, dict):
+            text_data = company_data.get(key)
+            return text_data
+            
+        return None
+    
     def validate(self, analysis_results, sales_insights, financials=None, business_details=None, industry_details=None):
         """
         Validates if a company meets Caprae Capital's investment criteria
         Returns a detailed assessment of criteria match
         """
+        # Safely handle input data
+        company_data = {}
+        
+        # Handle analysis_results - ensure it's a dictionary
+        if isinstance(analysis_results, str):
+            try:
+                analysis_results = json.loads(analysis_results)
+            except json.JSONDecodeError:
+                logger.error("Failed to parse analysis_results as JSON")
+                analysis_results = {}
+        
+        # Handle sales_insights - ensure it's a dictionary
+        if isinstance(sales_insights, str):
+            try:
+                sales_insights = json.loads(sales_insights)
+            except json.JSONDecodeError:
+                logger.error("Failed to parse sales_insights as JSON")
+                sales_insights = {}
         
         # Combine all available data
-        company_data = {
-            **analysis_results,
-            'sales_insights': sales_insights
-        }
-        if isinstance(company_data, str):
-            try:
-                company_data = json.loads(company_data)
-            except json.JSONDecodeError:
-                # Handle the case where the string isn't valid JSON
-                return None
+        if isinstance(analysis_results, dict):
+            company_data.update(analysis_results)
         
-        if financials:
+        if isinstance(sales_insights, dict):
+            company_data['sales_insights'] = sales_insights
+        
+        if financials and isinstance(financials, dict):
             company_data['financials'] = financials
             
-        if business_details:
+        if business_details and isinstance(business_details, dict):
             company_data['business_details'] = business_details
             
-        if industry_details:
+        if industry_details and isinstance(industry_details, dict):
             company_data['industry_details'] = industry_details
         
         # Evaluate each criterion category
@@ -135,12 +153,6 @@ class InvestmentCriteriaValidator:
     
     def _evaluate_business_criteria(self, company_data):
         """Evaluates business-related investment criteria"""
-        if isinstance(company_data, str):
-            try:
-                company_data = json.loads(company_data)
-            except json.JSONDecodeError:
-                # Handle the case where the string isn't valid JSON
-                return None
         score = 0
         max_score = 0
         criteria_met = []
@@ -223,12 +235,6 @@ class InvestmentCriteriaValidator:
         }
     
     def _evaluate_industry_criteria(self, company_data):
-        if isinstance(company_data, str):
-            try:
-                company_data = json.loads(company_data)
-            except json.JSONDecodeError:
-                # Handle the case where the string isn't valid JSON
-                return None
         """Evaluates industry-related investment criteria"""
         score = 0
         max_score = 0
@@ -322,12 +328,6 @@ class InvestmentCriteriaValidator:
         }
     
     def _evaluate_financial_criteria(self, company_data):
-        if isinstance(company_data, str):
-            try:
-                company_data = json.loads(company_data)
-            except json.JSONDecodeError:
-                # Handle the case where the string isn't valid JSON
-                return None
         """Evaluates financial-related investment criteria"""
         score = 0
         max_score = 0
@@ -432,7 +432,6 @@ class InvestmentCriteriaValidator:
         }
     
     def _identify_key_strengths(self, company_data, business_match, industry_match, financial_match):
-        
         """Identifies key strengths of the company relative to investment criteria"""
         strengths = []
         
@@ -477,12 +476,6 @@ class InvestmentCriteriaValidator:
         return concerns
     
     def _calculate_confidence(self, company_data):
-        if isinstance(company_data, str):
-            try:
-                company_data = json.loads(company_data)
-            except json.JSONDecodeError:
-                # Handle the case where the string isn't valid JSON
-                return None
         """Calculates confidence level in the assessment based on data completeness"""
         # Count available data points
         available_data = 0
@@ -532,12 +525,6 @@ class InvestmentCriteriaValidator:
         return confidence
     
     def _get_data_completeness(self, company_data):
-        if isinstance(company_data, str):
-            try:
-                company_data = json.loads(company_data)
-            except json.JSONDecodeError:
-                # Handle the case where the string isn't valid JSON
-                return None
         """Returns a breakdown of data completeness by category"""
         completeness = {
             'financial': 0,
@@ -589,15 +576,9 @@ class InvestmentCriteriaValidator:
         
         return completeness
     
-    # Data extraction methods using advanced NLP where available
+    # Data extraction methods
     
     def _extract_revenue(self, company_data):
-        if isinstance(company_data, str):
-            try:
-                company_data = json.loads(company_data)
-            except json.JSONDecodeError:
-                # Handle the case where the string isn't valid JSON
-                return None
         """Extracts revenue from company data"""
         # First, check if we have verified financial data
         if company_data.get('financials', {}).get('estimated_revenue') is not None:
@@ -611,12 +592,6 @@ class InvestmentCriteriaValidator:
         return None
     
     def _extract_cash_flow(self, company_data):
-        if isinstance(company_data, str):
-            try:
-                company_data = json.loads(company_data)
-            except json.JSONDecodeError:
-                # Handle the case where the string isn't valid JSON
-                return None
         """Extracts annual cash flow from company data"""
         # First, check if we have verified financial data
         if company_data.get('financials', {}).get('estimated_annual_cash_flow') is not None:
@@ -634,12 +609,6 @@ class InvestmentCriteriaValidator:
         return None
     
     def _extract_ebitda_margin(self, company_data):
-        if isinstance(company_data, str):
-            try:
-                company_data = json.loads(company_data)
-            except json.JSONDecodeError:
-                # Handle the case where the string isn't valid JSON
-                return None
         """Extracts EBITDA margin from company data"""
         # First, check if we have verified financial data
         if company_data.get('financials', {}).get('ebitda_margin') is not None:
@@ -648,12 +617,6 @@ class InvestmentCriteriaValidator:
         return None
     
     def _extract_profitability_years(self, company_data):
-        if isinstance(company_data, str):
-            try:
-                company_data = json.loads(company_data)
-            except json.JSONDecodeError:
-                # Handle the case where the string isn't valid JSON
-                return None
         """Extracts years of profitability from company data"""
         # Check if we have verified financial data
         if company_data.get('financials', {}).get('profitability_years') is not None:
@@ -662,12 +625,6 @@ class InvestmentCriteriaValidator:
         return None
     
     def _extract_capex(self, company_data):
-        if isinstance(company_data, str):
-            try:
-                company_data = json.loads(company_data)
-            except json.JSONDecodeError:
-                # Handle the case where the string isn't valid JSON
-                return None
         """Extracts capital expenditure requirements from company data"""
         # Check if we have verified financial data
         if company_data.get('financials', {}).get('capex_requirements') is not None:
@@ -695,19 +652,14 @@ class InvestmentCriteriaValidator:
         return None
     
     def _extract_recurring_revenue_pct(self, company_data):
-        if isinstance(company_data, str):
-            try:
-                company_data = json.loads(company_data)
-            except json.JSONDecodeError:
-                # Handle the case where the string isn't valid JSON
-                return None
-        financials = company_data.get('financials', None)
-
+        """Extracts recurring revenue percentage from company data"""
+        financials = company_data.get('financials', {})
+        
+        # Check if it's a dictionary to avoid errors
         if not isinstance(financials, dict):
-            print("Error: financials is not a dictionary:", financials)
-            return None  # or handle the error in a way that's suitable for your use case
+            return None
 
-        # Proceed with the usual logic if financials is a dictionary
+        # Extract recurring revenue percentage
         if financials.get('recurring_revenue_percentage') is not None:
             recurring_pct = financials['recurring_revenue_percentage']
             return recurring_pct
@@ -725,46 +677,29 @@ class InvestmentCriteriaValidator:
                 return 40  # Consulting can have moderate recurring revenue
         return None
     
-    
     def _extract_market_position(self, company_data):
-        if isinstance(company_data, str):
-            try:
-                company_data = json.loads(company_data)
-            except json.JSONDecodeError:
-                # Handle the case where the string isn't valid JSON
-                return None
         """Extracts market position from company data"""
         # Check if we have verified business details
         if company_data.get('business_details', {}).get('market_position') is not None:
             return company_data['business_details']['market_position']
         
         # Try to infer from text data using BERT if available
-        if self.has_bert and 'text_data' in company_data:
-            text = company_data['text_data']
-            prediction = self.bert_model(text)
-
-            # Assume the model returns a list of predictions, get the first one
-            predicted_label = prediction[0]['label']
-            
-            # In case you have predefined labels for market position, like 'high', 'moderate', 'low':
-            if predicted_label.lower() == 'high':
-                return 'high'
-            elif predicted_label.lower() == 'moderate':
-                return 'moderate'
-            elif predicted_label.lower() == 'low':
-                return 'low'
-            else:
-                return 'unknown'  # Default if model is not clear
+        if self.has_bert:
+            text_data = self.get_text_from_data(company_data)
+            if text_data:
+                try:
+                    # Process text with BERT
+                    inputs = self.bert_tokenizer(text_data, return_tensors="pt", truncation=True, max_length=512)
+                    outputs = self.bert_model(**inputs)
+                    # Further processing would be done here in a real implementation
+                    # For now, return a default value
+                    return 'moderate'
+                except Exception as e:
+                    logger.error(f"Error processing text with BERT: {str(e)}")
         
         return None
     
     def _extract_customer_diversity(self, company_data):
-        if isinstance(company_data, str):
-            try:
-                company_data = json.loads(company_data)
-            except json.JSONDecodeError:
-                # Handle the case where the string isn't valid JSON
-                return None
         """Extracts customer diversity from company data"""
         # Check if we have verified business details
         if company_data.get('business_details', {}).get('customer_diversity') is not None:
@@ -773,12 +708,6 @@ class InvestmentCriteriaValidator:
         return None
     
     def _extract_operations_complexity(self, company_data):
-        if isinstance(company_data, str):
-            try:
-                company_data = json.loads(company_data)
-            except json.JSONDecodeError:
-                # Handle the case where the string isn't valid JSON
-                return None
         """Extracts operations complexity from company data"""
         # Check if we have verified business details
         if company_data.get('business_details', {}).get('operations_complexity') is not None:
@@ -804,12 +733,6 @@ class InvestmentCriteriaValidator:
         return None
     
     def _extract_management_strength(self, company_data):
-        if isinstance(company_data, str):
-            try:
-                company_data = json.loads(company_data)
-            except json.JSONDecodeError:
-                # Handle the case where the string isn't valid JSON
-                return None
         """Extracts management team strength from company data"""
         # Check if we have verified business details
         if company_data.get('business_details', {}).get('middle_management_strength') is not None:
@@ -828,12 +751,6 @@ class InvestmentCriteriaValidator:
         return None
     
     def _extract_owner_status(self, company_data):
-        if isinstance(company_data, str):
-            try:
-                company_data = json.loads(company_data)
-            except json.JSONDecodeError:
-                # Handle the case where the string isn't valid JSON
-                return None
         """Extracts owner's status regarding exit/reduced role"""
         # Check if we have verified business details
         if company_data.get('business_details', {}).get('owner_status') is not None:
@@ -842,12 +759,6 @@ class InvestmentCriteriaValidator:
         return None
     
     def _extract_service_based(self, company_data):
-        if isinstance(company_data, str):
-            try:
-                company_data = json.loads(company_data)
-            except json.JSONDecodeError:
-                # Handle the case where the string isn't valid JSON
-                return None
         """Determines if company is service-based"""
         # Check if we have verified industry details
         if company_data.get('industry_details', {}).get('industry_type') is not None:
@@ -879,12 +790,6 @@ class InvestmentCriteriaValidator:
         return None
     
     def _extract_recurring_revenue_model(self, company_data):
-        if isinstance(company_data, str):
-            try:
-                company_data = json.loads(company_data)
-            except json.JSONDecodeError:
-                # Handle the case where the string isn't valid JSON
-                return None
         """Evaluates strength of recurring revenue model"""
         # Check recurring revenue percentage
         recurring_pct = self._extract_recurring_revenue_pct(company_data)
@@ -913,12 +818,6 @@ class InvestmentCriteriaValidator:
         return None
     
     def _extract_b2b_focus(self, company_data):
-        if isinstance(company_data, str):
-            try:
-                company_data = json.loads(company_data)
-            except json.JSONDecodeError:
-                # Handle the case where the string isn't valid JSON
-                return None
         """Determines if company is B2B focused"""
         # Check if we have verified industry details
         if company_data.get('industry_details', {}).get('b2b_percentage') is not None:
@@ -930,34 +829,23 @@ class InvestmentCriteriaValidator:
             else:
                 return 'b2c'
         
-        # Try to use BERT for text analysis if available
-        if self.has_bert and 'text_data' in company_data:
-            # This would use the BERT model to analyze text and classify B2B vs B2C
-            # For simplicity, we'll check for B2B indicators in the company data
-            data_str = str(company_data).lower()
-            b2b_indicators = ['enterprise', 'business customer', 'corporate', 'client', 
-                           'organization', 'solution', 'platform']
-            b2c_indicators = ['consumer', 'personal', 'individual', 'user', 'customer']
-            
-            b2b_count = sum(1 for ind in b2b_indicators if ind in data_str)
-            b2c_count = sum(1 for ind in b2c_indicators if ind in data_str)
-            
-            if b2b_count > b2c_count * 2:
-                return 'b2b'
-            elif b2b_count > b2c_count:
-                return 'mixed'
-            else:
-                return 'b2c'
+        # Try simple text analysis if BERT is not available
+        data_str = str(company_data).lower()
+        b2b_indicators = ['enterprise', 'business customer', 'corporate', 'client', 
+                       'organization', 'solution', 'platform']
+        b2c_indicators = ['consumer', 'personal', 'individual', 'user', 'customer']
         
-        return None
+        b2b_count = sum(1 for ind in b2b_indicators if ind in data_str)
+        b2c_count = sum(1 for ind in b2c_indicators if ind in data_str)
+        
+        if b2b_count > b2c_count * 2:
+            return 'b2b'
+        elif b2b_count > b2c_count:
+            return 'mixed'
+        else:
+            return 'b2c'
     
     def _extract_competitive_landscape(self, company_data):
-        if isinstance(company_data, str):
-            try:
-                company_data = json.loads(company_data)
-            except json.JSONDecodeError:
-                # Handle the case where the string isn't valid JSON
-                return None
         """Evaluates the competitive landscape"""
         # Check if we have verified industry details
         if company_data.get('industry_details', {}).get('competitive_landscape') is not None:
@@ -996,5 +884,16 @@ class InvestmentCriteriaValidator:
     def _extract_business_model(self, company_data):
         """Helper method to extract business model"""
         # This would normally use NLP to extract from text content
-        # Simplified version for demo purposes
+        # Simplified version checks for keywords in the data
+        data_str = str(company_data).lower()
+        
+        if 'subscription' in data_str:
+            return 'subscription'
+        elif 'saas' in data_str:
+            return 'saas'
+        elif 'service' in data_str:
+            return 'service'
+        elif 'consulting' in data_str:
+            return 'consulting'
+        
         return None

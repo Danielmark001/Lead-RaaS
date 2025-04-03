@@ -3699,4 +3699,289 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
+
+  async function loadFinancialData(fileName = "monthly_profits.csv") {
+    try {
+      // Show loading state
+      const resultsSection = document.getElementById("results-section");
+      if (resultsSection) {
+        const loadingElement = document.createElement("div");
+        loadingElement.className = "loading-container";
+        loadingElement.innerHTML = `
+        <div class="spinner"></div>
+        <p>Loading financial data...</p>
+      `;
+        resultsSection.appendChild(loadingElement);
+      }
+
+      // Fetch financial data from server
+      const response = await fetch(`/get-financial-data?file=${fileName}`);
+      const result = await response.json();
+
+      if (result.error) {
+        showError(`Failed to load financial data: ${result.error}`);
+        return null;
+      }
+
+      // Parse CSV data
+      return result.data;
+    } catch (error) {
+      console.error("Error loading financial data:", error);
+      showError(`Failed to load financial data: ${error.message}`);
+      return null;
+    } finally {
+      // Remove loading element
+      const loadingElements = document.querySelectorAll(".loading-container");
+      loadingElements.forEach((el) => el.remove());
+    }
+  }
+
+  // Function to parse CSV data
+  function parseCSV(csvText) {
+    return new Promise((resolve, reject) => {
+      Papa.parse(csvText, {
+        header: true,
+        dynamicTyping: true,
+        skipEmptyLines: true,
+        delimitersToGuess: [",", "\t", "|", ";"],
+        complete: (results) => {
+          if (results.errors.length > 0) {
+            console.error("CSV parsing errors:", results.errors);
+            reject(new Error("Error parsing CSV data"));
+            return;
+          }
+          resolve(results.data);
+        },
+        error: (error) => {
+          console.error("CSV parsing error:", error);
+          reject(error);
+        },
+      });
+    });
+  }
+
+  // Function to prepare data for chart visualization
+  function prepareChartData(data, dateKey = "Date", valueKey = "Profit") {
+    // Group data by month
+    const groupedData = _.groupBy(data, (row) => {
+      if (!row[dateKey]) return "Unknown";
+      const date = new Date(row[dateKey]);
+      return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
+        2,
+        "0"
+      )}`;
+    });
+
+    // Calculate total by month
+    const chartData = _.map(groupedData, (group, yearMonth) => ({
+      yearMonth,
+      totalValue: _.sumBy(group, valueKey),
+    }));
+
+    // Sort data by date
+    return _.sortBy(chartData, "yearMonth");
+  }
+
+  // Enhanced version of the MonthlyProfitChart React component
+  const MonthlyProfitChart = () => {
+    const [data, setData] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          setLoading(true);
+
+          // Fetch data from server
+          const csvData = await loadFinancialData("monthly_profits.csv");
+          if (!csvData) {
+            setError("Failed to load financial data");
+            setLoading(false);
+            return;
+          }
+
+          // Parse CSV data
+          const parsedData = await parseCSV(csvData);
+
+          // Prepare data for chart
+          const chartData = prepareChartData(parsedData, "Date", "Profit");
+
+          setData(chartData);
+          setLoading(false);
+        } catch (error) {
+          console.error("Error fetching financial data:", error);
+          setError(`Error: ${error.message}`);
+          setLoading(false);
+        }
+      };
+
+      fetchData();
+    }, []);
+
+    if (loading) {
+      return (
+        <div className="loading-container">
+          <div className="spinner"></div>
+          <p>Loading financial data...</p>
+        </div>
+      );
+    }
+
+    if (error) {
+      return (
+        <div className="error-message">
+          <i className="fas fa-exclamation-circle"></i> {error}
+        </div>
+      );
+    }
+
+    if (data.length === 0) {
+      return (
+        <div className="empty-state">
+          <p>No financial data available</p>
+        </div>
+      );
+    }
+
+    return (
+      <div className="chart-container">
+        <h3>Monthly Profit Trend</h3>
+        <ResponsiveContainer width="100%" height={300}>
+          <LineChart
+            data={data}
+            margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+          >
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis
+              dataKey="yearMonth"
+              tickFormatter={(value) => {
+                const [year, month] = value.split("-");
+                return `${month}/${year.slice(2)}`;
+              }}
+            />
+            <YAxis tickFormatter={(value) => `$${value.toLocaleString()}`} />
+            <Tooltip
+              formatter={(value) => [`$${value.toLocaleString()}`, "Profit"]}
+              labelFormatter={(value) => {
+                const [year, month] = value.split("-");
+                const date = new Date(parseInt(year), parseInt(month) - 1);
+                return date.toLocaleDateString("en-US", {
+                  month: "long",
+                  year: "numeric",
+                });
+              }}
+            />
+            <Legend />
+            <Line
+              type="monotone"
+              dataKey="totalValue"
+              name="Monthly Profit"
+              stroke="#4f46e5"
+              activeDot={{ r: 8 }}
+              strokeWidth={2}
+            />
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
+    );
+  };
+
+  // Add a button to show financial data visualization
+  function addFinancialDataButton() {
+    // Check if we're on the results page
+    const resultsSection = document.getElementById("results-section");
+    if (!resultsSection || resultsSection.style.display === "none") return;
+
+    // Check if button already exists
+    if (document.getElementById("show-financial-data-btn")) return;
+
+    // Create button container
+    const buttonContainer = document.createElement("div");
+    buttonContainer.className = "financial-data-actions";
+    buttonContainer.style.margin = "2rem 0";
+    buttonContainer.style.textAlign = "center";
+
+    // Create button
+    const button = document.createElement("button");
+    button.id = "show-financial-data-btn";
+    button.className = "action-btn";
+    button.innerHTML =
+      '<i class="fas fa-chart-line"></i> Show Financial Analysis';
+
+    // Add event listener
+    button.addEventListener("click", showFinancialDataVisualization);
+
+    // Add to page
+    buttonContainer.appendChild(button);
+    resultsSection.appendChild(buttonContainer);
+  }
+
+  // Function to show financial data visualization
+  async function showFinancialDataVisualization() {
+    // Show loading
+    const resultsElement = document.getElementById("results");
+    if (!resultsElement) return;
+
+    const loadingElement = document.createElement("div");
+    loadingElement.className = "loading-container";
+    loadingElement.innerHTML = `
+    <div class="spinner"></div>
+    <p>Preparing financial analysis...</p>
+  `;
+    resultsElement.appendChild(loadingElement);
+
+    try {
+      // First, ensure we have sample data
+      await fetch("/generate-sample-data");
+
+      // Create financial dashboard section
+      const dashboardSection = document.createElement("div");
+      dashboardSection.className = "dashboard-section";
+      dashboardSection.innerHTML = `
+      <div class="section-header">
+        <i class="fas fa-chart-line"></i>
+        <h3>Financial Analysis</h3>
+      </div>
+      <div id="financial-visualization-container" class="financial-container"></div>
+    `;
+
+      // Add to results
+      resultsElement.appendChild(dashboardSection);
+
+      // Remove loading
+      loadingElement.remove();
+
+      // Render the React component
+      const reactRoot = ReactDOM.createRoot(
+        document.getElementById("financial-visualization-container")
+      );
+      reactRoot.render(React.createElement(MonthlyProfitChart));
+    } catch (error) {
+      console.error("Error showing financial visualization:", error);
+      loadingElement.remove();
+      showError(`Failed to show financial analysis: ${error.message}`);
+    }
+  }
+
+  // Add the financial button when results are displayed
+  document.addEventListener("DOMContentLoaded", () => {
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (
+          mutation.type === "attributes" &&
+          mutation.attributeName === "style" &&
+          mutation.target.id === "results-section" &&
+          mutation.target.style.display !== "none"
+        ) {
+          addFinancialDataButton();
+        }
+      });
+    });
+
+    const resultsSection = document.getElementById("results-section");
+    if (resultsSection) {
+      observer.observe(resultsSection, { attributes: true });
+    }
+  });
 });

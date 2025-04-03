@@ -607,6 +607,137 @@ def save_lead():
     except Exception as e:
         logger.error(f"Save lead failed: {str(e)}", exc_info=True)
         return jsonify({"error": f"Failed to save lead: {str(e)}"}), 500
+    
+@app.route('/get-financial-data', methods=['GET'])
+def get_financial_data():
+    """Route to fetch financial data for visualization"""
+    try:
+        # Get the requested file name (default to monthly_profits.csv)
+        file_name = request.args.get('file', 'monthly_profits.csv')
+        
+        # Validate file name to prevent directory traversal
+        if '..' in file_name or file_name.startswith('/'):
+            return jsonify({'error': 'Invalid file name'}), 400
+        
+        # Set the path to the data file
+        data_path = os.path.join('data', file_name)
+        
+        # Check if the file exists
+        if not os.path.exists(data_path):
+            logger.warning(f"Financial data file not found: {data_path}")
+            return jsonify({'error': 'Financial data file not found'}), 404
+        
+        # Read the file
+        with open(data_path, 'r') as f:
+            data = f.read()
+        
+        # Return the data
+        return jsonify({'status': 'success', 'data': data})
+        
+    except Exception as e:
+        logger.error(f"Error fetching financial data: {str(e)}")
+        return jsonify({'error': f"Failed to fetch financial data: {str(e)}"}), 500
+
+# Add this route to generate sample financial data if needed
+@app.route('/generate-sample-data', methods=['GET'])
+def generate_sample_data():
+    """Generate sample financial data for testing"""
+    try:
+        # Create data directory if it doesn't exist
+        os.makedirs('data', exist_ok=True)
+        
+        # Path to sample data file
+        data_path = os.path.join('data', 'monthly_profits.csv')
+        
+        # Generate sample data if file doesn't exist
+        if not os.path.exists(data_path):
+            # Create sample data - 12 months of profit data
+            months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+            current_year = datetime.now().year
+            
+            # Create CSV file
+            with open(data_path, 'w', newline='') as csvfile:
+                writer = csv.writer(csvfile)
+                writer.writerow(['Date', 'Profit', 'Expenses', 'Revenue'])
+                
+                # Add data for each month
+                for i, month in enumerate(months):
+                    # Generate realistic profits (increasing trend with some variation)
+                    base_profit = 50000 + i * 5000  # Increasing trend
+                    variation = np.random.randint(-8000, 8000)  # Random variation
+                    profit = base_profit + variation
+                    
+                    # Calculate revenue and expenses
+                    expenses = base_profit * 0.6 + np.random.randint(-5000, 5000)
+                    revenue = profit + expenses
+                    
+                    # Format date as YYYY-MM-DD
+                    date = f"{current_year}-{i+1:02d}-15"
+                    
+                    writer.writerow([date, profit, expenses, revenue])
+            
+            logger.info(f"Generated sample financial data at {data_path}")
+            return jsonify({'status': 'success', 'message': 'Sample financial data generated'})
+        else:
+            return jsonify({'status': 'success', 'message': 'Sample data already exists'})
+            
+    except Exception as e:
+        logger.error(f"Error generating sample data: {str(e)}")
+        return jsonify({'error': f"Failed to generate sample data: {str(e)}"}), 500
+    
+@app.route('/get-financials', methods=['POST'])
+def get_financials():
+    """Get financial data for a company"""
+    try:
+        if not request.is_json:
+            return jsonify({"error": "Request must be in JSON format"}), 400
+        
+        data = request.json
+        company_name = data.get('company_name')
+        ticker = data.get('ticker')
+        
+        if not company_name and not ticker:
+            return jsonify({"error": "Company name or ticker symbol is required"}), 400
+        
+        # Get financial data
+        financials = financial_api.get_company_financials(company_name, ticker)
+        
+        if not financials:
+            return jsonify({"error": "Could not retrieve financial data"}), 404
+        
+        return jsonify({
+            'status': 'success',
+            'financials': financials
+        })
+        
+    except Exception as e:
+        logger.error(f"Error getting financials: {str(e)}", exc_info=True)
+        return jsonify({"error": f"Failed to get financial data: {str(e)}"}), 500
+
+# Add new route for investment criteria check
+@app.route('/check-investment-criteria', methods=['POST'])
+def check_investment_criteria():
+    """Check a company against investment criteria"""
+    try:
+        data = request.json
+        company_data = data.get('company_data', {})
+        financials = data.get('financials', {})
+        
+        if not company_data:
+            return jsonify({"error": "Company data is required"}), 400
+        
+        # Analyze investment fit
+        investment_fit = financial_api.analyze_investment_fit(company_data, financials)
+        
+        return jsonify({
+            'status': 'success',
+            'investment_fit': investment_fit
+        })
+        
+    except Exception as e:
+        logger.error(f"Error checking investment criteria: {str(e)}", exc_info=True)
+        return jsonify({"error": f"Failed to check investment criteria: {str(e)}"}), 500
+    
 
 @app.errorhandler(404)
 def page_not_found(e):
@@ -757,60 +888,4 @@ if __name__ == '__main__':
     
     logger.info("Starting Enhanced AI-Readiness Lead Generation Tool")
     app.run(debug=True, host='0.0.0.0', port=5000)
-    
-# Add these imports at the top with your other import
 
-# Add new route for financial data
-@app.route('/get-financials', methods=['POST'])
-def get_financials():
-    """Get financial data for a company"""
-    try:
-        if not request.is_json:
-            return jsonify({"error": "Request must be in JSON format"}), 400
-        
-        data = request.json
-        company_name = data.get('company_name')
-        ticker = data.get('ticker')
-        
-        if not company_name and not ticker:
-            return jsonify({"error": "Company name or ticker symbol is required"}), 400
-        
-        # Get financial data
-        financials = financial_api.get_company_financials(company_name, ticker)
-        
-        if not financials:
-            return jsonify({"error": "Could not retrieve financial data"}), 404
-        
-        return jsonify({
-            'status': 'success',
-            'financials': financials
-        })
-        
-    except Exception as e:
-        logger.error(f"Error getting financials: {str(e)}", exc_info=True)
-        return jsonify({"error": f"Failed to get financial data: {str(e)}"}), 500
-
-# Add new route for investment criteria check
-@app.route('/check-investment-criteria', methods=['POST'])
-def check_investment_criteria():
-    """Check a company against investment criteria"""
-    try:
-        data = request.json
-        company_data = data.get('company_data', {})
-        financials = data.get('financials', {})
-        
-        if not company_data:
-            return jsonify({"error": "Company data is required"}), 400
-        
-        # Analyze investment fit
-        investment_fit = financial_api.analyze_investment_fit(company_data, financials)
-        
-        return jsonify({
-            'status': 'success',
-            'investment_fit': investment_fit
-        })
-        
-    except Exception as e:
-        logger.error(f"Error checking investment criteria: {str(e)}", exc_info=True)
-        return jsonify({"error": f"Failed to check investment criteria: {str(e)}"}), 500
-    
