@@ -8,6 +8,7 @@ import logging
 import uuid
 from datetime import datetime
 import re
+import numpy as np
 
 # Import modules
 from modules.scraper import WebScraper

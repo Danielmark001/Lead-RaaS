@@ -576,3 +576,20 @@ AttributeError: 'str' object has no attribute 'get'
 2025-04-03 11:35:33,958 - __main__ - INFO - Financial data added for Apple
 2025-04-03 11:35:33,960 - __main__ - INFO - Investment criteria match added to results
 2025-04-03 11:35:33,962 - __main__ - INFO - Analysis completed successfully for URL: https://apple.com
+2025-04-03 11:37:27,399 - __main__ - INFO - Starting Enhanced AI-Readiness Lead Generation Tool
+2025-04-03 11:42:01,880 - __main__ - INFO - Starting analysis for URL: https://getcohesiveai.com
+2025-04-03 11:42:01,880 - __main__ - INFO - Scraping website content
+2025-04-03 11:42:07,152 - __main__ - INFO - Analyzing website content
+2025-04-03 11:42:07,448 - __main__ - INFO - Calculating AI readiness score
+2025-04-03 11:42:07,450 - __main__ - INFO - Generating lead qualification insights
+2025-04-03 11:42:08,255 - __main__ - INFO - Financial data added for Getcohesiveai
+2025-04-03 11:42:08,258 - __main__ - INFO - Investment criteria match added to results
+2025-04-03 11:42:08,261 - __main__ - INFO - Analysis completed successfully for URL: https://getcohesiveai.com
+2025-04-03 11:42:30,615 - __main__ - INFO - Starting analysis for URL: https://capraecapital.com
+2025-04-03 11:42:30,615 - __main__ - INFO - Scraping website content
+2025-04-03 11:42:35,374 - __main__ - INFO - Analyzing website content
+2025-04-03 11:42:35,858 - __main__ - INFO - Calculating AI readiness score
+2025-04-03 11:42:35,862 - __main__ - INFO - Generating lead qualification insights
+2025-04-03 11:42:36,665 - __main__ - INFO - Financial data added for Capraecapital
+2025-04-03 11:42:36,667 - __main__ - INFO - Investment criteria match added to results
+2025-04-03 11:42:36,668 - __main__ - INFO - Analysis completed successfully for URL: https://capraecapital.com
