@@ -1,5 +1,5 @@
-# AI-Readiness Assessment Tool
-A web-based tool that analyzes company websites to assess their AI readiness potential and identify transformation opportunities. Built for Caprae Capital Partners' AI-RaaS (AI Readiness as a Service) offering.
+# Lead Readiness As A Service
+A web-scraper that analyzes company websites to assess their AI readiness potential and identify transformation opportunities. Built for Caprae Capital Partners' AI-RaaS (AI Readiness as a Service) offering.
 
 ## Overview
 This tool helps private equity firms and investment professionals quickly evaluate a company's AI readiness by analyzing their public web presence. It extracts technology indicators, leadership information, and growth signals to provide an overall AI readiness score, now with enhanced features for security, contact management, and lead qualification.
