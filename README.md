@@ -1,4 +1,4 @@
-# Lead Readiness As A Service
+# Lead Readiness-as-a-Service
 A web-scraper that analyzes company websites to assess their AI readiness potential and identify transformation opportunities. Built for Caprae Capital Partners' AI-RaaS (AI Readiness as a Service) offering.
 
 ## Overview
